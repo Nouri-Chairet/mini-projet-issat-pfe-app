@@ -1,0 +1,29 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('add-classes/', views.create_classes, name='login'),
+    path('get-classes/', views.get_classes, name='get_classes'),
+    path('upload/schedule/', views.create_schedule, name='upload_schedule'),
+    path('classes/schedule/', views.get_classes_schedule, name='get_classes_schedule'),
+    path('teacher/schedule/', views.get_teacher_schedule, name='get_teacher_schedule'),
+    path('teacher/get/', views.get_teachers, name='get_teachers'),
+    path('students/get/', views.get_students, name='get_students'),
+    path('students/update/', views.update_student, name='update_students'),
+    path('students/delete/', views.delete_student, name='delete_students'),
+    path('post/upload/', views.create_post, name='upload_post'),
+    path('post/delete/', views.delete_post, name='get_posts'),
+    path('posts/update/', views.update_post, name='update_post'),
+    path('posts/get/announcement/', views.get_announcement_posts, name='get_posts'),
+    path ('posts/get/lessons/', views.get_lesson_posts,name='lesson-posts'),
+    path('forum/questions/create/', views.create_forum_question, name='create_forum_question'),
+    path('forum/questions/answer/', views.answer_forum_question, name='answer_forum_question'),
+    path('forum/questions/', views.get_forum_questions, name='get_forum_questions'),
+    path('teacher/availability/set/', views.set_teacher_availability, name='set_teacher_availability'),
+    path('teacher/surveillance-load/', views.get_teacher_surveillance_load, name='get_teacher_surveillance_load'),
+    path('exam-calendar/manual/', views.create_exam_calendar_manual, name='create_exam_calendar_manual'),
+    path('exam-calendar/excel/', views.create_exam_calendar_from_excel, name='create_exam_calendar_from_excel'),
+    path('pfe/excel/', views.create_pfe_subjects_from_excel, name='create_pfe_subjects_from_excel'),
+    path('pfe/jury/assign/', views.assign_pfe_jury, name='assign_pfe_jury'),
+    path('pfe/teacher-quota/', views.get_pfe_teacher_quota, name='get_pfe_teacher_quota'),
+]

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "poised-artwork-456612-a5",
+  "private_key_id": "12943b94e5a38f61476339be026148a0601adcac",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCv6KmDx37tic5O\nKxBCAhqkwzntDOeMevZ3OKkdWOLBfEdGt/mAKMpyRtJ4cc3COadx5ubv9WNuYmo8\nDG2n65uiy/repw5raw+Zkxr3Gv3fiv09EqTLhOQHaiWxdl7bH7bFaVmAYO/v/t2J\nN+p2k2RH5hP38AFZsQBpFw37mSBcxDLyVR3vG+MTpWalgHI1YjgLcqC4+PKTGg9G\nXSOEM4dHIheffWBjVAObG7dWsZJs3XfLgeKt4Gq7hng0HgVkN+sEa/nPfJFaI+Tb\nUtTNgqQHK2da2DFlt0vV7LISkoQ9jFoXop7bUZLyFC61JyIjIrtWKeJirRQvsUhX\nTrgFUKNTAgMBAAECggEACEh+YvQr5+eLTWb9tv3+Xy/KNH1dEeJgZLDIVddvpgjC\nGnRjTUOedM8c7gr9011/ov9qdHYrnnEH65fyOewAQiQ0xfM73JcH/wVMScJ9nd8f\nmZadJ/A0BJ1c9QRL5ymRI66YRlFKOxTXPbTiV38NQ81zt0MX7S9Gg6xQPj6xpWyL\nsG4t6TmbLGlhzlj6GL9pF8phNW4mWmIu200sGc6Wke7HMOynprqzpG7eSyoTpc2s\n7CZwGEVKZklO6XJSdbMCPeqkFzQqn7keQtte53Ox9QXbCxzsos3jcmM6XkqMkuB6\nSXfNN73dHlXGHTv574fY6/YSu6XfqcfyWOJ6K+3ZgQKBgQDdvpPBX3eRaFpwAb8e\neC+inZU5WMz/WBzmZ9AUDMCahvxEO0y4SqoSZaR07xiY0TdaEHF9U8KBYaetRggE\nS60Mz/Mq6YgluLX7+84LYti/hrzz6GvoXbsw6Vk1IvXPe8dmW9eKeprk/2/Mld98\nJjLZxpeKhitq/jR7nHV/8tGScwKBgQDLFWeTXGpiF8CTcpSpCjiR2GxV+Ifh7nWs\nequjNjBdB2ChehpgeVxD53IOTlkysPEMKJ46p3tt8t0zOaOIpJ10cXQpf5EN5ngy\nihr0pqxuJdwcwuRs4/BOAG3t9gGsgk3lzTTfp/cluABtJ5FhrH0IkND/868C+sT1\nzoYCnYcToQKBgDqWtCuPseP1ko+tpnXCg7OPt3HjiKae/WPTYiMqC2nI6LaOhILd\nF3qs6HsNAY6/GMTvO01F6EqPJuKdcljQNfUArNtVwOdWmp7ttU9E2sggLaS0cG6A\n9YjC3xMvHYuoxNLCyXyJUIvZAg0oPFhtL1pjIn8zXB109SEEAffAjKcJAoGAWaAh\nrOQ9QvtOjwQjXZLYMm18KljbxzcREcS1mPsiTvwhhkI3/9mvgXxUVsH3FasHRqFq\na2Jc08I6IxBN/tD/eFNVu7bD0omjBFL04IHqWVY2FS9h1jimZhZEbZ+DT5nWPRPa\nQNaE+U2CSqoKvDt+ltgqlLr7wunfIMg7Vk4lPeECgYEAwKjYQeADm89s1IED/5Gw\nqlCfh4Yz04JkJXMgkwrJBHn0d9AI/62/zc9y6/8I93VlJB7C7RNpFTbdZzZBIeIK\nWwvmEX/dEQ1GMJC9qGWfW34mBIfgjX3Ejijpvm8gY08W35rAqogNaclEmllT8d3u\n9I5h06C1vmom1MHlS6P+hbk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "django-uploader@poised-artwork-456612-a5.iam.gserviceaccount.com",
+  "client_id": "114995213338404540242",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/django-uploader%40poised-artwork-456612-a5.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
