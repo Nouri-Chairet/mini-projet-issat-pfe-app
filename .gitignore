@@ -1,3 +1,5 @@
 /.venv
 /django/Back-end/api/admin_panel/migrations
 /django/.env
+__pycache__/
+*.py[cod]
