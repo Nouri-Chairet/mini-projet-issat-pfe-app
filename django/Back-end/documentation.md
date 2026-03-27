@@ -3,6 +3,7 @@
 ## 1) Project Scope
 
 This platform supports ISSAT university operations for:
+
 - Account management (admin, teacher, student)
 - Class and schedule management
 - Attendance and access control
@@ -23,13 +24,17 @@ This platform supports ISSAT university operations for:
 ## 3) Authentication Endpoints (`/api/auth/...`)
 
 ### 3.1 POST `/api/auth/login/`
+
 **Purpose**
+
 - Authenticates user by email/password and returns JWT tokens.
 
 **Auth required**
+
 - No
 
 **Request body**
+
 ```json
 {
   "email": "user@issat.tn",
@@ -38,6 +43,7 @@ This platform supports ISSAT university operations for:
 ```
 
 **Success response**
+
 ```json
 {
   "refresh": "...",
@@ -46,19 +52,24 @@ This platform supports ISSAT university operations for:
 ```
 
 **Error cases**
+
 - `400`: invalid credentials
 - `404`: user not found
 
 ---
 
 ### 3.2 POST `/api/auth/register/`
+
 **Purpose**
+
 - Admin creates new users (admin/teacher/student).
 
 **Auth required**
+
 - Yes (`IsAuthenticated + IsAdmin`)
 
 **Request body (base)**
+
 ```json
 {
   "email": "new@issat.tn",
@@ -69,26 +80,33 @@ This platform supports ISSAT university operations for:
 ```
 
 **Additional fields by role**
+
 - `student`: `class_id`, `parent_contact`
 - `teacher`: `department`, `ncin`, `age`
 
 **Success response**
+
 - Returns token pair for created user.
 
 **Error cases**
+
 - `400`: email exists, invalid role
 - `404`: class not found (student)
 
 ---
 
 ### 3.3 PATCH `/api/auth/update-pass/`
+
 **Purpose**
+
 - Changes password using `old_password` and `new_password`.
 
 **Auth required**
+
 - Backend currently expects authenticated `request.user`.
 
 **Request body**
+
 ```json
 {
   "old_password": "old",
@@ -97,23 +115,29 @@ This platform supports ISSAT university operations for:
 ```
 
 **Success response**
+
 ```json
 { "detail": "Password updated successfully" }
 ```
 
 **Error cases**
+
 - `400`: old password incorrect
 
 ---
 
 ### 3.4 PATCH `/api/auth/update-account/`
+
 **Purpose**
+
 - Updates current profile based on user role.
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 **Notes**
+
 - Admin updates directly on `Users`
 - Teacher updates through `TeacherSerializer`
 - Student uses user serializer path
@@ -121,18 +145,23 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 3.5 POST `/api/auth/forgot-password/`
+
 **Purpose**
+
 - Sends reset email with tokenized URL.
 
 **Auth required**
+
 - No
 
 **Request body**
+
 ```json
 { "email": "user@issat.tn" }
 ```
 
 **Success response**
+
 ```json
 { "detail": "Password reset link sent." }
 ```
@@ -140,23 +169,30 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 3.6 GET `/api/auth/forget-password/confirme/?uid=<uid>&token=<token>`
+
 **Purpose**
+
 - Verifies reset link and redirects to frontend page:
 - `http://localhost:5173/change-password?uid=...&token=...`
 
 **Auth required**
+
 - No
 
 ---
 
 ### 3.7 POST `/api/auth/forget_password/reset/`
+
 **Purpose**
+
 - Final reset password with `uid`, `token`, `new_password`.
 
 **Auth required**
+
 - No
 
 **Request body**
+
 ```json
 {
   "uid": "...",
@@ -168,13 +204,17 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 3.8 POST `/api/auth/refresh/`
+
 **Purpose**
+
 - Creates fresh access/refresh tokens from refresh token.
 
 **Auth required**
+
 - No
 
 **Request body**
+
 ```json
 { "refresh": "..." }
 ```
@@ -182,26 +222,34 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 3.9 GET `/api/auth/user/student/`
+
 **Purpose**
+
 - Returns current authenticated student profile.
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 **Error cases**
+
 - `403`: user is not student
 - `404`: student profile missing
 
 ---
 
 ### 3.10 GET `/api/auth/user/teacher/`
+
 **Purpose**
+
 - Returns current authenticated teacher profile.
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 **Error cases**
+
 - `403`: user is not teacher
 - `404`: teacher profile missing
 
@@ -210,13 +258,17 @@ This platform supports ISSAT university operations for:
 ## 4) Admin & Academic Endpoints (`/api/admin/...`)
 
 ### 4.1 POST `/api/admin/add-classes/`
+
 **Purpose**
+
 - Batch creates classes with section-level constraints.
 
 **Auth required**
+
 - Yes (`IsAuthenticated + IsAdmin`)
 
 **Request body**
+
 ```json
 {
   "level": 2,
@@ -226,87 +278,114 @@ This platform supports ISSAT university operations for:
 ```
 
 **Behavior**
+
 - Creates classes `classe_num = 1..nb`
 - Validates `section` and `level`
 
 ---
 
 ### 4.2 GET `/api/admin/get-classes/`
+
 **Purpose**
+
 - Lists all classes.
 
 **Auth required**
+
 - Yes (`IsAdminOrTeacher`)
 
 ---
 
 ### 4.3 POST `/api/admin/upload/schedule/`
+
 **Purpose**
+
 - Imports schedule rows from Excel.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 **Excel columns required**
+
 - `jour, heure-debut, heure-fin, matiere, professeur, classe, salle`
 
 **Class token format**
+
 - `niveau-section-classe_num`
 
 ---
 
 ### 4.4 GET `/api/admin/classes/schedule/`
+
 **Purpose**
+
 - Retrieves schedule for one class.
 
 **Auth required**
+
 - Yes (`IsAdminOrStudent`)
 
 **Query options**
+
 - Option A: `class_id`
 - Option B: `niveau`, `section`, `classe_num`
 
 ---
 
 ### 4.5 GET `/api/admin/teacher/schedule/?teacher_id=<uuid>`
+
 **Purpose**
+
 - Retrieves one teacher schedule.
 
 **Auth required**
+
 - Yes (`IsAdminOrTeacher`)
 
 ---
 
 ### 4.6 GET `/api/admin/teacher/get/`
+
 **Purpose**
+
 - Lists teachers.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 ---
 
 ### 4.7 GET `/api/admin/students/get/`
+
 **Purpose**
+
 - Lists students for one class.
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 **Query options**
+
 - Option A: `class_id`
 - Option B: `niveau`, `section`, `classe_num`
 
 ---
 
 ### 4.8 PATCH `/api/admin/students/update/`
+
 **Purpose**
+
 - Updates student account/profile fields.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 **Request body**
+
 ```json
 {
   "student_id": "...",
@@ -320,71 +399,94 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 4.9 DELETE `/api/admin/students/delete/?student_id=<uuid>`
+
 **Purpose**
+
 - Deletes student record.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 ---
 
 ### 4.10 POST `/api/admin/post/upload/`
+
 **Purpose**
+
 - Creates lesson or announcement post with PDF upload.
 
 **Auth required**
+
 - Yes (`IsAdminOrTeacher`)
 
 **Behavior**
+
 - If `class_id` is provided => `type = lesson`
 - If `class_id` omitted => `type = announcement` (teacher blocked)
 
 **Request**
+
 - Multipart form-data: `title`, `content`, `file(.pdf)`, optional `class_id`
 
 ---
 
 ### 4.11 DELETE `/api/admin/post/delete/?post_id=<uuid>`
+
 **Purpose**
+
 - Deletes post.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 ---
 
 ### 4.12 PATCH `/api/admin/posts/update/`
+
 **Purpose**
+
 - Updates post title/content/file.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 ---
 
 ### 4.13 GET `/api/admin/posts/get/announcement/`
+
 **Purpose**
+
 - Lists announcement posts.
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 ---
 
 ### 4.14 GET `/api/admin/posts/get/lessons/?classe_id=<uuid>`
+
 **Purpose**
+
 - Lists lesson posts for one class.
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 ---
 
-### 4.15 PATCH `/api/admin/resolve_absence/` *(view exists; route not currently exposed)*
+### 4.15 PATCH `/api/admin/resolve_absence/` _(view exists; route not currently exposed)_
+
 **Purpose**
+
 - Reactivates student access (`access_status=true`).
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 ---
@@ -392,13 +494,17 @@ This platform supports ISSAT university operations for:
 ## 5) Forum Endpoints (`/api/admin/forum/...`)
 
 ### 5.1 POST `/api/admin/forum/questions/create/`
+
 **Purpose**
+
 - Creates forum question (student/teacher/admin).
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 **Request body**
+
 ```json
 {
   "title": "Question title",
@@ -410,13 +516,17 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 5.2 POST `/api/admin/forum/questions/answer/`
+
 **Purpose**
+
 - Adds answer to an existing question.
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 **Request body**
+
 ```json
 {
   "question_id": "question-uuid",
@@ -427,10 +537,13 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 5.3 GET `/api/admin/forum/questions/?class_id=<uuid>`
+
 **Purpose**
+
 - Lists forum questions (optionally filtered by class).
 
 **Auth required**
+
 - Yes (`IsAuthenticated`)
 
 ---
@@ -438,13 +551,17 @@ This platform supports ISSAT university operations for:
 ## 6) Surveillance Endpoints (`/api/admin/teacher/...`)
 
 ### 6.1 POST `/api/admin/teacher/availability/set/`
+
 **Purpose**
+
 - Saves teacher availability slots for surveillance or PFE presentations.
 
 **Auth required**
+
 - Yes (`IsAdminOrTeacher`)
 
 **Request body**
+
 ```json
 {
   "context": "surveillance|pfe",
@@ -458,7 +575,9 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 6.2 GET `/api/admin/teacher/surveillance-load/?teacher_id=<uuid>`
+
 **Purpose**
+
 - Returns computed load summary:
   - `weekly_teaching_hours`
   - `required_surveillance_hours`
@@ -466,6 +585,7 @@ This platform supports ISSAT university operations for:
   - `remaining_surveillance_hours`
 
 **Auth required**
+
 - Yes (`IsAdminOrTeacher`)
 
 ---
@@ -473,13 +593,17 @@ This platform supports ISSAT university operations for:
 ## 7) Exam Calendar Endpoints (`/api/admin/exam-calendar/...`)
 
 ### 7.1 POST `/api/admin/exam-calendar/manual/`
+
 **Purpose**
+
 - Creates one exam session manually + optional invigilator assignments.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 **Request body**
+
 ```json
 {
   "class_id": "class-uuid",
@@ -495,20 +619,26 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 7.2 POST `/api/admin/exam-calendar/excel/`
+
 **Purpose**
+
 - Imports exam sessions from Excel, assigns listed teachers, then builds and uploads PDF.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 **Excel columns**
+
 - `matiere, classe, enseignants, date, heure-debut, heure-fin, salle`
 
 **Formats**
+
 - `classe`: `niveau-section-classe_num`
 - `enseignants`: semicolon-separated usernames
 
 **Success response**
+
 ```json
 {
   "message": "Exam calendar processed",
@@ -522,27 +652,35 @@ This platform supports ISSAT university operations for:
 ## 8) PFE Endpoints (`/api/admin/pfe/...`)
 
 ### 8.1 POST `/api/admin/pfe/excel/`
+
 **Purpose**
+
 - Imports PFE subjects and supervisors from Excel.
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 **Accepted column sets**
+
 1. `nom de sujet PFE`, `nom de l’étudiant`, `nom de l’encadreur`
 2. `sujet_pfe`, `etudiant`, `encadreur`
 
 ---
 
 ### 8.2 POST `/api/admin/pfe/jury/assign/`
+
 **Purpose**
+
 - Assigns jury members for a PFE subject.
 - Automatically ensures encadreur assignment (supervisor role).
 
 **Auth required**
+
 - Yes (`IsAdmin`)
 
 **Request body**
+
 ```json
 {
   "pfe_subject_id": "subject-uuid",
@@ -558,7 +696,9 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 8.3 GET `/api/admin/pfe/teacher-quota/?teacher_id=<uuid>`
+
 **Purpose**
+
 - Returns quota and progress for one teacher:
   - `supervised_subjects`
   - `required_presentations`
@@ -566,6 +706,7 @@ This platform supports ISSAT university operations for:
   - `remaining_presentations`
 
 **Auth required**
+
 - Yes (`IsAdminOrTeacher`)
 
 ---
@@ -573,13 +714,17 @@ This platform supports ISSAT university operations for:
 ## 9) Teacher Endpoints (`/api/teacher/...`)
 
 ### 9.1 POST `/api/teacher/make_presence/`
+
 **Purpose**
+
 - Teacher marks attendance for students in one schedule.
 
 **Auth required**
+
 - Yes (`IsTeacher`)
 
 **Request body**
+
 ```json
 {
   "schedule_id": "schedule-uuid",
@@ -593,28 +738,37 @@ This platform supports ISSAT university operations for:
 ---
 
 ### 9.2 GET `/api/teacher/get_absence_made/`
+
 **Purpose**
+
 - Lists attendance rows marked by teacher where status is absent.
 
 **Auth required**
+
 - Yes (`IsTeacher`)
 
 ---
 
 ### 9.3 GET `/api/teacher/get_current_session/`
+
 **Purpose**
+
 - Returns session currently active for teacher according to current day/time.
 
 **Auth required**
+
 - Yes (`IsTeacher`)
 
 ---
 
 ### 9.4 GET `/api/teacher/get_classes/`
+
 **Purpose**
+
 - Returns distinct classes assigned to teacher from schedules.
 
 **Auth required**
+
 - Yes (`IsTeacher`)
 
 ---
@@ -624,11 +778,13 @@ This platform supports ISSAT university operations for:
 > Suggested base: React Router style path design for your current backend.
 
 ### 10.1 Public Routes
+
 - `/login` -> Login page (`POST /api/auth/login/`)
 - `/forgot-password` -> Request reset email (`POST /api/auth/forgot-password/`)
 - `/change-password` -> Reset form (`POST /api/auth/forget_password/reset/`)
 
 ### 10.2 Shared Authenticated Routes
+
 - `/profile` -> Current user profile (`GET /api/auth/user/student/` or `/user/teacher/`)
 - `/account/settings` -> Update account/password (`PATCH /api/auth/update-account/`, `/update-pass/`)
 - `/announcements` -> Announcements feed (`GET /api/admin/posts/get/announcement/`)
@@ -637,12 +793,14 @@ This platform supports ISSAT university operations for:
 - `/forum/:questionId` -> Question details + answers (`GET /api/admin/forum/questions/` + `POST /answer/`)
 
 ### 10.3 Student Routes
+
 - `/student/dashboard`
 - `/student/schedule` -> class schedule (`GET /api/admin/classes/schedule/`)
 - `/student/lessons` -> class lessons (`GET /api/admin/posts/get/lessons/`)
 - `/student/attendance` -> attendance status (from teacher marking outcomes)
 
 ### 10.4 Teacher Routes
+
 - `/teacher/dashboard`
 - `/teacher/current-session` -> (`GET /api/teacher/get_current_session/`)
 - `/teacher/classes` -> (`GET /api/teacher/get_classes/`)
@@ -654,6 +812,7 @@ This platform supports ISSAT university operations for:
 - `/teacher/pfe-quota` -> (`GET /api/admin/pfe/teacher-quota/`)
 
 ### 10.5 Admin Routes
+
 - `/admin/dashboard`
 - `/admin/users/register` -> (`POST /api/auth/register/`)
 - `/admin/classes` -> list/create (`GET/POST` on class APIs)
@@ -674,6 +833,7 @@ This platform supports ISSAT university operations for:
 - `/admin/pfe/quotas` -> (`GET /api/admin/pfe/teacher-quota/`)
 
 ### 10.6 Route Guards (Recommended)
+
 - `PublicOnlyGuard`: `/login`, `/forgot-password`, `/change-password`
 - `AuthGuard`: all authenticated routes
 - `RoleGuard('student')`: `/student/**`
@@ -685,19 +845,24 @@ This platform supports ISSAT university operations for:
 ## 11) Response & Error Conventions
 
 Common success codes:
+
 - `200`, `201`
 
 Common error codes:
+
 - `400` invalid input
 - `403` forbidden by role
 - `404` not found
 - `500` server error
 
 Typical error shape:
+
 ```json
 { "error": "message" }
 ```
+
 or
+
 ```json
 { "detail": "message" }
 ```
