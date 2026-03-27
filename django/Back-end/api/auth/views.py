@@ -17,7 +17,30 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 import uuid
+from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
+from api.auth.serializers import (
+    ForgotPasswordRequestSerializer,
+    LoginRequestSerializer,
+    MessageSerializer,
+    RefreshTokenRequestSerializer,
+    RegisterRequestSerializer,
+    ResetPasswordRequestSerializer,
+    StudentProfileResponseSerializer,
+    TeacherProfileResponseSerializer,
+    TokenPairSerializer,
+    UpdateAccountRequestSerializer,
+    UpdatePasswordRequestSerializer,
+)
 
+@extend_schema(
+    tags=['Auth'],
+    summary='Refresh JWT token pair',
+    request=RefreshTokenRequestSerializer,
+    responses={
+        200: TokenPairSerializer,
+        400: MessageSerializer,
+    },
+)
 @api_view(['POST'])
 def refresh_token(request):
     refresh = request.data.get('refresh')
@@ -34,6 +57,17 @@ def refresh_token(request):
     except Exception as e:
         print(e)
         return Response({'detail': str(e)}, status=400)
+@extend_schema(
+    tags=['Auth'],
+    summary='Register a new account by role',
+    request=RegisterRequestSerializer,
+    responses={
+        200: TokenPairSerializer,
+        400: MessageSerializer,
+        404: MessageSerializer,
+        500: MessageSerializer,
+    },
+)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def register_view(request):
@@ -85,6 +119,15 @@ def register_view(request):
         return Response({'detail': str(e)}, status=500)
     
     
+@extend_schema(
+    tags=['Auth'],
+    summary='Update current user password',
+    request=UpdatePasswordRequestSerializer,
+    responses={
+        200: MessageSerializer,
+        400: MessageSerializer,
+    },
+)
 @api_view(['PATCH'])
 def update_password(request):
     new_password = request.data.get('new_password')
@@ -98,6 +141,16 @@ def update_password(request):
         return Response({'detail': 'Old password is incorrect'}, status=400)
 
 
+@extend_schema(
+    tags=['Auth'],
+    summary='Login and issue JWT token pair',
+    request=LoginRequestSerializer,
+    responses={
+        200: TokenPairSerializer,
+        400: MessageSerializer,
+        404: MessageSerializer,
+    },
+)
 @api_view(['POST'])
 def login_view(request):
     email = request.data.get('email')
@@ -113,6 +166,16 @@ def login_view(request):
         return Response({'detail': 'User not found'}, status=404)
 
 
+@extend_schema(
+    tags=['Auth'],
+    summary='Update authenticated account profile',
+    request=UpdateAccountRequestSerializer,
+    responses={
+        200: OpenApiResponse(description='Profile updated. Response shape depends on role.'),
+        400: OpenApiResponse(description='Validation error'),
+        404: MessageSerializer,
+    },
+)
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def update_account(request):
@@ -142,6 +205,17 @@ def update_account(request):
     return Response(serializer.errors, status=400)
 
 
+@extend_schema(
+    tags=['Auth'],
+    summary='Send password reset email',
+    request=ForgotPasswordRequestSerializer,
+    responses={
+        200: MessageSerializer,
+        400: MessageSerializer,
+        404: MessageSerializer,
+        500: MessageSerializer,
+    },
+)
 @api_view(['POST'])
 def forgot_password(request):
     email = request.data.get('email')
@@ -168,6 +242,18 @@ def forgot_password(request):
     except Exception as e:
         print(str(e))
         return Response({'detail': str(e)}, status=500)
+@extend_schema(
+    tags=['Auth'],
+    summary='Validate reset link and redirect to frontend',
+    parameters=[
+        OpenApiParameter(name='uid', required=True, type=str, location=OpenApiParameter.QUERY),
+        OpenApiParameter(name='token', required=True, type=str, location=OpenApiParameter.QUERY),
+    ],
+    responses={
+        302: OpenApiResponse(description='Redirects to frontend reset page when token is valid'),
+        400: MessageSerializer,
+    },
+)
 @api_view(['GET'])
 def reset_password_verify(request):
     token = request.query_params.get('token')
@@ -185,6 +271,16 @@ def reset_password_verify(request):
         return redirect(f'http://localhost:5173/change-password?uid={request.query_params.get("uid")}&token={token}')
     else:
         return Response({'detail': 'Invalid or expired token.'}, status=status.HTTP_400_BAD_REQUEST)
+@extend_schema(
+    tags=['Auth'],
+    summary='Reset password with uid/token',
+    request=ResetPasswordRequestSerializer,
+    responses={
+        200: MessageSerializer,
+        400: MessageSerializer,
+        500: MessageSerializer,
+    },
+)
 @api_view(['POST'])
 def reset_password(request):
     token = request.data.get('token')
@@ -208,6 +304,15 @@ def reset_password(request):
         print(str(e))
         return Response({'detail': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+@extend_schema(
+    tags=['Auth'],
+    summary='Get current teacher profile',
+    responses={
+        200: TeacherProfileResponseSerializer,
+        403: MessageSerializer,
+        404: MessageSerializer,
+    },
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_teacher(request):
@@ -233,6 +338,15 @@ def get_teacher(request):
             return Response({'detail': 'Teacher not found'}, status=404)
     else:
         return Response({'detail': 'User is not a teacher'}, status=403)
+@extend_schema(
+    tags=['Auth'],
+    summary='Get current student profile',
+    responses={
+        200: StudentProfileResponseSerializer,
+        403: MessageSerializer,
+        404: MessageSerializer,
+    },
+)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_student(request):
@@ -257,6 +371,15 @@ def get_student(request):
             return Response({'detail': 'Student not found'}, status=404)
     else:
         return Response({'detail': 'User is not a student'}, status=403)
+@extend_schema(
+    tags=['Auth'],
+    summary='Confirm reset password with uid/token',
+    request=ResetPasswordRequestSerializer,
+    responses={
+        200: MessageSerializer,
+        400: MessageSerializer,
+    },
+)
 @api_view(['POST'])
 def reset_password_confirm(request):
     uidb64 = request.data.get('uid')

@@ -3,8 +3,17 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from api.admin_panel.permissions import IsTeacher
 from api.models import Classes, Students, Attendance, Schedules,Teachers
+from drf_spectacular.utils import OpenApiTypes, extend_schema
 from datetime import datetime
 from api.utils.convert_to_french import convert_to_french
+
+
+TEACHER_GENERIC_RESPONSES = {
+    200: OpenApiTypes.OBJECT,
+    400: OpenApiTypes.OBJECT,
+    404: OpenApiTypes.OBJECT,
+    500: OpenApiTypes.OBJECT,
+}
 
 
 #request form 
@@ -17,6 +26,7 @@ from api.utils.convert_to_french import convert_to_french
 #        },
 #            "presence": true
 #        },
+@extend_schema(tags=['Teacher Panel'], request=OpenApiTypes.OBJECT, responses=TEACHER_GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsTeacher])
 def make_presence(request):
@@ -48,6 +58,7 @@ def make_presence(request):
         
     except Exception as e:
         return Response({"error": str(e)}, status=400)
+@extend_schema(tags=['Teacher Panel'], responses=TEACHER_GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsTeacher])
 def get_absence_made(request):
@@ -63,6 +74,7 @@ def get_absence_made(request):
             "presence": attendance.status,
         })
     return Response({"data":response_data}, status=200)
+@extend_schema(tags=['Teacher Panel'], responses=TEACHER_GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsTeacher])
 def get_current_session(request):
@@ -95,6 +107,7 @@ def get_current_session(request):
         return Response({"message": "No classes found for today"}, status=404) 
     except Exception as e:
         return Response({"error": str(e)}, status=400)
+@extend_schema(tags=['Teacher Panel'], responses=TEACHER_GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsTeacher])
 def get_classes(request):

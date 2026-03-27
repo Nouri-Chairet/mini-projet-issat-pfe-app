@@ -24,10 +24,20 @@ from rest_framework.response import Response
 from api.admin_panel.permissions import IsAdmin,IsAdminOrTeacher,IsAdminOrStudent
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
+from drf_spectacular.utils import OpenApiTypes, extend_schema
 import pandas as pd
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from api.utils.pdf_uploader import upload_pdf_to_gcs
+
+
+GENERIC_RESPONSES = {
+    200: OpenApiTypes.OBJECT,
+    201: OpenApiTypes.OBJECT,
+    400: OpenApiTypes.OBJECT,
+    404: OpenApiTypes.OBJECT,
+    500: OpenApiTypes.OBJECT,
+}
 
 
 def _validate_section_level(section, level):
@@ -94,6 +104,7 @@ def _teacher_surveillance_payload(teacher):
 #     "section": "A",
 #     "nb": 2
 # }
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def create_classes (request):
@@ -111,6 +122,7 @@ def create_classes (request):
     except Exception as e:
         return Response({"error": str(e)}, status=400)
 
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsAdminOrTeacher])
 def get_classes (request):
@@ -132,6 +144,7 @@ def get_classes (request):
 #classes are in this format : 1-tronc commun-3
 #professors are in this format : prenom nom
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def create_schedule (request):
@@ -184,6 +197,7 @@ def create_schedule (request):
 
 #request under this form :
 # params = niveau section classe_num or just the class_id
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsAdminOrStudent])
 def get_classes_schedule (request):
@@ -217,6 +231,7 @@ def get_classes_schedule (request):
 
 #request under this form :
 # params = teacher-id
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsAdminOrTeacher])
 def get_teacher_schedule (request):
@@ -247,6 +262,7 @@ def get_teacher_schedule (request):
         return Response({"error": str(e)}, status=500)
 
 
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def get_teachers(request):
@@ -271,6 +287,7 @@ def get_teachers(request):
 #request under this form :
 # params = niveau section classe_num
 #or class_id
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_students(request):
@@ -311,6 +328,7 @@ def get_students(request):
 #      but at least one of them is required
 #}
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def update_student(request):
@@ -354,6 +372,7 @@ def update_student(request):
 #request under this form :
 # params = student_id
 
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def delete_student(request):
@@ -382,6 +401,7 @@ def delete_student(request):
 #     "itle": "Lesson Title",
 #    "content": "Lesson content",
 #      "class_id":"class_id"
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminOrTeacher])
 def create_post(request):
@@ -419,6 +439,7 @@ def create_post(request):
 
 #request under this form :
 # params = post_id
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def delete_post(request):
@@ -433,6 +454,7 @@ def delete_post(request):
         return Response({"message": "Post deleted successfully"}, status=200)
     except Exception as e:
         return Response({"error": str(e)}, status=500)
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def update_post(request):
@@ -454,6 +476,7 @@ def update_post(request):
     except Exception as e:
         return Response({"error": str(e)}, status=500)
 
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_lesson_posts(request):
@@ -475,6 +498,7 @@ def get_lesson_posts(request):
         )
     return Response({"lessons":posts_data},status=200)
         
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_announcement_posts(request):
@@ -496,6 +520,7 @@ def get_announcement_posts(request):
         return Response({"error": str(e)}, status=500)
 
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_forum_question(request):
@@ -518,6 +543,7 @@ def create_forum_question(request):
     return Response({"id": str(question.id), "message": "Question created"}, status=201)
 
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def answer_forum_question(request):
@@ -532,6 +558,7 @@ def answer_forum_question(request):
     return Response({"id": str(answer.id), "message": "Answer added"}, status=201)
 
 
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_forum_questions(request):
@@ -554,6 +581,7 @@ def get_forum_questions(request):
     return Response({"questions": payload}, status=200)
 
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdminOrTeacher])
 def set_teacher_availability(request):
@@ -592,6 +620,7 @@ def set_teacher_availability(request):
         return Response({"error": str(e)}, status=400)
 
 
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsAdminOrTeacher])
 def get_teacher_surveillance_load(request):
@@ -609,6 +638,7 @@ def get_teacher_surveillance_load(request):
     return Response(_teacher_surveillance_payload(teacher), status=200)
 
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def create_exam_calendar_manual(request):
@@ -648,6 +678,7 @@ def create_exam_calendar_manual(request):
         return Response({"error": str(e)}, status=400)
 
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def create_exam_calendar_from_excel(request):
@@ -705,6 +736,7 @@ def create_exam_calendar_from_excel(request):
         return Response({"error": str(e)}, status=400)
 
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def create_pfe_subjects_from_excel(request):
@@ -742,6 +774,7 @@ def create_pfe_subjects_from_excel(request):
         return Response({"error": str(e)}, status=400)
 
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated, IsAdmin])
 def assign_pfe_jury(request):
@@ -793,6 +826,7 @@ def assign_pfe_jury(request):
         return Response({"error": str(e)}, status=400)
 
 
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsAdminOrTeacher])
 def get_pfe_teacher_quota(request):
@@ -822,6 +856,7 @@ def get_pfe_teacher_quota(request):
     )
 
 
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated,IsAdmin])
 def resolve_absence(request):

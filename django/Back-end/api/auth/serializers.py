@@ -61,5 +61,87 @@ class ClassSerializer(serializers.ModelSerializer):
         return instance
 
 
+class TokenPairSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+    access = serializers.CharField()
+
+
+class MessageSerializer(serializers.Serializer):
+    detail = serializers.CharField()
+
+
+class LoginRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+
+class RefreshTokenRequestSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+
+class RegisterRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    username = serializers.CharField()
+    password = serializers.CharField()
+    role = serializers.ChoiceField(choices=['admin', 'teacher', 'student'])
+    class_id = serializers.UUIDField(required=False)
+    parent_contact = serializers.CharField(required=False, allow_blank=True)
+    department = serializers.CharField(required=False, allow_blank=True)
+    ncin = serializers.CharField(required=False, allow_blank=True)
+    age = serializers.IntegerField(required=False)
+
+
+class UpdatePasswordRequestSerializer(serializers.Serializer):
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()
+
+
+class UpdateAccountRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=False)
+    username = serializers.CharField(required=False)
+    password = serializers.CharField(required=False)
+    department = serializers.CharField(required=False)
+    ncin = serializers.CharField(required=False)
+    age = serializers.IntegerField(required=False)
+    parent_contact = serializers.CharField(required=False)
+    access_status = serializers.BooleanField(required=False)
+
+
+class ForgotPasswordRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class ResetPasswordRequestSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+    new_password = serializers.CharField()
+
+
+class UserSummarySerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    email = serializers.EmailField()
+    username = serializers.CharField()
+    role = serializers.CharField()
+
+
+class TeacherProfileResponseSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    user = UserSummarySerializer()
+    department = serializers.CharField()
+    ncin = serializers.CharField()
+    age = serializers.IntegerField()
+    created_at = serializers.DateTimeField(required=False, allow_null=True)
+    updated_at = serializers.DateTimeField(required=False, allow_null=True)
+
+
+class StudentProfileResponseSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    user = UserSummarySerializer()
+    class_id = serializers.UUIDField()
+    class_name = serializers.CharField()
+    parent_contact = serializers.CharField(allow_null=True)
+    created_at = serializers.DateTimeField()
+
+
 
 
