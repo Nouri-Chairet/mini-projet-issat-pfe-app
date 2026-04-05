@@ -1,76 +1,55 @@
 import { useState } from "react";
-import { users } from "../data/mockData";
-import type { AppUser, AppUserRole } from "../types/app";
 
 interface LoginProps {
-  onLogin: (user: AppUser) => void;
+  onLogin: (email: string, password: string) => Promise<void>;
+  onForgotPassword: (email: string) => Promise<string>;
 }
 
-const roles: {
-  key: AppUserRole;
-  label: string;
-  icon: string;
-  accent: string;
-  desc: string;
-}[] = [
-  {
-    key: "chef",
-    label: "Chef de département",
-    icon: "◈",
-    accent: "#00e5a0",
-    desc: "Gérer les PFE, jurys et plannings",
-  },
-  {
-    key: "enseignant",
-    label: "Enseignant",
-    icon: "◆",
-    accent: "#ff6b35",
-    desc: "Encadrer, disponibilités, jurys",
-  },
-  {
-    key: "etudiant",
-    label: "Étudiant",
-    icon: "◉",
-    accent: "#7c9eff",
-    desc: "Suivre mon PFE et ma soutenance",
-  },
-];
-
-export default function Login({ onLogin }: LoginProps) {
-  const [selectedRole, setSelectedRole] = useState<AppUserRole | null>(null);
+export default function Login({ onLogin, onForgotPassword }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isResetLoading, setIsResetLoading] = useState(false);
 
-  const accent = selectedRole
-    ? (roles.find((role) => role.key === selectedRole)?.accent ?? "#00e5a0")
-    : "#00e5a0";
-
-  const handleSubmit = () => {
+  const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setError("");
-    setLoading(true);
+    setMessage("");
 
-    setTimeout(() => {
-      const user = users.find(
-        (appUser) =>
-          appUser.email === email &&
-          appUser.password === password &&
-          appUser.role === selectedRole,
-      );
-      if (user) {
-        onLogin(user);
-      } else {
-        setError("Identifiants incorrects ou rôle incompatible.");
-      }
-      setLoading(false);
-    }, 700);
+    if (!email || !password) {
+      setError("Veuillez remplir email et mot de passe.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await onLogin(email, password);
+    } catch {
+      setError("Identifiants invalides.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const quickLogin = (role: AppUserRole) => {
-    const user = users.find((appUser) => appUser.role === role);
-    if (user) {
-      onLogin(user);
+  const triggerForgotPassword = async () => {
+    setError("");
+    setMessage("");
+
+    if (!email) {
+      setError("Saisissez votre email pour recevoir le lien de réinitialisation.");
+      return;
+    }
+
+    setIsResetLoading(true);
+    try {
+      const detail = await onForgotPassword(email);
+      setMessage(detail);
+    } catch {
+      setError("Impossible d'envoyer l'email de réinitialisation.");
+    } finally {
+      setIsResetLoading(false);
     }
   };
 
@@ -82,450 +61,118 @@ export default function Login({ onLogin }: LoginProps) {
         alignItems: "center",
         justifyContent: "center",
         background: "var(--bg)",
-        position: "relative",
-        overflow: "hidden",
         padding: 20,
       }}
     >
       <div
         style={{
-          position: "absolute",
-          inset: 0,
-          overflow: "hidden",
-          pointerEvents: "none",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "-20%",
-            right: "-10%",
-            width: 600,
-            height: 600,
-            borderRadius: "50%",
-            background: `radial-gradient(circle, ${accent}08 0%, transparent 70%)`,
-            transition: "background 0.6s ease",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-10%",
-            left: "-5%",
-            width: 400,
-            height: 400,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(124,158,255,0.05) 0%, transparent 70%)",
-          }}
-        />
-        <svg
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            opacity: 0.03,
-          }}
-        >
-          <defs>
-            <pattern
-              id="grid"
-              width="60"
-              height="60"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M 60 0 L 0 0 0 60"
-                fill="none"
-                stroke="white"
-                strokeWidth="0.5"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
-        <div
-          style={{
-            position: "absolute",
-            top: 32,
-            left: 32,
-            width: 48,
-            height: 48,
-            borderTop: "1px solid rgba(255,255,255,0.15)",
-            borderLeft: "1px solid rgba(255,255,255,0.15)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: 32,
-            right: 32,
-            width: 48,
-            height: 48,
-            borderBottom: "1px solid rgba(255,255,255,0.15)",
-            borderRight: "1px solid rgba(255,255,255,0.15)",
-          }}
-        />
-      </div>
-
-      <div
-        style={{
           width: "100%",
-          maxWidth: 900,
-          position: "relative",
-          zIndex: 1,
+          maxWidth: 420,
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
+          borderRadius: "var(--r-lg)",
+          padding: 28,
         }}
       >
-        <div className="fu" style={{ textAlign: "center", marginBottom: 52 }}>
-          <div
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 10,
-              marginBottom: 24,
-              padding: "6px 16px",
-              border: "1px solid var(--border2)",
-              borderRadius: 40,
-              background: "var(--surface)",
-            }}
-          >
-            <span
-              style={{ color: accent, fontSize: 16, transition: "color 0.4s" }}
-            >
-              ◈
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 11,
-                color: "var(--text2)",
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-              }}
-            >
-              Université — Dépt. Informatique
-            </span>
-          </div>
-          <h1
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(36px,6vw,64px)",
-              fontWeight: 800,
-              lineHeight: 1.05,
-              letterSpacing: "-2px",
-              color: "var(--text)",
-            }}
-          >
-            Gestion
-            <span
-              style={{
-                color: accent,
-                transition: "color 0.4s",
-                fontFamily: "var(--font-serif)",
-                fontStyle: "italic",
-              }}
-            >
-              {" "}
-              PFE
-            </span>
-          </h1>
-          <p
-            style={{
-              color: "var(--text2)",
-              marginTop: 12,
-              fontFamily: "var(--font-mono)",
-              fontSize: 13,
-            }}
-          >
-            Session 2024 — 2025
-          </p>
-        </div>
-
-        <div
-          className="fu1"
+        <h1
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3,1fr)",
-            gap: 14,
-            marginBottom: 32,
+            margin: 0,
+            marginBottom: 22,
+            color: "var(--text)",
+            fontSize: 28,
+            letterSpacing: "-1px",
           }}
         >
-          {roles.map((role) => (
-            <button
-              key={role.key}
-              onClick={() => {
-                setSelectedRole(role.key);
-                setEmail("");
-                setPassword("");
-                setError("");
-              }}
-              style={{
-                padding: "24px 20px",
-                border: `1px solid ${selectedRole === role.key ? `${role.accent}60` : "var(--border)"}`,
-                borderRadius: "var(--r-lg)",
-                background:
-                  selectedRole === role.key
-                    ? `${role.accent}08`
-                    : "var(--surface)",
-                textAlign: "left",
-                cursor: "pointer",
-                transition: "all 0.25s cubic-bezier(0.16,1,0.3,1)",
-                transform:
-                  selectedRole === role.key ? "translateY(-3px)" : "none",
-                boxShadow:
-                  selectedRole === role.key
-                    ? `0 8px 32px ${role.accent}20`
-                    : "none",
-                position: "relative",
-                overflow: "hidden",
-              }}
-              onMouseEnter={(e) => {
-                if (selectedRole !== role.key) {
-                  e.currentTarget.style.borderColor = `${role.accent}30`;
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (selectedRole !== role.key) {
-                  e.currentTarget.style.borderColor = "var(--border)";
-                }
-              }}
-            >
-              {selectedRole === role.key && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 2,
-                    background: role.accent,
-                    borderRadius: "2px 2px 0 0",
-                  }}
-                />
-              )}
-              <div
-                style={{ fontSize: 24, color: role.accent, marginBottom: 12 }}
-              >
-                {role.icon}
-              </div>
-              <div
-                style={{
-                  fontWeight: 700,
-                  fontSize: 14,
-                  color: "var(--text)",
-                  marginBottom: 5,
-                }}
-              >
-                {role.label}
-              </div>
-              <div
-                style={{ fontSize: 12, color: "var(--text2)", lineHeight: 1.4 }}
-              >
-                {role.desc}
-              </div>
-            </button>
-          ))}
-        </div>
+          Connexion
+        </h1>
 
-        {selectedRole && (
-          <div
-            className="fu"
+        <form onSubmit={submitLogin} style={{ display: "grid", gap: 12 }}>
+          <label style={{ fontSize: 12, color: "var(--text2)" }}>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
+            placeholder="email@exemple.com"
             style={{
-              background: "var(--surface)",
-              border: "1px solid var(--border2)",
-              borderRadius: "var(--r-lg)",
-              padding: "28px 32px",
-              marginBottom: 20,
+              width: "100%",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--r-md)",
+              background: "var(--bg2)",
+              color: "var(--text)",
+              padding: "10px 12px",
+              fontSize: 14,
+            }}
+          />
+
+          <label style={{ fontSize: 12, color: "var(--text2)", marginTop: 4 }}>
+            Mot de passe
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+            placeholder="••••••••"
+            style={{
+              width: "100%",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--r-md)",
+              background: "var(--bg2)",
+              color: "var(--text)",
+              padding: "10px 12px",
+              fontSize: 14,
+            }}
+          />
+
+          <button
+            type="button"
+            onClick={triggerForgotPassword}
+            disabled={isResetLoading}
+            style={{
+              border: "none",
+              background: "transparent",
+              color: "var(--text2)",
+              textAlign: "left",
+              padding: 0,
+              marginTop: 2,
+              fontSize: 13,
+              cursor: "pointer",
             }}
           >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 14,
-                marginBottom: 16,
-              }}
-            >
-              <div>
-                <label
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    color: "var(--text2)",
-                    textTransform: "uppercase",
-                    letterSpacing: "1px",
-                    display: "block",
-                    marginBottom: 8,
-                  }}
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  placeholder={`ex: ${users.find((appUser) => appUser.role === selectedRole)?.email ?? ""}`}
-                  style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    background: "var(--bg2)",
-                    border: `1px solid ${error ? "var(--danger)30" : "var(--border2)"}`,
-                    borderRadius: "var(--r-md)",
-                    color: "var(--text)",
-                    outline: "none",
-                    transition: "border 0.2s",
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = `${accent}80`;
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "var(--border2)";
-                  }}
-                />
-              </div>
-              <div>
-                <label
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    color: "var(--text2)",
-                    textTransform: "uppercase",
-                    letterSpacing: "1px",
-                    display: "block",
-                    marginBottom: 8,
-                  }}
-                >
-                  Mot de passe
-                </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                  placeholder="••••••••"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSubmit();
-                    }
-                  }}
-                  style={{
-                    width: "100%",
-                    padding: "12px 16px",
-                    background: "var(--bg2)",
-                    border: `1px solid ${error ? "var(--danger)30" : "var(--border2)"}`,
-                    borderRadius: "var(--r-md)",
-                    color: "var(--text)",
-                    outline: "none",
-                    transition: "border 0.2s",
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = `${accent}80`;
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = "var(--border2)";
-                  }}
-                />
-              </div>
+            {isResetLoading
+              ? "Envoi en cours..."
+              : "Mot de passe oublié ?"}
+          </button>
+
+          {error ? (
+            <div style={{ color: "var(--danger)", fontSize: 13 }}>{error}</div>
+          ) : null}
+          {message ? (
+            <div style={{ color: "var(--chef-accent)", fontSize: 13 }}>
+              {message}
             </div>
-            {error && (
-              <div
-                style={{
-                  color: "var(--danger)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 12,
-                  marginBottom: 14,
-                }}
-              >
-                ⚠ {error}
-              </div>
-            )}
-            <button
-              onClick={handleSubmit}
-              style={{
-                width: "100%",
-                padding: "14px",
-                border: "none",
-                borderRadius: "var(--r-md)",
-                background: accent,
-                color: "#000",
-                fontWeight: 700,
-                fontSize: 14,
-                letterSpacing: "0.5px",
-                transition: "opacity 0.2s, transform 0.1s",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = "0.9";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = "1";
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.transform = "scale(0.99)";
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-              }}
-            >
-              {loading ? "···" : "Connexion →"}
-            </button>
-          </div>
-        )}
+          ) : null}
 
-        <div className="fu2" style={{ textAlign: "center" }}>
-          <p
+          <button
+            type="submit"
+            disabled={isLoading}
             style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: "var(--text3)",
-              marginBottom: 12,
-              textTransform: "uppercase",
-              letterSpacing: "1px",
+              marginTop: 4,
+              background: "var(--chef-accent)",
+              color: "#000",
+              border: "none",
+              borderRadius: "var(--r-md)",
+              padding: "10px 14px",
+              fontWeight: 700,
+              cursor: "pointer",
             }}
           >
-            Accès rapide démo
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: 10,
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            {roles.map((role) => (
-              <button
-                key={role.key}
-                onClick={() => {
-                  quickLogin(role.key);
-                }}
-                style={{
-                  padding: "7px 16px",
-                  border: `1px solid ${role.accent}30`,
-                  borderRadius: 40,
-                  background: "transparent",
-                  color: role.accent,
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
-                  cursor: "pointer",
-                  transition: "all 0.2s",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = `${role.accent}15`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                }}
-              >
-                {role.icon} {role.label}
-              </button>
-            ))}
-          </div>
-        </div>
+            {isLoading ? "Connexion..." : "Se connecter"}
+          </button>
+        </form>
       </div>
     </div>
   );
