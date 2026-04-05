@@ -79,22 +79,30 @@ async function hydrateUser(tokens: TokenPair, email: string): Promise<AppUser> {
   let department: string | undefined;
 
   if (backendRole === "teacher") {
-    const response = await axios.get(`${API_BASE_URL}/api/auth/user/teacher/`, {
-      headers: {
-        Authorization: `Bearer ${tokens.access}`,
-      },
-    });
-    name = response.data?.user?.username ?? name;
-    department = response.data?.department;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/auth/user/teacher/`, {
+        headers: {
+          Authorization: `Bearer ${tokens.access}`,
+        },
+      });
+      name = response.data?.user?.username ?? name;
+      department = response.data?.department;
+    } catch {
+      name = makeDisplayName(email);
+    }
   }
 
   if (backendRole === "student") {
-    const response = await axios.get(`${API_BASE_URL}/api/auth/user/student/`, {
-      headers: {
-        Authorization: `Bearer ${tokens.access}`,
-      },
-    });
-    name = response.data?.user?.username ?? name;
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/auth/user/student/`, {
+        headers: {
+          Authorization: `Bearer ${tokens.access}`,
+        },
+      });
+      name = response.data?.user?.username ?? name;
+    } catch {
+      name = makeDisplayName(email);
+    }
   }
 
   const schemaUserId = payload?.user_id;
