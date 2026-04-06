@@ -59,7 +59,7 @@ export default function EnseignantDisponibilites({
     setSaved(false);
   };
 
-  const allDates = [...selected].sort();
+  const allDates = Array.from(selected).sort();
 
   return (
     <div style={{ padding: "36px 40px", maxWidth: 900 }}>

@@ -17,11 +17,9 @@ export default function EnseignantPlanning({ user }: EnseignantPlanningProps) {
       sujet.jury.some((juryMember) => juryMember.name === user.name) &&
       sujet.datePresentation,
   );
-  const tous = [
-    ...new Map(
-      [...mesSujets, ...mesJurys].map((sujet) => [sujet.id, sujet]),
-    ).values(),
-  ].sort(
+  const tous = Array.from(
+    new Map([...mesSujets, ...mesJurys].map((sujet) => [sujet.id, sujet])).values(),
+  ).sort(
     (a: Sujet, b: Sujet) =>
       new Date(a.datePresentation as string).getTime() -
       new Date(b.datePresentation as string).getTime(),

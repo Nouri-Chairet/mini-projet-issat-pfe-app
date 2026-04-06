@@ -11,8 +11,10 @@ import EnseignantPlanning from './pages/enseignant/Planning';
 import EnseignantDisponibilites from './pages/enseignant/Disponibilites';
 import Forum from './pages/shared/Forum';
 import EtudiantDashboard from './pages/etudiant/Dashboard';
+import { clearSession, getStoredSession, loginWithEmailPassword, requestPasswordReset } from './services/auth';
+import type { AppUser, NavItem, PageId } from './types/app';
 
-const navConfig = {
+const navConfig: Record<AppUser['role'], NavItem[]> = {
   chef: [
     { id: 'dashboard', label: "Vue d'ensemble", icon: '▦' },
     { id: 'sujets', label: 'Sujets PFE', icon: '▤' },
@@ -33,9 +35,9 @@ const navConfig = {
   ],
 };
 
-function renderPage(page, user, onNav) {
-  const props = { user, onNav };
-  const map = {
+function renderPage(page: PageId, user: AppUser, onNav: (page: PageId) => void) {
+  const props = { user, onNav } as any;
+  const map: Record<AppUser['role'], Partial<Record<PageId, React.ReactElement>>> = {
     chef: { dashboard: <ChefDashboard {...props} />, sujets: <ChefSujets {...props} />, planning: <ChefPlanning {...props} />, jurys: <ChefJurys {...props} />, forum: <Forum {...props} />, export: <ChefExport {...props} /> },
     enseignant: { dashboard: <EnseignantDashboard {...props} />, planning: <EnseignantPlanning {...props} />, disponibilites: <EnseignantDisponibilites {...props} />, forum: <Forum {...props} /> },
     etudiant: { dashboard: <EtudiantDashboard {...props} />, forum: <Forum {...props} /> },
@@ -44,11 +46,27 @@ function renderPage(page, user, onNav) {
 }
 
 export default function App() {
-  const [user, setUser] = useState(null);
-  const [activePage, setActivePage] = useState('dashboard');
-  if (!user) return <Login onLogin={u => { setUser(u); setActivePage('dashboard'); }} />;
+  const [user, setUser] = useState<AppUser | null>(getStoredSession()?.user ?? null);
+  const [activePage, setActivePage] = useState<PageId>('dashboard');
+
+  const handleLogin = async (email: string, password: string) => {
+    const session = await loginWithEmailPassword(email, password);
+    setUser(session.user);
+    setActivePage('dashboard');
+  };
+
+  const handleLogout = () => {
+    clearSession();
+    setUser(null);
+    setActivePage('dashboard');
+  };
+
+  if (!user) {
+    return <Login onLogin={handleLogin} onForgotPassword={requestPasswordReset} />;
+  }
+
   return (
-    <Shell user={user} nav={navConfig[user.role]} activePage={activePage} onNav={setActivePage} onLogout={() => { setUser(null); setActivePage('dashboard'); }}>
+    <Shell user={user} nav={navConfig[user.role]} activePage={activePage} onNav={setActivePage} onLogout={handleLogout}>
       {renderPage(activePage, user, setActivePage)}
     </Shell>
   );
