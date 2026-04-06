@@ -2,8 +2,12 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('dashboard/stats/', views.get_admin_dashboard_stats, name='get_admin_dashboard_stats'),
     path('add-classes/', views.create_classes, name='login'),
     path('get-classes/', views.get_classes, name='get_classes'),
+    path('departments/get/', views.get_departments, name='get_departments'),
+    path('departments/create/', views.create_department, name='create_department'),
+    path('departments/assign-head/', views.assign_department_head, name='assign_department_head'),
     path('upload/schedule/', views.create_schedule, name='upload_schedule'),
     path('classes/schedule/', views.get_classes_schedule, name='get_classes_schedule'),
     path('teacher/schedule/', views.get_teacher_schedule, name='get_teacher_schedule'),

@@ -5,6 +5,7 @@ from api.models import (
     Teachers,
     Students,
     Classes,
+    Departments,
     Section,
     Schedules,
     Posts,
@@ -98,6 +99,17 @@ def _teacher_surveillance_payload(teacher):
         "assigned_surveillance_hours": assigned,
         "remaining_surveillance_hours": round(required - assigned, 2),
     }
+
+
+def _sync_departments_from_teachers():
+    teacher_departments = (
+        Teachers.objects.exclude(department__isnull=True)
+        .exclude(department__exact="")
+        .values_list("department", flat=True)
+        .distinct()
+    )
+    for name in teacher_departments:
+        Departments.objects.get_or_create(name=name.strip())
 #request under this form :  
 # {
 #     "level": "1A",
@@ -111,14 +123,44 @@ def create_classes (request):
     try:
         level = int(request.data.get('level'))
         section = request.data.get('section')
-        nb=int(request.data.get('nb'))
+        nb = int(request.data.get('nb'))
         validation_error = _validate_section_level(section, level)
         if validation_error:
             return Response({"error": validation_error}, status=400)
-        for i in range(1, nb+1):
-            new_class = Classes.objects.create(niveau=str(level),classe_section=section,classe_num=str(i))
+
+        if nb < 1:
+            return Response({"error": "nb must be greater than 0"}, status=400)
+
+        existing_classes = Classes.objects.filter(
+            niveau=str(level),
+            classe_section=section,
+        )
+        existing_numbers = set()
+        for existing in existing_classes:
+            try:
+                existing_numbers.add(int(existing.classe_num))
+            except (TypeError, ValueError):
+                continue
+
+        next_num = max(existing_numbers) + 1 if existing_numbers else 1
+        created = []
+        for i in range(next_num, next_num + nb):
+            new_class = Classes.objects.create(
+                niveau=str(level),
+                classe_section=section,
+                classe_num=str(i),
+            )
             new_class.save()
-        return Response({"message": "Classes created successfully"}, status=201)
+            created.append(f"{level}-{section}-{i}")
+
+        return Response(
+            {
+                "message": "Classes created successfully",
+                "created_count": len(created),
+                "created_classes": created,
+            },
+            status=201,
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=400)
 
@@ -282,6 +324,133 @@ def get_teachers(request):
     
     except Exception as e:
         print("error",e)
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def get_admin_dashboard_stats(request):
+    try:
+        _sync_departments_from_teachers()
+        teachers_count = Teachers.objects.count()
+        classes_count = Classes.objects.count()
+        students_count = Students.objects.count()
+        departments_count = Departments.objects.count()
+        heads_assigned_count = Departments.objects.exclude(head__isnull=True).count()
+        return Response(
+            {
+                "teachers": teachers_count,
+                "classes": classes_count,
+                "students": students_count,
+                "departments": departments_count,
+                "heads_assigned": heads_assigned_count,
+            },
+            status=200,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def get_departments(request):
+    try:
+        _sync_departments_from_teachers()
+        data = []
+        departments = Departments.objects.select_related('head', 'head__user').order_by('name')
+        for department in departments:
+            teachers_count = Teachers.objects.filter(department=department.name).count()
+            data.append(
+                {
+                    "id": str(department.id),
+                    "name": department.name,
+                    "teachers_count": teachers_count,
+                    "head": {
+                        "id": str(department.head.user_id),
+                        "username": department.head.user.username,
+                        "email": department.head.user.email,
+                    }
+                    if department.head
+                    else None,
+                }
+            )
+        return Response({"departments": data}, status=200)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def create_department(request):
+    try:
+        name = str(request.data.get('name', '')).strip()
+        if not name:
+            return Response({"error": "Department name is required"}, status=400)
+        department, created = Departments.objects.get_or_create(name=name)
+        return Response(
+            {
+                "message": "Department created successfully" if created else "Department already exists",
+                "department": {
+                    "id": str(department.id),
+                    "name": department.name,
+                },
+            },
+            status=201 if created else 200,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def assign_department_head(request):
+    try:
+        department_id = request.data.get('department_id')
+        teacher_id = request.data.get('teacher_id')
+        if not department_id:
+            return Response({"error": "department_id is required"}, status=400)
+
+        department = Departments.objects.filter(id=department_id).first()
+        if not department:
+            return Response({"error": "Department not found"}, status=404)
+
+        if not teacher_id:
+            department.head = None
+            department.save(update_fields=['head'])
+            return Response({"message": "Department head cleared"}, status=200)
+
+        teacher = Teachers.objects.filter(user_id=teacher_id).select_related('user').first()
+        if not teacher:
+            return Response({"error": "Teacher not found"}, status=404)
+
+        if (teacher.department or '').strip() != department.name:
+            return Response(
+                {"error": "Teacher department must match selected department"},
+                status=400,
+            )
+
+        department.head = teacher
+        department.save(update_fields=['head'])
+        return Response(
+            {
+                "message": "Department head assigned",
+                "department": {
+                    "id": str(department.id),
+                    "name": department.name,
+                },
+                "head": {
+                    "id": str(teacher.user_id),
+                    "username": teacher.user.username,
+                    "email": teacher.user.email,
+                },
+            },
+            status=200,
+        )
+    except Exception as e:
         return Response({"error": str(e)}, status=500)
 
 #request under this form :

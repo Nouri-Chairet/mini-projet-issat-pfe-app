@@ -8,11 +8,10 @@ import {
 } from "react-router-dom";
 import Login from "./pages/Login";
 import Shell from "./components/Shell";
-import ChefDashboard from "./pages/chef/Dashboard";
-import ChefSujets from "./pages/chef/Sujets";
-import ChefPlanning from "./pages/chef/Planning";
-import ChefJurys from "./pages/chef/Jurys";
-import ChefExport from "./pages/chef/Export";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminAccounts from "./pages/admin/Accounts";
+import AdminClasses from "./pages/admin/Classes";
+import AdminDepartments from "./pages/admin/Departments";
 import EnseignantDashboard from "./pages/enseignant/Dashboard";
 import EnseignantPlanning from "./pages/enseignant/Planning";
 import EnseignantDisponibilites from "./pages/enseignant/Disponibilites";
@@ -42,12 +41,11 @@ const pathToRole: Record<RoleRoute, AppUser["role"]> = {
 
 const navConfig: Record<AppUser["role"], NavItem[]> = {
   chef: [
-    { id: "dashboard", label: "Vue d'ensemble", icon: "▦" },
-    { id: "sujets", label: "Sujets PFE", icon: "▤" },
-    { id: "planning", label: "Planning", icon: "◈" },
-    { id: "jurys", label: "Jurys", icon: "◆" },
-    { id: "forum", label: "Forum PFE", icon: "◎", badge: 2 },
-    { id: "export", label: "Export & Rapports", icon: "↓" },
+    { id: "dashboard", label: "Admin Dashboard", icon: "▦" },
+    { id: "accounts", label: "Comptes", icon: "◎" },
+    { id: "classes", label: "Classes", icon: "▤" },
+    { id: "departments", label: "Départements", icon: "◆" },
+    { id: "heads", label: "Chefs département", icon: "◈" },
   ],
   enseignant: [
     { id: "dashboard", label: "Mon espace", icon: "▦" },
@@ -72,12 +70,11 @@ function renderPage(
     Partial<Record<PageId, React.ReactElement>>
   > = {
     chef: {
-      dashboard: <ChefDashboard {...props} />,
-      sujets: <ChefSujets {...props} />,
-      planning: <ChefPlanning {...props} />,
-      jurys: <ChefJurys {...props} />,
-      forum: <Forum {...props} />,
-      export: <ChefExport {...props} />,
+      dashboard: <AdminDashboard {...props} />,
+      accounts: <AdminAccounts {...props} />,
+      classes: <AdminClasses {...props} />,
+      departments: <AdminDepartments {...props} mode="departments" />,
+      heads: <AdminDepartments {...props} mode="heads" />,
     },
     enseignant: {
       dashboard: <EnseignantDashboard {...props} />,
