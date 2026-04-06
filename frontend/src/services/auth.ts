@@ -19,7 +19,7 @@ export interface AuthSession {
 
 const SESSION_STORAGE_KEY = "pfe-auth-session";
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, "") ??
+  process.env.REACT_APP_API_BASE_URL?.replace(/\/$/, "") ??
   "http://127.0.0.1:8000";
 
 function decodeJwtPayload(token: string): JwtPayload | null {
@@ -68,7 +68,7 @@ function makeAvatar(name: string): string {
 }
 
 function makeNumericId(seed: string): number {
-  return [...seed].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return seed.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
 }
 
 async function hydrateUser(tokens: TokenPair, email: string): Promise<AppUser> {
