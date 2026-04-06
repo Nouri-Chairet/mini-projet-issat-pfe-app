@@ -3,6 +3,17 @@ from . import views
 
 urlpatterns = [
     path('dashboard/stats/', views.get_admin_dashboard_stats, name='get_admin_dashboard_stats'),
+    path('timetable/import/dry-run/', views.timetable_import_dry_run, name='timetable_import_dry_run'),
+    path('timetable/import/commit/', views.timetable_import_commit, name='timetable_import_commit'),
+    path('timetable/status/', views.get_timetable_publish_status, name='get_timetable_publish_status'),
+    path('timetable/publish/', views.publish_timetable, name='publish_timetable'),
+    path('timetable/unpublish/', views.unpublish_timetable, name='unpublish_timetable'),
+    path('timetable/list/', views.list_timetable_slots, name='list_timetable_slots'),
+    path('timetable/manual/create/', views.create_timetable_slot, name='create_timetable_slot'),
+    path('timetable/manual/delete/', views.delete_timetable_slot, name='delete_timetable_slot'),
+    path('timetable/export/ics/', views.export_timetable_ics, name='export_timetable_ics'),
+    path('timetable/readiness/', views.get_timetable_readiness, name='get_timetable_readiness'),
+    path('timetable/telemetry/', views.log_timetable_telemetry, name='log_timetable_telemetry'),
     path('add-classes/', views.create_classes, name='login'),
     path('get-classes/', views.get_classes, name='get_classes'),
     path('departments/get/', views.get_departments, name='get_departments'),

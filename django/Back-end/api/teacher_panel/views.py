@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from api.admin_panel.permissions import IsTeacher
-from api.models import Classes, Students, Attendance, Schedules,Teachers
+from api.models import Classes, Students, Attendance, Schedules, Teachers, TimetablePublications
 from drf_spectacular.utils import OpenApiTypes, extend_schema
 from datetime import datetime
 from api.utils.convert_to_french import convert_to_french
@@ -50,10 +50,19 @@ def make_presence(request):
             student_obj = Students.objects.filter(user=student_id).first()
             if not student_obj:
                 return Response({"error": f"student_id {student_id} is invalid"}, status=400)
-            if(presence == 'false'):
+            if presence is False or str(presence).lower() == 'false':
                 student_obj.access_status = False
                 student_obj.save()
-            Attendance.objects.create(student=student_obj, schedule=schedule, presence=presence,class_id=schedule.class_id,marked_by=request.user)
+
+            Attendance.objects.update_or_create(
+                student=student_obj,
+                schedule=schedule,
+                session_date=datetime.now().date(),
+                defaults={
+                    "status": bool(presence),
+                    "marked_by": request.user,
+                },
+            )
         return Response({"message": "Presence made successfully"}, status=200)
         
     except Exception as e:
@@ -82,6 +91,10 @@ def get_current_session(request):
     API endpoint to get the current session.
     """
     try:
+        publication = TimetablePublications.objects.order_by('-updated_at').first()
+        if publication and not publication.is_published:
+            return Response({"error": "Timetable not published yet"}, status=403)
+
         current_date = datetime.now()
         today = current_date.strftime("%A")
         today = convert_to_french(today.lower())

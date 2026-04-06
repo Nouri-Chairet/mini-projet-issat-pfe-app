@@ -1,6 +1,12 @@
+import { useEffect, useState } from "react";
 import { sujets, enseignants } from "../../data/mockData";
-import { Stat, StatusTag, Avatar } from "../../components/UI";
+import { Stat, StatusTag, Avatar, Btn } from "../../components/UI";
 import type { AppUser, PageId } from "../../types/app";
+import {
+  getTeacherCurrentSession,
+  logTimetableTelemetry,
+  type TeacherCurrentSession,
+} from "../../services/timetable";
 
 const A = "var(--ens-accent)";
 
@@ -23,6 +29,17 @@ export default function EnseignantDashboard({
     sujet.jury.some((juryMember) => juryMember.name === user.name),
   );
   const total = mesSujets.length + mesJurys.length;
+  const [currentSession, setCurrentSession] =
+    useState<TeacherCurrentSession | null>(null);
+
+  useEffect(() => {
+    getTeacherCurrentSession().then((session) => {
+      setCurrentSession(session);
+    });
+    logTimetableTelemetry("teacher_dashboard_opened", "/teacher/dashboard").catch(
+      () => undefined,
+    );
+  }, []);
 
   return (
     <div style={{ padding: "36px 40px", maxWidth: 1100 }}>
@@ -100,6 +117,37 @@ export default function EnseignantDashboard({
           accent="var(--chef-accent)"
           sub="Dates déclarées"
         />
+      </div>
+
+      <div
+        style={{
+          border: "1px solid var(--border)",
+          borderRadius: "var(--r-lg)",
+          padding: 16,
+          marginBottom: 20,
+          background: "var(--surface)",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <div>
+          <div style={{ fontWeight: 700, marginBottom: 4 }}>Séance en cours</div>
+          {currentSession ? (
+            <div style={{ color: "var(--text2)", fontSize: 13 }}>
+              {currentSession.day_of_week} {currentSession.start_time} - {currentSession.end_time} • {currentSession.subject} • Salle {currentSession.room}
+            </div>
+          ) : (
+            <div style={{ color: "var(--text3)", fontSize: 13 }}>
+              Aucune séance active actuellement.
+            </div>
+          )}
+        </div>
+        <Btn onClick={() => onNav("emploi")} variant="ghost">
+          Voir emploi du temps
+        </Btn>
       </div>
 
       <div

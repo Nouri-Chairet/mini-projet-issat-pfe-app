@@ -1,5 +1,8 @@
-from datetime import datetime
+from datetime import datetime, date
 from io import BytesIO
+from django.db import transaction
+from django.http import HttpResponse
+from django.utils import timezone
 from api.models import (
     Users,
     Teachers,
@@ -20,6 +23,10 @@ from api.models import (
     PFEPresentationSlots,
     PFEJuryAssignments,
     JuryRole,
+    UserRole,
+    TimetablePublications,
+    TimetableTelemetry,
+    Attendance,
 )
 from rest_framework.response import Response
 from api.admin_panel.permissions import IsAdmin,IsAdminOrTeacher,IsAdminOrStudent
@@ -65,6 +72,288 @@ def _parse_class_token(token):
     return niveau.strip(), section.strip(), classe_num.strip()
 
 
+def _normalize_schedule_day(value):
+    raw = str(value).strip().lower()
+    day_map = {
+        "lundi": "Lundi",
+        "mardi": "Mardi",
+        "mercredi": "Mercredi",
+        "jeudi": "Jeudi",
+        "vendredi": "Vendredi",
+        "samedi": "Samedi",
+    }
+    return day_map.get(raw)
+
+
+def _normalize_schedule_time(value):
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return value.time().replace(microsecond=0)
+    if hasattr(value, "hour") and hasattr(value, "minute"):
+        return value.replace(microsecond=0)
+    try:
+        as_text = str(value).strip()
+        if not as_text:
+            return None
+        if len(as_text) == 5:
+            return datetime.strptime(as_text, "%H:%M").time()
+        return datetime.strptime(as_text, "%H:%M:%S").time()
+    except Exception:
+        return None
+
+
+def _time_overlaps(start_a, end_a, start_b, end_b):
+    return start_a < end_b and start_b < end_a
+
+
+def _parse_schedule_dataframe(df):
+    expected_columns = [
+        "jour",
+        "heure-debut",
+        "heure-fin",
+        "matiere",
+        "professeur",
+        "classe",
+        "salle",
+    ]
+    if not set(expected_columns).issubset(df.columns):
+        return [], ["Invalid file format: expected columns are missing"]
+
+    parsed_rows = []
+    errors = []
+
+    for index, row in df.iterrows():
+        row_number = index + 2
+        teacher_username = str(row.get("professeur", "")).strip()
+        class_token = str(row.get("classe", "")).strip()
+        day_of_week = _normalize_schedule_day(row.get("jour"))
+        start_time = _normalize_schedule_time(row.get("heure-debut"))
+        end_time = _normalize_schedule_time(row.get("heure-fin"))
+        subject = str(row.get("matiere", "")).strip()
+        room = str(row.get("salle", "")).strip()
+
+        if not teacher_username:
+            errors.append(f"Row {row_number}: professeur is required")
+            continue
+
+        teacher_user = Users.objects.filter(username=teacher_username, role=UserRole.TEACHER.value).first()
+        teacher = Teachers.objects.filter(user=teacher_user).first() if teacher_user else None
+        if not teacher:
+            errors.append(f"Row {row_number}: teacher '{teacher_username}' not found")
+            continue
+
+        class_chunks = _parse_class_token(class_token)
+        if not class_chunks:
+            errors.append(
+                f"Row {row_number}: classe must match '<niveau>-<section>-<numero>'"
+            )
+            continue
+
+        niveau, section, classe_num = class_chunks
+        classe = Classes.objects.filter(
+            niveau=str(niveau),
+            classe_section=str(section),
+            classe_num=str(classe_num),
+        ).first()
+        if not classe:
+            errors.append(f"Row {row_number}: class '{class_token}' not found")
+            continue
+
+        if not day_of_week:
+            errors.append(f"Row {row_number}: invalid day '{row.get('jour')}'")
+            continue
+
+        if not start_time or not end_time:
+            errors.append(f"Row {row_number}: invalid start/end time")
+            continue
+
+        if start_time >= end_time:
+            errors.append(f"Row {row_number}: start time must be before end time")
+            continue
+
+        if not subject:
+            errors.append(f"Row {row_number}: matiere is required")
+            continue
+
+        if not room:
+            errors.append(f"Row {row_number}: salle is required")
+            continue
+
+        parsed_rows.append(
+            {
+                "row_number": row_number,
+                "teacher": teacher,
+                "teacher_username": teacher.user.username,
+                "classe": classe,
+                "class_label": _class_label(classe),
+                "day_of_week": day_of_week,
+                "start_time": start_time,
+                "end_time": end_time,
+                "subject": subject,
+                "room": room,
+            }
+        )
+
+    return parsed_rows, errors
+
+
+def _detect_schedule_conflicts(parsed_rows):
+    conflicts = []
+
+    for index, left in enumerate(parsed_rows):
+        for right in parsed_rows[index + 1 :]:
+            if left["day_of_week"] != right["day_of_week"]:
+                continue
+            if not _time_overlaps(
+                left["start_time"],
+                left["end_time"],
+                right["start_time"],
+                right["end_time"],
+            ):
+                continue
+
+            if left["teacher"].user_id == right["teacher"].user_id:
+                conflicts.append(
+                    f"Rows {left['row_number']} and {right['row_number']}: teacher overlap for {left['teacher_username']}"
+                )
+            if left["classe"].id == right["classe"].id:
+                conflicts.append(
+                    f"Rows {left['row_number']} and {right['row_number']}: class overlap for {left['class_label']}"
+                )
+            if left["room"].strip().lower() == right["room"].strip().lower():
+                conflicts.append(
+                    f"Rows {left['row_number']} and {right['row_number']}: room overlap in {left['room']}"
+                )
+
+    existing = Schedules.objects.all().select_related("teacher", "class_id", "teacher__user")
+    for row in parsed_rows:
+        for schedule in existing:
+            if row["day_of_week"] != schedule.day_of_week:
+                continue
+            if not _time_overlaps(
+                row["start_time"], row["end_time"], schedule.start_time, schedule.end_time
+            ):
+                continue
+            if row["teacher"].user_id == schedule.teacher.user_id:
+                conflicts.append(
+                    f"Row {row['row_number']}: teacher overlap with existing schedule for {row['teacher_username']}"
+                )
+            if row["classe"].id == schedule.class_id.id:
+                conflicts.append(
+                    f"Row {row['row_number']}: class overlap with existing schedule for {row['class_label']}"
+                )
+            if row["room"].strip().lower() == schedule.room.strip().lower():
+                conflicts.append(
+                    f"Row {row['row_number']}: room overlap with existing schedule in {row['room']}"
+                )
+
+    return conflicts
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def timetable_import_dry_run(request):
+    try:
+        file = request.FILES.get('file')
+        if not file:
+            return Response({"error": "No file provided"}, status=400)
+        if not file.name.endswith('.xlsx'):
+            return Response({"error": "Invalid file format"}, status=400)
+
+        df = pd.read_excel(file)
+        if df.empty:
+            return Response({"error": "Empty file"}, status=400)
+
+        parsed_rows, errors = _parse_schedule_dataframe(df)
+        conflicts = _detect_schedule_conflicts(parsed_rows) if not errors else []
+
+        return Response(
+            {
+                "valid": len(errors) == 0 and len(conflicts) == 0,
+                "errors": errors,
+                "conflicts": conflicts,
+                "parsed_count": len(parsed_rows),
+                "preview": [
+                    {
+                        "teacher": row["teacher_username"],
+                        "class": row["class_label"],
+                        "day_of_week": row["day_of_week"],
+                        "start_time": str(row["start_time"]),
+                        "end_time": str(row["end_time"]),
+                        "room": row["room"],
+                        "subject": row["subject"],
+                    }
+                    for row in parsed_rows[:30]
+                ],
+            },
+            status=200,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def timetable_import_commit(request):
+    try:
+        file = request.FILES.get('file')
+        if not file:
+            return Response({"error": "No file provided"}, status=400)
+        if not file.name.endswith('.xlsx'):
+            return Response({"error": "Invalid file format"}, status=400)
+
+        df = pd.read_excel(file)
+        if df.empty:
+            return Response({"error": "Empty file"}, status=400)
+
+        parsed_rows, errors = _parse_schedule_dataframe(df)
+        conflicts = _detect_schedule_conflicts(parsed_rows) if not errors else []
+
+        if errors or conflicts:
+            return Response(
+                {
+                    "error": "Validation failed",
+                    "errors": errors,
+                    "conflicts": conflicts,
+                    "parsed_count": len(parsed_rows),
+                },
+                status=400,
+            )
+
+        replace_existing = str(request.data.get('replace_existing', 'false')).lower() == 'true'
+
+        with transaction.atomic():
+            if replace_existing:
+                Schedules.objects.all().delete()
+
+            created = []
+            for row in parsed_rows:
+                schedule = Schedules.objects.create(
+                    teacher=row["teacher"],
+                    class_id=row["classe"],
+                    day_of_week=row["day_of_week"],
+                    start_time=row["start_time"],
+                    end_time=row["end_time"],
+                    room=row["room"],
+                    subject=row["subject"],
+                )
+                created.append(str(schedule.id))
+
+        return Response(
+            {
+                "message": "Timetable imported successfully",
+                "created_count": len(created),
+                "created_ids": created,
+            },
+            status=201,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
 def _build_exam_calendar_pdf(exams):
     pdf_buffer = BytesIO()
     pdf = canvas.Canvas(pdf_buffer, pagesize=letter)
@@ -101,6 +390,34 @@ def _teacher_surveillance_payload(teacher):
     }
 
 
+def _get_publication_state():
+    publication = TimetablePublications.objects.order_by('-updated_at').first()
+    if publication:
+        return publication
+    publication = TimetablePublications.objects.create(is_published=False)
+    publication.save()
+    return publication
+
+
+def _is_timetable_published():
+    return bool(_get_publication_state().is_published)
+
+
+def _serialize_schedule(schedule):
+    return {
+        "id": str(schedule.id),
+        "teacher_id": str(schedule.teacher.user_id),
+        "teacher": schedule.teacher.user.username,
+        "class_id": str(schedule.class_id.id),
+        "class": _class_label(schedule.class_id),
+        "day_of_week": schedule.day_of_week,
+        "start_time": str(schedule.start_time),
+        "end_time": str(schedule.end_time),
+        "room": schedule.room,
+        "subject": schedule.subject,
+    }
+
+
 def _sync_departments_from_teachers():
     teacher_departments = (
         Teachers.objects.exclude(department__isnull=True)
@@ -110,6 +427,272 @@ def _sync_departments_from_teachers():
     )
     for name in teacher_departments:
         Departments.objects.get_or_create(name=name.strip())
+
+
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def get_timetable_publish_status(request):
+    try:
+        publication = _get_publication_state()
+        return Response(
+            {
+                "is_published": publication.is_published,
+                "published_at": publication.published_at,
+                "published_by": str(publication.published_by_id) if publication.published_by_id else None,
+                "updated_at": publication.updated_at,
+            },
+            status=200,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def publish_timetable(request):
+    try:
+        publication = _get_publication_state()
+        publication.is_published = True
+        publication.published_at = timezone.now()
+        publication.published_by = request.user
+        publication.save()
+        return Response({"message": "Timetable published"}, status=200)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def unpublish_timetable(request):
+    try:
+        publication = _get_publication_state()
+        publication.is_published = False
+        publication.save()
+        return Response({"message": "Timetable unpublished"}, status=200)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_timetable_slots(request):
+    try:
+        if request.user.role == UserRole.STUDENT.value:
+            return Response({"error": "Forbidden"}, status=403)
+
+        query = Schedules.objects.all().select_related('teacher', 'teacher__user', 'class_id')
+        teacher_id = request.query_params.get('teacher_id')
+        class_id = request.query_params.get('class_id')
+        day_of_week = request.query_params.get('day_of_week')
+
+        if teacher_id:
+            query = query.filter(teacher_id=teacher_id)
+        if class_id:
+            query = query.filter(class_id=class_id)
+        if day_of_week:
+            query = query.filter(day_of_week=day_of_week)
+
+        schedules = sorted(
+            list(query),
+            key=lambda s: (
+                ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"].index(s.day_of_week)
+                if s.day_of_week in ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
+                else 99,
+                s.start_time,
+            ),
+        )
+        return Response({"schedules": [_serialize_schedule(s) for s in schedules]}, status=200)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def create_timetable_slot(request):
+    try:
+        teacher_id = request.data.get('teacher_id')
+        class_id = request.data.get('class_id')
+        day_of_week = _normalize_schedule_day(request.data.get('day_of_week'))
+        start_time = _normalize_schedule_time(request.data.get('start_time'))
+        end_time = _normalize_schedule_time(request.data.get('end_time'))
+        room = str(request.data.get('room', '')).strip()
+        subject = str(request.data.get('subject', '')).strip()
+
+        if not all([teacher_id, class_id, day_of_week, start_time, end_time, room, subject]):
+            return Response({"error": "Missing required fields"}, status=400)
+        if start_time >= end_time:
+            return Response({"error": "start_time must be before end_time"}, status=400)
+
+        teacher = Teachers.objects.filter(user_id=teacher_id).select_related('user').first()
+        classe = Classes.objects.filter(id=class_id).first()
+        if not teacher or not classe:
+            return Response({"error": "Teacher or class not found"}, status=404)
+
+        candidate = {
+            "row_number": "manual",
+            "teacher": teacher,
+            "teacher_username": teacher.user.username,
+            "classe": classe,
+            "class_label": _class_label(classe),
+            "day_of_week": day_of_week,
+            "start_time": start_time,
+            "end_time": end_time,
+            "subject": subject,
+            "room": room,
+        }
+        conflicts = _detect_schedule_conflicts([candidate])
+        if conflicts:
+            return Response({"error": "Conflict detected", "conflicts": conflicts}, status=400)
+
+        schedule = Schedules.objects.create(
+            teacher=teacher,
+            class_id=classe,
+            day_of_week=day_of_week,
+            start_time=start_time,
+            end_time=end_time,
+            room=room,
+            subject=subject,
+        )
+        schedule.save()
+        return Response({"message": "Slot created", "slot": _serialize_schedule(schedule)}, status=201)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def delete_timetable_slot(request):
+    try:
+        schedule_id = request.query_params.get('schedule_id')
+        if not schedule_id:
+            return Response({"error": "schedule_id is required"}, status=400)
+        schedule = Schedules.objects.filter(id=schedule_id).first()
+        if not schedule:
+            return Response({"error": "Slot not found"}, status=404)
+        schedule.delete()
+        return Response({"message": "Slot deleted"}, status=200)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def export_timetable_ics(request):
+    try:
+        scope = request.query_params.get('scope')
+        if request.user.role == UserRole.TEACHER.value:
+            teacher = Teachers.objects.filter(user=request.user).first()
+            schedules = Schedules.objects.filter(teacher=teacher)
+            calendar_name = f"Teacher timetable - {request.user.username}"
+        elif request.user.role == UserRole.STUDENT.value:
+            student = Students.objects.filter(user=request.user).select_related('class_id').first()
+            if not student or not student.class_id:
+                return Response({"error": "Student class not found"}, status=404)
+            schedules = Schedules.objects.filter(class_id=student.class_id)
+            calendar_name = f"Student timetable - {request.user.username}"
+        else:
+            if scope == 'teacher':
+                teacher_id = request.query_params.get('teacher_id')
+                schedules = Schedules.objects.filter(teacher_id=teacher_id)
+                calendar_name = "Teacher timetable"
+            elif scope == 'class':
+                class_id = request.query_params.get('class_id')
+                schedules = Schedules.objects.filter(class_id=class_id)
+                calendar_name = "Class timetable"
+            else:
+                schedules = Schedules.objects.all()
+                calendar_name = "Global timetable"
+
+        lines = [
+            "BEGIN:VCALENDAR",
+            "VERSION:2.0",
+            "PRODID:-//GestionPFE//Timetable//EN",
+            f"X-WR-CALNAME:{calendar_name}",
+        ]
+        for schedule in schedules.select_related('teacher', 'teacher__user', 'class_id'):
+            lines.extend(
+                [
+                    "BEGIN:VEVENT",
+                    f"UID:{schedule.id}@gestionpfe",
+                    f"SUMMARY:{schedule.subject}",
+                    f"DESCRIPTION:Classe {_class_label(schedule.class_id)} - {schedule.teacher.user.username}",
+                    f"LOCATION:{schedule.room}",
+                    f"X-DAY-OF-WEEK:{schedule.day_of_week}",
+                    f"X-START-TIME:{schedule.start_time}",
+                    f"X-END-TIME:{schedule.end_time}",
+                    "END:VEVENT",
+                ]
+            )
+        lines.append("END:VCALENDAR")
+
+        response = HttpResponse("\r\n".join(lines), content_type='text/calendar; charset=utf-8')
+        response['Content-Disposition'] = 'attachment; filename="timetable.ics"'
+        return response
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def get_timetable_readiness(request):
+    try:
+        date_param = request.query_params.get('date')
+        session_date = date.fromisoformat(date_param) if date_param else date.today()
+
+        rows = []
+        schedules = Schedules.objects.all().select_related('class_id', 'teacher', 'teacher__user')
+        for schedule in schedules:
+            students_count = Students.objects.filter(class_id=schedule.class_id, access_status=True).count()
+            marked_count = Attendance.objects.filter(schedule=schedule, session_date=session_date).count()
+            rows.append(
+                {
+                    "schedule_id": str(schedule.id),
+                    "class": _class_label(schedule.class_id),
+                    "teacher": schedule.teacher.user.username,
+                    "day_of_week": schedule.day_of_week,
+                    "start_time": str(schedule.start_time),
+                    "end_time": str(schedule.end_time),
+                    "students_expected": students_count,
+                    "attendance_marked": marked_count,
+                    "ready": students_count > 0 and marked_count >= students_count,
+                }
+            )
+
+        return Response({"date": str(session_date), "rows": rows}, status=200)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def log_timetable_telemetry(request):
+    try:
+        event_name = str(request.data.get('event_name', '')).strip()
+        route = str(request.data.get('route', '')).strip()
+        payload = request.data.get('payload', None)
+        if not event_name:
+            return Response({"error": "event_name is required"}, status=400)
+
+        item = TimetableTelemetry.objects.create(
+            user=request.user,
+            role=request.user.role,
+            event_name=event_name,
+            route=route,
+            payload=payload,
+        )
+        item.save()
+        return Response({"message": "Telemetry logged"}, status=201)
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
 #request under this form :  
 # {
 #     "level": "1A",
@@ -244,6 +827,9 @@ def create_schedule (request):
 @permission_classes([IsAuthenticated, IsAdminOrStudent])
 def get_classes_schedule (request):
     try:
+        if request.user.role == UserRole.STUDENT.value and not _is_timetable_published():
+            return Response({"error": "Timetable not published yet"}, status=403)
+
         niveau= request.query_params.get('niveau')
         section= request.query_params.get('section')
         classe_num= request.query_params.get('classe_num')
@@ -278,6 +864,9 @@ def get_classes_schedule (request):
 @permission_classes([IsAuthenticated, IsAdminOrTeacher])
 def get_teacher_schedule (request):
     try:
+        if request.user.role == UserRole.TEACHER.value and not _is_timetable_published():
+            return Response({"error": "Timetable not published yet"}, status=403)
+
         teacher = request.query_params.get('teacher_id')
         if not teacher:
             return Response({"error": "Missing parameters"}, status=400)
