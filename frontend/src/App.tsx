@@ -1,0 +1,252 @@
+import React, { useMemo, useState } from "react";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import Login from "./pages/Login";
+import Shell from "./components/Shell";
+import ChefDashboard from "./pages/chef/Dashboard";
+import ChefSujets from "./pages/chef/Sujets";
+import ChefPlanning from "./pages/chef/Planning";
+import ChefJurys from "./pages/chef/Jurys";
+import ChefExport from "./pages/chef/Export";
+import EnseignantDashboard from "./pages/enseignant/Dashboard";
+import EnseignantPlanning from "./pages/enseignant/Planning";
+import EnseignantDisponibilites from "./pages/enseignant/Disponibilites";
+import Forum from "./pages/shared/Forum";
+import EtudiantDashboard from "./pages/etudiant/Dashboard";
+import {
+  clearSession,
+  getStoredSession,
+  loginWithEmailPassword,
+  requestPasswordReset,
+} from "./services/auth";
+import type { AppUser, NavItem, PageId } from "./types/app";
+
+type RoleRoute = "admin" | "teacher" | "student";
+
+const roleToPath: Record<AppUser["role"], RoleRoute> = {
+  chef: "admin",
+  enseignant: "teacher",
+  etudiant: "student",
+};
+
+const pathToRole: Record<RoleRoute, AppUser["role"]> = {
+  admin: "chef",
+  teacher: "enseignant",
+  student: "etudiant",
+};
+
+const navConfig: Record<AppUser["role"], NavItem[]> = {
+  chef: [
+    { id: "dashboard", label: "Vue d'ensemble", icon: "▦" },
+    { id: "sujets", label: "Sujets PFE", icon: "▤" },
+    { id: "planning", label: "Planning", icon: "◈" },
+    { id: "jurys", label: "Jurys", icon: "◆" },
+    { id: "forum", label: "Forum PFE", icon: "◎", badge: 2 },
+    { id: "export", label: "Export & Rapports", icon: "↓" },
+  ],
+  enseignant: [
+    { id: "dashboard", label: "Mon espace", icon: "▦" },
+    { id: "planning", label: "Mon planning", icon: "▤" },
+    { id: "disponibilites", label: "Disponibilités", icon: "◌" },
+    { id: "forum", label: "Forum PFE", icon: "◎", badge: 1 },
+  ],
+  etudiant: [
+    { id: "dashboard", label: "Mon PFE", icon: "◉" },
+    { id: "forum", label: "Forum PFE", icon: "◎" },
+  ],
+};
+
+function renderPage(
+  page: PageId,
+  user: AppUser,
+  onNav: (page: PageId) => void,
+) {
+  const props = { user, onNav } as any;
+  const map: Record<
+    AppUser["role"],
+    Partial<Record<PageId, React.ReactElement>>
+  > = {
+    chef: {
+      dashboard: <ChefDashboard {...props} />,
+      sujets: <ChefSujets {...props} />,
+      planning: <ChefPlanning {...props} />,
+      jurys: <ChefJurys {...props} />,
+      forum: <Forum {...props} />,
+      export: <ChefExport {...props} />,
+    },
+    enseignant: {
+      dashboard: <EnseignantDashboard {...props} />,
+      planning: <EnseignantPlanning {...props} />,
+      disponibilites: <EnseignantDisponibilites {...props} />,
+      forum: <Forum {...props} />,
+    },
+    etudiant: {
+      dashboard: <EtudiantDashboard {...props} />,
+      forum: <Forum {...props} />,
+    },
+  };
+  return map[user.role]?.[page] || map[user.role]?.dashboard;
+}
+
+function resolvePageFromPath(pathname: string, basePath: string): PageId {
+  const relative = pathname.startsWith(basePath)
+    ? pathname.slice(basePath.length).replace(/^\//, "")
+    : "";
+  const candidate = (relative || "dashboard") as PageId;
+  return candidate;
+}
+
+function UnauthorizedPage() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "grid",
+        placeItems: "center",
+        background: "var(--bg)",
+        color: "var(--text)",
+      }}
+    >
+      <div style={{ textAlign: "center" }}>
+        <h1 style={{ marginBottom: 8 }}>Accès refusé</h1>
+        <p style={{ color: "var(--text2)", margin: 0 }}>
+          Vous n&apos;avez pas les droits pour accéder à cette page.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+interface RolePortalProps {
+  user: AppUser;
+  onLogout: () => void;
+  routeRole: RoleRoute;
+}
+
+function RolePortal({ user, onLogout, routeRole }: RolePortalProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const expectedRole = pathToRole[routeRole];
+
+  if (user.role !== expectedRole) {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
+  const basePath = `/${routeRole}`;
+  const activePage = resolvePageFromPath(location.pathname, basePath);
+  const roleNav = navConfig[user.role] ?? [];
+  const allowedIds = new Set(roleNav.map((item) => item.id));
+
+  if (!allowedIds.has(activePage)) {
+    return <Navigate to={`${basePath}/dashboard`} replace />;
+  }
+
+  const onNav = (page: PageId) => {
+    navigate(`${basePath}/${page}`);
+  };
+
+  return (
+    <Shell
+      user={user}
+      nav={roleNav}
+      activePage={activePage}
+      onNav={onNav}
+      onLogout={onLogout}
+    >
+      {renderPage(activePage, user, onNav)}
+    </Shell>
+  );
+}
+
+export default function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState<AppUser | null>(
+    getStoredSession()?.user ?? null,
+  );
+
+  const userHomePath = useMemo(() => {
+    if (!user) {
+      return "/login";
+    }
+    return `/${roleToPath[user.role]}/dashboard`;
+  }, [user]);
+
+  const handleLogin = async (email: string, password: string) => {
+    const session = await loginWithEmailPassword(email, password);
+    setUser(session.user);
+    navigate(`/${roleToPath[session.user.role]}/dashboard`, { replace: true });
+  };
+
+  const handleLogout = () => {
+    clearSession();
+    setUser(null);
+    navigate("/login", { replace: true });
+  };
+
+  return (
+    <Routes>
+      <Route
+        path="/login"
+        element={
+          user ? (
+            <Navigate to={userHomePath} replace />
+          ) : (
+            <Login
+              onLogin={handleLogin}
+              onForgotPassword={requestPasswordReset}
+            />
+          )
+        }
+      />
+      <Route path="/unauthorized" element={<UnauthorizedPage />} />
+
+      <Route
+        path="/admin/*"
+        element={
+          user ? (
+            <RolePortal user={user} onLogout={handleLogout} routeRole="admin" />
+          ) : (
+            <Navigate to="/login" replace state={{ from: location.pathname }} />
+          )
+        }
+      />
+      <Route
+        path="/teacher/*"
+        element={
+          user ? (
+            <RolePortal
+              user={user}
+              onLogout={handleLogout}
+              routeRole="teacher"
+            />
+          ) : (
+            <Navigate to="/login" replace state={{ from: location.pathname }} />
+          )
+        }
+      />
+      <Route
+        path="/student/*"
+        element={
+          user ? (
+            <RolePortal
+              user={user}
+              onLogout={handleLogout}
+              routeRole="student"
+            />
+          ) : (
+            <Navigate to="/login" replace state={{ from: location.pathname }} />
+          )
+        }
+      />
+
+      <Route path="/" element={<Navigate to={userHomePath} replace />} />
+      <Route path="*" element={<Navigate to={userHomePath} replace />} />
+    </Routes>
+  );
+}
