@@ -180,6 +180,32 @@ class Schedules(models.Model):
             return 0.0
         return (end_dt - start_dt).total_seconds() / 3600
 
+
+class TimetablePublications(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    is_published = models.BooleanField(default=False)
+    published_at = models.DateTimeField(blank=True, null=True)
+    published_by = models.ForeignKey(Users, models.SET_NULL, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'timetable_publications'
+
+
+class TimetableTelemetry(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(Users, models.SET_NULL, null=True, blank=True)
+    role = models.CharField(max_length=20, blank=True, null=True)
+    event_name = models.CharField(max_length=120)
+    route = models.CharField(max_length=180, blank=True, null=True)
+    payload = models.JSONField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        managed = False
+        db_table = 'timetable_telemetry'
+
 class Posts(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Users, models.CASCADE)

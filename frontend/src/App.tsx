@@ -12,11 +12,14 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminAccounts from "./pages/admin/Accounts";
 import AdminClasses from "./pages/admin/Classes";
 import AdminDepartments from "./pages/admin/Departments";
+import AdminTimetable from "./pages/admin/Timetable";
 import EnseignantDashboard from "./pages/enseignant/Dashboard";
 import EnseignantPlanning from "./pages/enseignant/Planning";
 import EnseignantDisponibilites from "./pages/enseignant/Disponibilites";
+import EnseignantEmploi from "./pages/enseignant/Emploi";
 import Forum from "./pages/shared/Forum";
 import EtudiantDashboard from "./pages/etudiant/Dashboard";
+import EtudiantEmploi from "./pages/etudiant/Emploi";
 import {
   clearSession,
   getStoredSession,
@@ -42,6 +45,7 @@ const pathToRole: Record<RoleRoute, AppUser["role"]> = {
 const navConfig: Record<AppUser["role"], NavItem[]> = {
   chef: [
     { id: "dashboard", label: "Admin Dashboard", icon: "▦" },
+    { id: "timetable", label: "Emploi du temps", icon: "▧" },
     { id: "accounts", label: "Comptes", icon: "◎" },
     { id: "classes", label: "Classes", icon: "▤" },
     { id: "departments", label: "Départements", icon: "◆" },
@@ -49,12 +53,14 @@ const navConfig: Record<AppUser["role"], NavItem[]> = {
   ],
   enseignant: [
     { id: "dashboard", label: "Mon espace", icon: "▦" },
+    { id: "emploi", label: "Emploi du temps", icon: "▧" },
     { id: "planning", label: "Mon planning", icon: "▤" },
     { id: "disponibilites", label: "Disponibilités", icon: "◌" },
     { id: "forum", label: "Forum PFE", icon: "◎", badge: 1 },
   ],
   etudiant: [
     { id: "dashboard", label: "Mon PFE", icon: "◉" },
+    { id: "emploi", label: "Emploi du temps", icon: "▧" },
     { id: "forum", label: "Forum PFE", icon: "◎" },
   ],
 };
@@ -71,6 +77,7 @@ function renderPage(
   > = {
     chef: {
       dashboard: <AdminDashboard {...props} />,
+      timetable: <AdminTimetable />,
       accounts: <AdminAccounts {...props} />,
       classes: <AdminClasses {...props} />,
       departments: <AdminDepartments {...props} mode="departments" />,
@@ -78,12 +85,14 @@ function renderPage(
     },
     enseignant: {
       dashboard: <EnseignantDashboard {...props} />,
+      emploi: <EnseignantEmploi {...props} />,
       planning: <EnseignantPlanning {...props} />,
       disponibilites: <EnseignantDisponibilites {...props} />,
       forum: <Forum {...props} />,
     },
     etudiant: {
       dashboard: <EtudiantDashboard {...props} />,
+      emploi: <EtudiantEmploi />,
       forum: <Forum {...props} />,
     },
   };
