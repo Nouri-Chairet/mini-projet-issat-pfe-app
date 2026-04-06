@@ -114,7 +114,7 @@ class Classes(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     niveau = models.TextField()
     classe_section = models.CharField(max_length=40, choices=Section.choices, default=Section.PREPA_MPI)
-    classe_num = models.TextField(validators=[MinValueValidator(1)])
+    classe_num = models.TextField()
 
     def clean(self):
         try:
@@ -122,8 +122,16 @@ class Classes(models.Model):
         except (TypeError, ValueError):
             raise ValidationError({"niveau": "niveau must be a number."})
 
+        try:
+            classe_num_value = int(self.classe_num)
+        except (TypeError, ValueError):
+            raise ValidationError({"classe_num": "classe_num must be a number."})
+
         if niveau_value < 1:
             raise ValidationError({"niveau": "niveau must be greater than 0."})
+
+        if classe_num_value < 1:
+            raise ValidationError({"classe_num": "classe_num must be greater than 0."})
 
         if self.classe_section == Section.PREPA_MPI and niveau_value > 2:
             raise ValidationError({"niveau": "Prépa classes accept max niveau 2."})

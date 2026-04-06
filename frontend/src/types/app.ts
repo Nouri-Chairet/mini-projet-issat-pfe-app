@@ -89,6 +89,10 @@ export interface NavItem {
 
 export type PageId =
   | 'dashboard'
+  | 'accounts'
+  | 'classes'
+  | 'departments'
+  | 'heads'
   | 'sujets'
   | 'planning'
   | 'jurys'

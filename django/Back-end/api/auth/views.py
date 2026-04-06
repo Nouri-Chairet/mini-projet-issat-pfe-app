@@ -3,7 +3,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.hashers import check_password
-from api.models import Users, Teachers, Students, Classes, UserRole
+from api.models import Users, Teachers, Students, Classes, Departments, UserRole
 from api.auth.serializers import UserSerializer, TeacherSerializer
 from api.auth.permissions import IsAdmin
 from rest_framework.permissions import IsAuthenticated
@@ -109,6 +109,8 @@ def register_view(request):
             age = request.data.get('age')
             teacher = Teachers.objects.create(user=user, department=department, ncin=ncin, age=age)
             teacher.save()
+            if department and str(department).strip():
+                Departments.objects.get_or_create(name=str(department).strip())
             tokens = user.get_tokens()
             return Response(tokens)
         else:
