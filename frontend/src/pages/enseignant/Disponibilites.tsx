@@ -1,7 +1,11 @@
-import { useState } from "react";
-import { enseignants } from "../../data/mockData";
-import { Btn } from "../../components/UI";
-import type { AppUser } from "../../types/app";
+import { useEffect, useMemo, useState } from "react";
+import { Btn, Input } from "../../components/UI";
+import {
+  getPfeCampaign,
+  getTeacherAvailability,
+  setTeacherAvailabilityDateException,
+  type PfeCampaign,
+} from "../../services/admin";
 
 const A = "var(--ens-accent)";
 const MONTHS = [
@@ -20,22 +24,64 @@ const MONTHS = [
 ];
 const DAYS = ["D", "L", "M", "M", "J", "V", "S"];
 
-interface EnseignantDisponibilitesProps {
-  user: AppUser;
-}
-
-export default function EnseignantDisponibilites({
-  user,
-}: EnseignantDisponibilitesProps) {
-  const prof =
-    enseignants.find((enseignant) => enseignant.name === user.name) ??
-    enseignants[0];
-  const [year, setYear] = useState(2025);
-  const [month, setMonth] = useState(5);
-  const [selected, setSelected] = useState<Set<string>>(
-    new Set(prof.disponibilites),
+export default function EnseignantDisponibilites() {
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [month, setMonth] = useState(new Date().getMonth());
+  const [campaign, setCampaign] = useState<PfeCampaign | null>(null);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [initialSelection, setInitialSelection] = useState<Set<string>>(
+    new Set(),
   );
-  const [saved, setSaved] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const dayStartTime = campaign?.day_start_time.slice(0, 5) || "08:00";
+  const dayEndTime = campaign?.day_end_time.slice(0, 5) || "16:00";
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function load() {
+      try {
+        setLoading(true);
+        const currentCampaign = await getPfeCampaign();
+        if (!mounted) {
+          return;
+        }
+        setCampaign(currentCampaign);
+
+        const availability = await getTeacherAvailability({
+          context: "pfe",
+          campaign_id: currentCampaign.id,
+        });
+
+        if (!mounted) {
+          return;
+        }
+
+        const selectedDates = new Set(
+          availability.date_exceptions
+            .filter((item) => item.level !== "unavailable")
+            .map((item) => item.availability_date),
+        );
+        setSelected(selectedDates);
+        setInitialSelection(new Set(selectedDates));
+      } catch {
+        if (mounted) {
+          setFeedback("Aucune période PFE active pour le moment.");
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void load();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const first = new Date(year, month, 1).getDay();
   const lastDay = new Date(year, month + 1, 0).getDate();
@@ -47,103 +93,143 @@ export default function EnseignantDisponibilites({
   const dateStr = (day: number) =>
     `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
-  const toggleDay = (day: number) => {
-    const currentDate = dateStr(day);
-    const next = new Set(selected);
-    if (next.has(currentDate)) {
-      next.delete(currentDate);
-    } else {
-      next.add(currentDate);
+  const withinCampaignRange = (day: number) => {
+    if (!campaign) {
+      return false;
     }
-    setSelected(next);
-    setSaved(false);
+    const d = dateStr(day);
+    return d >= campaign.start_date && d <= campaign.end_date;
   };
 
-  const allDates = [...selected].sort();
+  const toggleDay = (day: number) => {
+    const d = dateStr(day);
+    const next = new Set(selected);
+    if (next.has(d)) {
+      next.delete(d);
+    } else {
+      next.add(d);
+    }
+    setSelected(next);
+  };
+
+  const allDates = useMemo(() => [...selected].sort(), [selected]);
+
+  const saveSelection = async () => {
+    if (!campaign) {
+      setFeedback("Aucune campagne active.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const adds = [...selected].filter((d) => !initialSelection.has(d));
+      const removals = [...initialSelection].filter((d) => !selected.has(d));
+
+      for (const d of adds) {
+        await setTeacherAvailabilityDateException({
+          context: "pfe",
+          campaign_id: campaign.id,
+          availability_date: d,
+          start_time: dayStartTime,
+          end_time: dayEndTime,
+          level: "preferred",
+        });
+      }
+
+      for (const d of removals) {
+        await setTeacherAvailabilityDateException({
+          context: "pfe",
+          campaign_id: campaign.id,
+          availability_date: d,
+          start_time: dayStartTime,
+          end_time: dayEndTime,
+          level: "unavailable",
+        });
+      }
+
+      setInitialSelection(new Set(selected));
+      setFeedback("Disponibilités envoyées pour la période PFE.");
+    } catch {
+      setFeedback("Erreur lors de l'enregistrement.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div style={{ padding: "36px 40px", maxWidth: 900 }}>
-      <div
-        className="fu"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-          marginBottom: 36,
-          flexWrap: "wrap",
-          gap: 16,
-        }}
-      >
-        <div>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: A,
-              textTransform: "uppercase",
-              letterSpacing: "2px",
-              marginBottom: 8,
-            }}
-          >
-            ◌ Calendrier
-          </div>
-          <h1
-            style={{ fontSize: 32, fontWeight: 800, letterSpacing: "-1.5px" }}
-          >
-            Mes{" "}
-            <span
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontStyle: "italic",
-                color: A,
-                fontWeight: 400,
-              }}
-            >
-              disponibilités
-            </span>
-          </h1>
-          <p
-            style={{
-              color: "var(--text2)",
-              marginTop: 8,
-              fontFamily: "var(--font-mono)",
-              fontSize: 12,
-            }}
-          >
-            {selected.size} jour(s) sélectionné(s)
-          </p>
+    <div style={{ padding: "36px 40px", maxWidth: 960 }}>
+      <div style={{ marginBottom: 22 }}>
+        <div
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: 11,
+            color: A,
+            textTransform: "uppercase",
+            letterSpacing: "2px",
+            marginBottom: 8,
+          }}
+        >
+          Disponibilites PFE
         </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          <Btn
-            accent={A}
-            variant="ghost"
-            onClick={() => {
-              setSelected(new Set());
-            }}
-          >
-            Réinitialiser
-          </Btn>
-          <Btn
-            accent={A}
-            onClick={() => {
-              setSaved(true);
-            }}
-          >
-            {saved ? "✓ Sauvegardé" : "Sauvegarder"}
-          </Btn>
-        </div>
+        <h1
+          style={{
+            fontSize: 32,
+            fontWeight: 800,
+            letterSpacing: "-1.5px",
+            margin: 0,
+          }}
+        >
+          Soumettre mes créneaux
+        </h1>
+        <p style={{ color: "var(--text2)", marginTop: 8 }}>
+          Sélectionnez vos dates disponibles pendant la période active puis
+          sauvegardez.
+        </p>
       </div>
 
+      {campaign ? (
+        <div
+          style={{
+            border: "1px solid var(--border)",
+            background: "var(--surface)",
+            borderRadius: "var(--r-md)",
+            padding: "10px 12px",
+            marginBottom: 14,
+            fontFamily: "var(--font-mono)",
+            fontSize: 12,
+            color: "var(--text2)",
+          }}
+        >
+          Campagne: {campaign.name} | {campaign.start_date} →{" "}
+          {campaign.end_date} | {dayStartTime}-{dayEndTime}
+        </div>
+      ) : null}
+
+      {feedback ? (
+        <div
+          style={{
+            border: "1px solid var(--border)",
+            background: "var(--surface)",
+            borderRadius: "var(--r-md)",
+            padding: "10px 12px",
+            marginBottom: 14,
+            color: "var(--text2)",
+          }}
+        >
+          {feedback}
+        </div>
+      ) : null}
+
       <div
-        style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 24 }}
+        style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 18 }}
       >
         <div
-          className="fu1"
           style={{
             background: "var(--surface)",
             border: "1px solid var(--border)",
             borderRadius: "var(--r-xl)",
-            padding: 28,
+            padding: 24,
           }}
         >
           <div
@@ -151,16 +237,16 @@ export default function EnseignantDisponibilites({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: 28,
+              marginBottom: 22,
             }}
           >
             <button
               onClick={() => {
                 if (month === 0) {
                   setMonth(11);
-                  setYear((currentYear) => currentYear - 1);
+                  setYear((value) => value - 1);
                 } else {
-                  setMonth((currentMonth) => currentMonth - 1);
+                  setMonth((value) => value - 1);
                 }
               }}
               style={{
@@ -169,9 +255,7 @@ export default function EnseignantDisponibilites({
                 borderRadius: 9,
                 border: "1px solid var(--border2)",
                 background: "none",
-                color: "var(--text)",
                 cursor: "pointer",
-                fontSize: 18,
               }}
             >
               ‹
@@ -183,9 +267,9 @@ export default function EnseignantDisponibilites({
               onClick={() => {
                 if (month === 11) {
                   setMonth(0);
-                  setYear((currentYear) => currentYear + 1);
+                  setYear((value) => value + 1);
                 } else {
-                  setMonth((currentMonth) => currentMonth + 1);
+                  setMonth((value) => value + 1);
                 }
               }}
               style={{
@@ -194,14 +278,13 @@ export default function EnseignantDisponibilites({
                 borderRadius: 9,
                 border: "1px solid var(--border2)",
                 background: "none",
-                color: "var(--text)",
                 cursor: "pointer",
-                fontSize: 18,
               }}
             >
               ›
             </button>
           </div>
+
           <div
             style={{
               display: "grid",
@@ -225,6 +308,7 @@ export default function EnseignantDisponibilites({
               </div>
             ))}
           </div>
+
           <div
             style={{
               display: "grid",
@@ -236,17 +320,20 @@ export default function EnseignantDisponibilites({
               if (!day) {
                 return <div key={`empty-${index}`} />;
               }
+
               const dayNum = day as number;
-              const dayStr = dateStr(dayNum);
-              const isSelected = selected.has(dayStr);
-              const currentDay = new Date(year, month, dayNum).getDay();
-              const isWeekend = currentDay === 0 || currentDay === 6;
+              const dayISO = dateStr(dayNum);
+              const isSelected = selected.has(dayISO);
+              const jsDay = new Date(year, month, dayNum).getDay();
+              const isWeekend = jsDay === 0 || jsDay === 6;
+              const inRange = withinCampaignRange(dayNum);
+              const disabled = !campaign || !inRange || isWeekend;
 
               return (
                 <button
                   key={`day-${index}`}
                   onClick={() => {
-                    if (!isWeekend) {
+                    if (!disabled) {
                       toggleDay(dayNum);
                     }
                   }}
@@ -258,157 +345,69 @@ export default function EnseignantDisponibilites({
                       ? `1px solid ${A}`
                       : "1px solid transparent",
                     background: isSelected ? "var(--ens-dim)" : "transparent",
-                    color: isWeekend
+                    color: disabled
                       ? "var(--text3)"
                       : isSelected
                         ? A
                         : "var(--text)",
-                    cursor: isWeekend ? "not-allowed" : "pointer",
+                    cursor: disabled ? "not-allowed" : "pointer",
                     fontSize: 13,
                     fontWeight: isSelected ? 700 : 400,
-                    transition: "all 0.12s",
-                    position: "relative",
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isSelected && !isWeekend) {
-                      e.currentTarget.style.background =
-                        "rgba(255,107,53,0.05)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isSelected) {
-                      e.currentTarget.style.background = "transparent";
-                    }
                   }}
                 >
                   {dayNum}
-                  {isSelected && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        bottom: 5,
-                        left: "50%",
-                        transform: "translateX(-50%)",
-                        width: 4,
-                        height: 4,
-                        borderRadius: "50%",
-                        background: A,
-                      }}
-                    />
-                  )}
                 </button>
               );
             })}
           </div>
-          <div
-            style={{
-              marginTop: 20,
-              paddingTop: 16,
-              borderTop: "1px solid var(--border)",
-              display: "flex",
-              gap: 16,
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: "var(--text3)",
-            }}
-          >
-            <span>● Sélectionné</span>
-            <span style={{ opacity: 0.4 }}>Cliquer pour (dé)sélectionner</span>
+
+          <div style={{ marginTop: 16 }}>
+            <Btn accent={A} onClick={saveSelection}>
+              Envoyer mes disponibilités
+            </Btn>
           </div>
         </div>
 
-        <div className="fu2">
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 10,
-              color: "var(--text3)",
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-              marginBottom: 14,
-            }}
-          >
-            Dates sélectionnées
-          </div>
-          {allDates.length === 0 ? (
-            <div
-              style={{
-                color: "var(--text3)",
-                fontFamily: "var(--font-mono)",
-                fontSize: 13,
-              }}
-            >
-              Aucune date sélectionnée
-            </div>
-          ) : (
-            allDates.map((date) => (
+        <div>
+          <Input
+            label="Dates sélectionnées"
+            value={`${allDates.length}`}
+            readOnly
+          />
+          <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
+            {allDates.map((d) => (
               <div
-                key={date}
+                key={d}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "10px 14px",
+                  border: "1px solid var(--border)",
                   background: "var(--surface)",
-                  border: `1px solid ${A}25`,
                   borderRadius: "var(--r-md)",
-                  marginBottom: 8,
+                  padding: "8px 10px",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 11,
                 }}
               >
-                <div>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: 13,
-                      color: A,
-                      fontWeight: 600,
-                    }}
-                  >
-                    {new Date(date).toLocaleDateString("fr-FR", {
-                      weekday: "short",
-                      day: "numeric",
-                      month: "short",
-                    })}
-                  </span>
-                </div>
-                <button
-                  onClick={() => {
-                    const next = new Set(selected);
-                    next.delete(date);
-                    setSelected(next);
-                  }}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    color: "var(--text3)",
-                    cursor: "pointer",
-                    fontSize: 14,
-                  }}
-                >
-                  ×
-                </button>
+                {d}
               </div>
-            ))
-          )}
-
-          {saved && (
-            <div
-              style={{
-                marginTop: 16,
-                padding: "12px 14px",
-                background: "rgba(0,229,160,0.06)",
-                border: "1px solid var(--chef-accent)30",
-                borderRadius: "var(--r-md)",
-                fontFamily: "var(--font-mono)",
-                fontSize: 12,
-                color: "var(--chef-accent)",
-              }}
-            >
-              ✓ Disponibilités sauvegardées
-            </div>
-          )}
+            ))}
+            {!allDates.length ? (
+              <div
+                style={{
+                  color: "var(--text3)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 12,
+                }}
+              >
+                Aucune date sélectionnée.
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
+
+      {loading ? (
+        <p style={{ color: "var(--text3)", marginTop: 12 }}>Chargement...</p>
+      ) : null}
     </div>
   );
 }

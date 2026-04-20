@@ -5,6 +5,11 @@ import {
   logTimetableTelemetry,
   type TeacherScheduleItem,
 } from "../../services/timetable";
+import {
+  getPfeCampaign,
+  listStudentPfeDates,
+  type StudentPfeDateItem,
+} from "../../services/admin";
 import { Btn, Select } from "../../components/UI";
 
 const weekOrder: Record<string, number> = {
@@ -18,6 +23,7 @@ const weekOrder: Record<string, number> = {
 
 export default function EtudiantEmploi() {
   const [items, setItems] = useState<TeacherScheduleItem[]>([]);
+  const [pfeDates, setPfeDates] = useState<StudentPfeDateItem[]>([]);
   const [feedback, setFeedback] = useState("");
   const [viewMode, setViewMode] = useState<"week" | "day">("week");
   const [selectedDay, setSelectedDay] = useState("Lundi");
@@ -28,8 +34,16 @@ export default function EtudiantEmploi() {
     async function load() {
       try {
         const schedules = await getStudentTimetable();
+        let pfe: StudentPfeDateItem[] = [];
+        try {
+          const campaign = await getPfeCampaign();
+          pfe = await listStudentPfeDates(campaign.id);
+        } catch {
+          pfe = [];
+        }
         if (mounted) {
           setItems(schedules);
+          setPfeDates(pfe);
         }
       } catch {
         if (mounted) {
@@ -87,11 +101,20 @@ export default function EtudiantEmploi() {
         Milestone 4 — consommation étudiant.
       </p>
 
-      <div style={{ display: "flex", gap: 10, marginBottom: 14, alignItems: "end" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 10,
+          marginBottom: 14,
+          alignItems: "end",
+        }}
+      >
         <Select
           label="Vue"
           value={viewMode}
-          onChange={(event) => setViewMode(event.target.value as "week" | "day")}
+          onChange={(event) =>
+            setViewMode(event.target.value as "week" | "day")
+          }
         >
           <option value="week">Semaine</option>
           <option value="day">Jour</option>
@@ -102,11 +125,13 @@ export default function EtudiantEmploi() {
             value={selectedDay}
             onChange={(event) => setSelectedDay(event.target.value)}
           >
-            {["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"].map((day) => (
-              <option key={day} value={day}>
-                {day}
-              </option>
-            ))}
+            {["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"].map(
+              (day) => (
+                <option key={day} value={day}>
+                  {day}
+                </option>
+              ),
+            )}
           </Select>
         ) : null}
         <Btn onClick={downloadIcs} variant="ghost">
@@ -153,6 +178,45 @@ export default function EtudiantEmploi() {
             </div>
           </div>
         ))}
+      </div>
+
+      <h2 style={{ marginTop: 28, marginBottom: 10 }}>
+        Dates des soutenances PFE
+      </h2>
+      <div style={{ display: "grid", gap: 10 }}>
+        {pfeDates.map((item) => (
+          <div
+            key={item.subject_id}
+            style={{
+              border: "1px solid var(--border)",
+              borderRadius: "var(--r-lg)",
+              padding: "12px 14px",
+              background: "var(--surface)",
+            }}
+          >
+            <strong>
+              {item.slot.date} • {item.slot.start_time.slice(0, 5)} -{" "}
+              {item.slot.end_time.slice(0, 5)}
+            </strong>
+            <div style={{ color: "var(--text2)", marginTop: 4 }}>
+              {item.subject_title} • Salle {item.slot.room}
+            </div>
+            <div style={{ color: "var(--text3)", fontSize: 13 }}>
+              Étudiant: {item.student_name} • Encadreur: {item.supervisor_name}
+            </div>
+          </div>
+        ))}
+        {pfeDates.length === 0 ? (
+          <div
+            style={{
+              color: "var(--text3)",
+              fontFamily: "var(--font-mono)",
+              fontSize: 12,
+            }}
+          >
+            Les dates de soutenances PFE ne sont pas encore publiées.
+          </div>
+        ) : null}
       </div>
     </div>
   );
