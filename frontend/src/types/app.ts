@@ -16,6 +16,7 @@ export interface AppUser {
   nbSujets?: number;
   sujetId?: number;
   schemaUserId?: UUID;
+  is_department_head?: boolean;
 }
 
 export interface StudentProfile {
@@ -95,9 +96,13 @@ export type PageId =
   | 'classes'
   | 'departments'
   | 'heads'
+  | 'pfe-sessions'
+  | 'pfe-scheduler'
   | 'sujets'
   | 'planning'
   | 'jurys'
   | 'forum'
   | 'export'
+  | 'pfe-results'
+  | 'pfe-campaign-management'
   | 'disponibilites';

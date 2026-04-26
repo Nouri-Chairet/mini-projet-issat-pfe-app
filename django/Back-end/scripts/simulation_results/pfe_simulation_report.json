@@ -1,0 +1,4676 @@
+{
+  "seed": 20260420,
+  "config": {
+    "teachers": 30,
+    "head_department": {
+      "id": "H01",
+      "name": "Head Department"
+    },
+    "presentations": 112,
+    "rooms": [
+      "A1",
+      "A2",
+      "A3",
+      "A4"
+    ],
+    "time_blocks": [
+      [
+        "08:00",
+        "09:00"
+      ],
+      [
+        "09:15",
+        "10:15"
+      ],
+      [
+        "10:30",
+        "11:30"
+      ],
+      [
+        "11:45",
+        "12:45"
+      ],
+      [
+        "13:00",
+        "14:00"
+      ],
+      [
+        "14:15",
+        "15:15"
+      ]
+    ]
+  },
+  "stats": {
+    "teachers_total": 30,
+    "head_department": {
+      "id": "H01",
+      "name": "Head Department"
+    },
+    "presentations_total": 112,
+    "assignments_completed": 112,
+    "unresolved_total": 0,
+    "slots_generated": 528
+  },
+  "teacher_results": [
+    {
+      "teacher_id": "T01",
+      "teacher_name": "Teacher 01",
+      "target_presentations": 10,
+      "preferred_sessions_count": 19,
+      "available_not_preferred_sessions_count": 17,
+      "preferred_sessions": [
+        "2026-06-02 10:30-11:30 Room A1",
+        "2026-06-03 11:45-12:45 Room A2",
+        "2026-06-03 11:45-12:45 Room A3",
+        "2026-06-04 13:00-14:00 Room A2",
+        "2026-06-08 10:30-11:30 Room A3",
+        "2026-06-08 11:45-12:45 Room A3",
+        "2026-06-09 13:00-14:00 Room A1",
+        "2026-06-10 10:30-11:30 Room A1",
+        "2026-06-11 08:00-09:00 Room A2",
+        "2026-06-12 11:45-12:45 Room A2",
+        "2026-06-15 08:00-09:00 Room A2",
+        "2026-06-16 09:15-10:15 Room A2",
+        "2026-06-18 09:15-10:15 Room A1",
+        "2026-06-18 10:30-11:30 Room A3",
+        "2026-06-19 13:00-14:00 Room A2",
+        "2026-06-22 09:15-10:15 Room A2",
+        "2026-06-25 09:15-10:15 Room A4",
+        "2026-06-29 08:00-09:00 Room A1",
+        "2026-06-29 10:30-11:30 Room A2"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 13:00-14:00 Room A1",
+        "2026-06-02 10:30-11:30 Room A3",
+        "2026-06-04 09:15-10:15 Room A3",
+        "2026-06-05 11:45-12:45 Room A3",
+        "2026-06-05 11:45-12:45 Room A4",
+        "2026-06-09 14:15-15:15 Room A3",
+        "2026-06-15 09:15-10:15 Room A3",
+        "2026-06-15 11:45-12:45 Room A1",
+        "2026-06-16 11:45-12:45 Room A1",
+        "2026-06-18 13:00-14:00 Room A2",
+        "2026-06-19 09:15-10:15 Room A3",
+        "2026-06-24 09:15-10:15 Room A4",
+        "2026-06-24 10:30-11:30 Room A2",
+        "2026-06-24 14:15-15:15 Room A1",
+        "2026-06-26 11:45-12:45 Room A2",
+        "2026-06-26 14:15-15:15 Room A3",
+        "2026-06-30 10:30-11:30 Room A2"
+      ],
+      "assigned_total": 16,
+      "assigned_by_role": {
+        "encadreur": 7,
+        "rapporteur": 3,
+        "president": 6
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-034",
+          "role": "president",
+          "slot_label": "2026-06-01 13:00-14:00 Room A1",
+          "slot_id": "S0017"
+        },
+        {
+          "subject_id": "PFE-010",
+          "role": "encadreur",
+          "slot_label": "2026-06-03 11:45-12:45 Room A2",
+          "slot_id": "S0062"
+        },
+        {
+          "subject_id": "PFE-014",
+          "role": "encadreur",
+          "slot_label": "2026-06-03 11:45-12:45 Room A3",
+          "slot_id": "S0063"
+        },
+        {
+          "subject_id": "PFE-017",
+          "role": "encadreur",
+          "slot_label": "2026-06-04 13:00-14:00 Room A2",
+          "slot_id": "S0090"
+        },
+        {
+          "subject_id": "PFE-042",
+          "role": "president",
+          "slot_label": "2026-06-05 11:45-12:45 Room A3",
+          "slot_id": "S0111"
+        },
+        {
+          "subject_id": "PFE-108",
+          "role": "president",
+          "slot_label": "2026-06-05 11:45-12:45 Room A4",
+          "slot_id": "S0112"
+        },
+        {
+          "subject_id": "PFE-029",
+          "role": "encadreur",
+          "slot_label": "2026-06-08 11:45-12:45 Room A3",
+          "slot_id": "S0135"
+        },
+        {
+          "subject_id": "PFE-009",
+          "role": "rapporteur",
+          "slot_label": "2026-06-09 13:00-14:00 Room A1",
+          "slot_id": "S0161"
+        },
+        {
+          "subject_id": "PFE-012",
+          "role": "rapporteur",
+          "slot_label": "2026-06-12 11:45-12:45 Room A2",
+          "slot_id": "S0230"
+        },
+        {
+          "subject_id": "PFE-046",
+          "role": "president",
+          "slot_label": "2026-06-15 09:15-10:15 Room A3",
+          "slot_id": "S0247"
+        },
+        {
+          "subject_id": "PFE-057",
+          "role": "encadreur",
+          "slot_label": "2026-06-18 09:15-10:15 Room A1",
+          "slot_id": "S0317"
+        },
+        {
+          "subject_id": "PFE-086",
+          "role": "rapporteur",
+          "slot_label": "2026-06-18 10:30-11:30 Room A3",
+          "slot_id": "S0323"
+        },
+        {
+          "subject_id": "PFE-095",
+          "role": "encadreur",
+          "slot_label": "2026-06-22 09:15-10:15 Room A2",
+          "slot_id": "S0366"
+        },
+        {
+          "subject_id": "PFE-096",
+          "role": "president",
+          "slot_label": "2026-06-24 10:30-11:30 Room A2",
+          "slot_id": "S0418"
+        },
+        {
+          "subject_id": "PFE-106",
+          "role": "encadreur",
+          "slot_label": "2026-06-25 09:15-10:15 Room A4",
+          "slot_id": "S0440"
+        },
+        {
+          "subject_id": "PFE-100",
+          "role": "president",
+          "slot_label": "2026-06-26 14:15-15:15 Room A3",
+          "slot_id": "S0479"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T02",
+      "teacher_name": "Teacher 02",
+      "target_presentations": 7,
+      "preferred_sessions_count": 12,
+      "available_not_preferred_sessions_count": 12,
+      "preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A2",
+        "2026-06-01 11:45-12:45 Room A4",
+        "2026-06-04 10:30-11:30 Room A4",
+        "2026-06-04 14:15-15:15 Room A2",
+        "2026-06-08 10:30-11:30 Room A2",
+        "2026-06-11 08:00-09:00 Room A4",
+        "2026-06-12 13:00-14:00 Room A2",
+        "2026-06-18 14:15-15:15 Room A4",
+        "2026-06-24 09:15-10:15 Room A3",
+        "2026-06-25 11:45-12:45 Room A1",
+        "2026-06-29 14:15-15:15 Room A4",
+        "2026-06-30 08:00-09:00 Room A2"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-02 08:00-09:00 Room A1",
+        "2026-06-02 14:15-15:15 Room A4",
+        "2026-06-04 09:15-10:15 Room A2",
+        "2026-06-08 13:00-14:00 Room A3",
+        "2026-06-09 09:15-10:15 Room A3",
+        "2026-06-10 09:15-10:15 Room A2",
+        "2026-06-12 08:00-09:00 Room A4",
+        "2026-06-15 08:00-09:00 Room A1",
+        "2026-06-17 13:00-14:00 Room A2",
+        "2026-06-18 09:15-10:15 Room A4",
+        "2026-06-18 10:30-11:30 Room A4",
+        "2026-06-19 11:45-12:45 Room A3"
+      ],
+      "assigned_total": 6,
+      "assigned_by_role": {
+        "encadreur": 2,
+        "rapporteur": 4,
+        "president": 0
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-028",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 11:45-12:45 Room A4",
+          "slot_id": "S0016"
+        },
+        {
+          "subject_id": "PFE-037",
+          "role": "rapporteur",
+          "slot_label": "2026-06-04 10:30-11:30 Room A4",
+          "slot_id": "S0084"
+        },
+        {
+          "subject_id": "PFE-026",
+          "role": "rapporteur",
+          "slot_label": "2026-06-04 14:15-15:15 Room A2",
+          "slot_id": "S0094"
+        },
+        {
+          "subject_id": "PFE-018",
+          "role": "rapporteur",
+          "slot_label": "2026-06-08 10:30-11:30 Room A2",
+          "slot_id": "S0130"
+        },
+        {
+          "subject_id": "PFE-077",
+          "role": "rapporteur",
+          "slot_label": "2026-06-11 08:00-09:00 Room A4",
+          "slot_id": "S0196"
+        },
+        {
+          "subject_id": "PFE-097",
+          "role": "encadreur",
+          "slot_label": "2026-06-18 14:15-15:15 Room A4",
+          "slot_id": "S0336"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T03",
+      "teacher_name": "Teacher 03",
+      "target_presentations": 14,
+      "preferred_sessions_count": 19,
+      "available_not_preferred_sessions_count": 24,
+      "preferred_sessions": [
+        "2026-06-02 13:00-14:00 Room A3",
+        "2026-06-03 08:00-09:00 Room A1",
+        "2026-06-03 08:00-09:00 Room A3",
+        "2026-06-05 11:45-12:45 Room A3",
+        "2026-06-09 14:15-15:15 Room A3",
+        "2026-06-12 14:15-15:15 Room A2",
+        "2026-06-15 09:15-10:15 Room A3",
+        "2026-06-15 10:30-11:30 Room A1",
+        "2026-06-17 13:00-14:00 Room A2",
+        "2026-06-18 09:15-10:15 Room A1",
+        "2026-06-22 14:15-15:15 Room A3",
+        "2026-06-24 13:00-14:00 Room A3",
+        "2026-06-26 13:00-14:00 Room A1",
+        "2026-06-26 13:00-14:00 Room A4",
+        "2026-06-26 14:15-15:15 Room A3",
+        "2026-06-30 13:00-14:00 Room A3",
+        "2026-06-30 14:15-15:15 Room A1",
+        "2026-06-30 14:15-15:15 Room A3",
+        "2026-06-30 14:15-15:15 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 10:30-11:30 Room A3",
+        "2026-06-02 11:45-12:45 Room A4",
+        "2026-06-02 14:15-15:15 Room A3",
+        "2026-06-05 13:00-14:00 Room A4",
+        "2026-06-09 13:00-14:00 Room A3",
+        "2026-06-12 11:45-12:45 Room A3",
+        "2026-06-15 10:30-11:30 Room A3",
+        "2026-06-15 11:45-12:45 Room A1",
+        "2026-06-16 13:00-14:00 Room A3",
+        "2026-06-17 08:00-09:00 Room A2",
+        "2026-06-17 10:30-11:30 Room A4",
+        "2026-06-18 10:30-11:30 Room A3",
+        "2026-06-19 14:15-15:15 Room A4",
+        "2026-06-22 11:45-12:45 Room A2",
+        "2026-06-22 14:15-15:15 Room A1",
+        "2026-06-23 08:00-09:00 Room A2",
+        "2026-06-24 08:00-09:00 Room A1",
+        "2026-06-25 10:30-11:30 Room A2",
+        "2026-06-25 14:15-15:15 Room A4",
+        "2026-06-26 11:45-12:45 Room A3",
+        "2026-06-26 13:00-14:00 Room A3",
+        "2026-06-29 10:30-11:30 Room A2",
+        "2026-06-29 14:15-15:15 Room A4",
+        "2026-06-30 10:30-11:30 Room A2"
+      ],
+      "assigned_total": 12,
+      "assigned_by_role": {
+        "encadreur": 7,
+        "rapporteur": 3,
+        "president": 2
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-036",
+          "role": "rapporteur",
+          "slot_label": "2026-06-02 11:45-12:45 Room A4",
+          "slot_id": "S0040"
+        },
+        {
+          "subject_id": "PFE-035",
+          "role": "encadreur",
+          "slot_label": "2026-06-02 13:00-14:00 Room A3",
+          "slot_id": "S0043"
+        },
+        {
+          "subject_id": "PFE-042",
+          "role": "encadreur",
+          "slot_label": "2026-06-05 11:45-12:45 Room A3",
+          "slot_id": "S0111"
+        },
+        {
+          "subject_id": "PFE-019",
+          "role": "rapporteur",
+          "slot_label": "2026-06-09 14:15-15:15 Room A3",
+          "slot_id": "S0167"
+        },
+        {
+          "subject_id": "PFE-046",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 09:15-10:15 Room A3",
+          "slot_id": "S0247"
+        },
+        {
+          "subject_id": "PFE-045",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 10:30-11:30 Room A1",
+          "slot_id": "S0249"
+        },
+        {
+          "subject_id": "PFE-055",
+          "role": "president",
+          "slot_label": "2026-06-15 11:45-12:45 Room A1",
+          "slot_id": "S0253"
+        },
+        {
+          "subject_id": "PFE-058",
+          "role": "encadreur",
+          "slot_label": "2026-06-17 13:00-14:00 Room A2",
+          "slot_id": "S0306"
+        },
+        {
+          "subject_id": "PFE-057",
+          "role": "president",
+          "slot_label": "2026-06-18 09:15-10:15 Room A1",
+          "slot_id": "S0317"
+        },
+        {
+          "subject_id": "PFE-074",
+          "role": "encadreur",
+          "slot_label": "2026-06-22 14:15-15:15 Room A3",
+          "slot_id": "S0383"
+        },
+        {
+          "subject_id": "PFE-084",
+          "role": "encadreur",
+          "slot_label": "2026-06-26 13:00-14:00 Room A4",
+          "slot_id": "S0476"
+        },
+        {
+          "subject_id": "PFE-100",
+          "role": "encadreur",
+          "slot_label": "2026-06-26 14:15-15:15 Room A3",
+          "slot_id": "S0479"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T04",
+      "teacher_name": "Teacher 04",
+      "target_presentations": 13,
+      "preferred_sessions_count": 25,
+      "available_not_preferred_sessions_count": 20,
+      "preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A4",
+        "2026-06-01 11:45-12:45 Room A1",
+        "2026-06-02 08:00-09:00 Room A3",
+        "2026-06-04 13:00-14:00 Room A4",
+        "2026-06-08 10:30-11:30 Room A1",
+        "2026-06-09 13:00-14:00 Room A1",
+        "2026-06-11 09:15-10:15 Room A2",
+        "2026-06-12 11:45-12:45 Room A1",
+        "2026-06-15 10:30-11:30 Room A4",
+        "2026-06-15 13:00-14:00 Room A3",
+        "2026-06-17 10:30-11:30 Room A4",
+        "2026-06-18 13:00-14:00 Room A3",
+        "2026-06-18 14:15-15:15 Room A4",
+        "2026-06-19 11:45-12:45 Room A3",
+        "2026-06-22 11:45-12:45 Room A2",
+        "2026-06-22 13:00-14:00 Room A1",
+        "2026-06-22 14:15-15:15 Room A2",
+        "2026-06-24 09:15-10:15 Room A1",
+        "2026-06-24 11:45-12:45 Room A2",
+        "2026-06-24 11:45-12:45 Room A3",
+        "2026-06-25 09:15-10:15 Room A3",
+        "2026-06-26 08:00-09:00 Room A4",
+        "2026-06-26 14:15-15:15 Room A4",
+        "2026-06-29 09:15-10:15 Room A4",
+        "2026-06-29 14:15-15:15 Room A1"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-02 09:15-10:15 Room A4",
+        "2026-06-02 11:45-12:45 Room A4",
+        "2026-06-03 10:30-11:30 Room A3",
+        "2026-06-03 11:45-12:45 Room A3",
+        "2026-06-03 13:00-14:00 Room A1",
+        "2026-06-03 14:15-15:15 Room A2",
+        "2026-06-08 11:45-12:45 Room A3",
+        "2026-06-11 11:45-12:45 Room A3",
+        "2026-06-12 09:15-10:15 Room A4",
+        "2026-06-15 09:15-10:15 Room A4",
+        "2026-06-15 13:00-14:00 Room A2",
+        "2026-06-17 14:15-15:15 Room A4",
+        "2026-06-18 10:30-11:30 Room A1",
+        "2026-06-22 13:00-14:00 Room A2",
+        "2026-06-23 10:30-11:30 Room A1",
+        "2026-06-23 13:00-14:00 Room A1",
+        "2026-06-23 14:15-15:15 Room A3",
+        "2026-06-26 08:00-09:00 Room A3",
+        "2026-06-29 08:00-09:00 Room A4",
+        "2026-06-30 13:00-14:00 Room A1"
+      ],
+      "assigned_total": 12,
+      "assigned_by_role": {
+        "encadreur": 5,
+        "rapporteur": 3,
+        "president": 4
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-004",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 11:45-12:45 Room A1",
+          "slot_id": "S0013"
+        },
+        {
+          "subject_id": "PFE-036",
+          "role": "president",
+          "slot_label": "2026-06-02 11:45-12:45 Room A4",
+          "slot_id": "S0040"
+        },
+        {
+          "subject_id": "PFE-014",
+          "role": "president",
+          "slot_label": "2026-06-03 11:45-12:45 Room A3",
+          "slot_id": "S0063"
+        },
+        {
+          "subject_id": "PFE-029",
+          "role": "rapporteur",
+          "slot_label": "2026-06-08 11:45-12:45 Room A3",
+          "slot_id": "S0135"
+        },
+        {
+          "subject_id": "PFE-009",
+          "role": "encadreur",
+          "slot_label": "2026-06-09 13:00-14:00 Room A1",
+          "slot_id": "S0161"
+        },
+        {
+          "subject_id": "PFE-053",
+          "role": "encadreur",
+          "slot_label": "2026-06-12 11:45-12:45 Room A1",
+          "slot_id": "S0229"
+        },
+        {
+          "subject_id": "PFE-068",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 10:30-11:30 Room A4",
+          "slot_id": "S0252"
+        },
+        {
+          "subject_id": "PFE-064",
+          "role": "president",
+          "slot_label": "2026-06-15 13:00-14:00 Room A2",
+          "slot_id": "S0258"
+        },
+        {
+          "subject_id": "PFE-085",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 13:00-14:00 Room A3",
+          "slot_id": "S0259"
+        },
+        {
+          "subject_id": "PFE-097",
+          "role": "rapporteur",
+          "slot_label": "2026-06-18 14:15-15:15 Room A4",
+          "slot_id": "S0336"
+        },
+        {
+          "subject_id": "PFE-066",
+          "role": "president",
+          "slot_label": "2026-06-23 10:30-11:30 Room A1",
+          "slot_id": "S0393"
+        },
+        {
+          "subject_id": "PFE-093",
+          "role": "rapporteur",
+          "slot_label": "2026-06-26 08:00-09:00 Room A4",
+          "slot_id": "S0460"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T05",
+      "teacher_name": "Teacher 05",
+      "target_presentations": 13,
+      "preferred_sessions_count": 25,
+      "available_not_preferred_sessions_count": 19,
+      "preferred_sessions": [
+        "2026-06-01 09:15-10:15 Room A3",
+        "2026-06-01 13:00-14:00 Room A3",
+        "2026-06-04 10:30-11:30 Room A1",
+        "2026-06-04 14:15-15:15 Room A2",
+        "2026-06-08 14:15-15:15 Room A3",
+        "2026-06-09 09:15-10:15 Room A2",
+        "2026-06-09 13:00-14:00 Room A3",
+        "2026-06-10 08:00-09:00 Room A3",
+        "2026-06-10 09:15-10:15 Room A3",
+        "2026-06-10 13:00-14:00 Room A2",
+        "2026-06-11 09:15-10:15 Room A4",
+        "2026-06-11 13:00-14:00 Room A2",
+        "2026-06-12 11:45-12:45 Room A3",
+        "2026-06-15 08:00-09:00 Room A3",
+        "2026-06-16 10:30-11:30 Room A2",
+        "2026-06-17 13:00-14:00 Room A2",
+        "2026-06-18 10:30-11:30 Room A1",
+        "2026-06-18 10:30-11:30 Room A3",
+        "2026-06-18 11:45-12:45 Room A4",
+        "2026-06-19 08:00-09:00 Room A1",
+        "2026-06-22 09:15-10:15 Room A4",
+        "2026-06-26 09:15-10:15 Room A3",
+        "2026-06-26 11:45-12:45 Room A4",
+        "2026-06-29 14:15-15:15 Room A1",
+        "2026-06-29 14:15-15:15 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-03 09:15-10:15 Room A3",
+        "2026-06-04 08:00-09:00 Room A1",
+        "2026-06-04 11:45-12:45 Room A4",
+        "2026-06-05 11:45-12:45 Room A2",
+        "2026-06-08 14:15-15:15 Room A1",
+        "2026-06-10 11:45-12:45 Room A3",
+        "2026-06-11 08:00-09:00 Room A1",
+        "2026-06-11 09:15-10:15 Room A1",
+        "2026-06-11 13:00-14:00 Room A4",
+        "2026-06-12 08:00-09:00 Room A1",
+        "2026-06-12 13:00-14:00 Room A3",
+        "2026-06-15 13:00-14:00 Room A3",
+        "2026-06-15 14:15-15:15 Room A4",
+        "2026-06-26 08:00-09:00 Room A4",
+        "2026-06-26 11:45-12:45 Room A2",
+        "2026-06-26 14:15-15:15 Room A1",
+        "2026-06-29 09:15-10:15 Room A3",
+        "2026-06-30 11:45-12:45 Room A1",
+        "2026-06-30 11:45-12:45 Room A3"
+      ],
+      "assigned_total": 16,
+      "assigned_by_role": {
+        "encadreur": 3,
+        "rapporteur": 6,
+        "president": 7
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-024",
+          "role": "rapporteur",
+          "slot_label": "2026-06-04 08:00-09:00 Room A1",
+          "slot_id": "S0073"
+        },
+        {
+          "subject_id": "PFE-015",
+          "role": "rapporteur",
+          "slot_label": "2026-06-04 10:30-11:30 Room A1",
+          "slot_id": "S0081"
+        },
+        {
+          "subject_id": "PFE-026",
+          "role": "encadreur",
+          "slot_label": "2026-06-04 14:15-15:15 Room A2",
+          "slot_id": "S0094"
+        },
+        {
+          "subject_id": "PFE-027",
+          "role": "encadreur",
+          "slot_label": "2026-06-10 09:15-10:15 Room A3",
+          "slot_id": "S0175"
+        },
+        {
+          "subject_id": "PFE-090",
+          "role": "president",
+          "slot_label": "2026-06-10 11:45-12:45 Room A3",
+          "slot_id": "S0183"
+        },
+        {
+          "subject_id": "PFE-049",
+          "role": "encadreur",
+          "slot_label": "2026-06-11 09:15-10:15 Room A4",
+          "slot_id": "S0200"
+        },
+        {
+          "subject_id": "PFE-083",
+          "role": "rapporteur",
+          "slot_label": "2026-06-11 13:00-14:00 Room A2",
+          "slot_id": "S0210"
+        },
+        {
+          "subject_id": "PFE-059",
+          "role": "president",
+          "slot_label": "2026-06-12 08:00-09:00 Room A1",
+          "slot_id": "S0217"
+        },
+        {
+          "subject_id": "PFE-071",
+          "role": "rapporteur",
+          "slot_label": "2026-06-12 11:45-12:45 Room A3",
+          "slot_id": "S0231"
+        },
+        {
+          "subject_id": "PFE-030",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 08:00-09:00 Room A3",
+          "slot_id": "S0243"
+        },
+        {
+          "subject_id": "PFE-079",
+          "role": "president",
+          "slot_label": "2026-06-16 10:30-11:30 Room A2",
+          "slot_id": "S0274"
+        },
+        {
+          "subject_id": "PFE-058",
+          "role": "rapporteur",
+          "slot_label": "2026-06-17 13:00-14:00 Room A2",
+          "slot_id": "S0306"
+        },
+        {
+          "subject_id": "PFE-088",
+          "role": "president",
+          "slot_label": "2026-06-18 10:30-11:30 Room A1",
+          "slot_id": "S0321"
+        },
+        {
+          "subject_id": "PFE-086",
+          "role": "president",
+          "slot_label": "2026-06-18 10:30-11:30 Room A3",
+          "slot_id": "S0323"
+        },
+        {
+          "subject_id": "PFE-072",
+          "role": "president",
+          "slot_label": "2026-06-18 11:45-12:45 Room A4",
+          "slot_id": "S0328"
+        },
+        {
+          "subject_id": "PFE-093",
+          "role": "president",
+          "slot_label": "2026-06-26 08:00-09:00 Room A4",
+          "slot_id": "S0460"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T06",
+      "teacher_name": "Teacher 06",
+      "target_presentations": 12,
+      "preferred_sessions_count": 20,
+      "available_not_preferred_sessions_count": 18,
+      "preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A4",
+        "2026-06-01 09:15-10:15 Room A1",
+        "2026-06-02 13:00-14:00 Room A3",
+        "2026-06-08 10:30-11:30 Room A2",
+        "2026-06-10 09:15-10:15 Room A3",
+        "2026-06-11 11:45-12:45 Room A3",
+        "2026-06-11 13:00-14:00 Room A1",
+        "2026-06-15 09:15-10:15 Room A1",
+        "2026-06-15 11:45-12:45 Room A2",
+        "2026-06-16 09:15-10:15 Room A3",
+        "2026-06-18 11:45-12:45 Room A4",
+        "2026-06-19 09:15-10:15 Room A1",
+        "2026-06-19 13:00-14:00 Room A4",
+        "2026-06-23 11:45-12:45 Room A1",
+        "2026-06-23 14:15-15:15 Room A2",
+        "2026-06-24 10:30-11:30 Room A4",
+        "2026-06-25 10:30-11:30 Room A2",
+        "2026-06-26 14:15-15:15 Room A3",
+        "2026-06-26 14:15-15:15 Room A4",
+        "2026-06-30 08:00-09:00 Room A2"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 11:45-12:45 Room A4",
+        "2026-06-02 10:30-11:30 Room A4",
+        "2026-06-02 11:45-12:45 Room A1",
+        "2026-06-03 09:15-10:15 Room A4",
+        "2026-06-04 09:15-10:15 Room A4",
+        "2026-06-04 14:15-15:15 Room A4",
+        "2026-06-05 08:00-09:00 Room A2",
+        "2026-06-08 08:00-09:00 Room A3",
+        "2026-06-08 09:15-10:15 Room A4",
+        "2026-06-09 11:45-12:45 Room A4",
+        "2026-06-12 08:00-09:00 Room A2",
+        "2026-06-16 10:30-11:30 Room A1",
+        "2026-06-16 13:00-14:00 Room A4",
+        "2026-06-17 13:00-14:00 Room A2",
+        "2026-06-18 11:45-12:45 Room A2",
+        "2026-06-18 14:15-15:15 Room A1",
+        "2026-06-23 13:00-14:00 Room A2",
+        "2026-06-29 10:30-11:30 Room A3"
+      ],
+      "assigned_total": 15,
+      "assigned_by_role": {
+        "encadreur": 5,
+        "rapporteur": 3,
+        "president": 7
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-001",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 08:00-09:00 Room A4",
+          "slot_id": "S0004"
+        },
+        {
+          "subject_id": "PFE-020",
+          "role": "president",
+          "slot_label": "2026-06-01 09:15-10:15 Room A1",
+          "slot_id": "S0005"
+        },
+        {
+          "subject_id": "PFE-028",
+          "role": "president",
+          "slot_label": "2026-06-01 11:45-12:45 Room A4",
+          "slot_id": "S0016"
+        },
+        {
+          "subject_id": "PFE-035",
+          "role": "rapporteur",
+          "slot_label": "2026-06-02 13:00-14:00 Room A3",
+          "slot_id": "S0043"
+        },
+        {
+          "subject_id": "PFE-052",
+          "role": "president",
+          "slot_label": "2026-06-08 08:00-09:00 Room A3",
+          "slot_id": "S0123"
+        },
+        {
+          "subject_id": "PFE-082",
+          "role": "president",
+          "slot_label": "2026-06-08 09:15-10:15 Room A4",
+          "slot_id": "S0128"
+        },
+        {
+          "subject_id": "PFE-018",
+          "role": "president",
+          "slot_label": "2026-06-08 10:30-11:30 Room A2",
+          "slot_id": "S0130"
+        },
+        {
+          "subject_id": "PFE-054",
+          "role": "rapporteur",
+          "slot_label": "2026-06-09 11:45-12:45 Room A4",
+          "slot_id": "S0160"
+        },
+        {
+          "subject_id": "PFE-043",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 11:45-12:45 Room A2",
+          "slot_id": "S0254"
+        },
+        {
+          "subject_id": "PFE-065",
+          "role": "encadreur",
+          "slot_label": "2026-06-16 09:15-10:15 Room A3",
+          "slot_id": "S0271"
+        },
+        {
+          "subject_id": "PFE-072",
+          "role": "encadreur",
+          "slot_label": "2026-06-18 11:45-12:45 Room A4",
+          "slot_id": "S0328"
+        },
+        {
+          "subject_id": "PFE-076",
+          "role": "encadreur",
+          "slot_label": "2026-06-19 09:15-10:15 Room A1",
+          "slot_id": "S0341"
+        },
+        {
+          "subject_id": "PFE-081",
+          "role": "president",
+          "slot_label": "2026-06-19 13:00-14:00 Room A4",
+          "slot_id": "S0356"
+        },
+        {
+          "subject_id": "PFE-109",
+          "role": "president",
+          "slot_label": "2026-06-23 14:15-15:15 Room A2",
+          "slot_id": "S0406"
+        },
+        {
+          "subject_id": "PFE-100",
+          "role": "rapporteur",
+          "slot_label": "2026-06-26 14:15-15:15 Room A3",
+          "slot_id": "S0479"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T07",
+      "teacher_name": "Teacher 07",
+      "target_presentations": 8,
+      "preferred_sessions_count": 18,
+      "available_not_preferred_sessions_count": 14,
+      "preferred_sessions": [
+        "2026-06-01 11:45-12:45 Room A4",
+        "2026-06-01 13:00-14:00 Room A1",
+        "2026-06-03 08:00-09:00 Room A2",
+        "2026-06-03 10:30-11:30 Room A1",
+        "2026-06-05 08:00-09:00 Room A4",
+        "2026-06-08 08:00-09:00 Room A2",
+        "2026-06-12 11:45-12:45 Room A4",
+        "2026-06-12 14:15-15:15 Room A4",
+        "2026-06-15 13:00-14:00 Room A4",
+        "2026-06-16 09:15-10:15 Room A4",
+        "2026-06-16 11:45-12:45 Room A1",
+        "2026-06-16 14:15-15:15 Room A2",
+        "2026-06-17 11:45-12:45 Room A3",
+        "2026-06-19 14:15-15:15 Room A2",
+        "2026-06-19 14:15-15:15 Room A3",
+        "2026-06-22 14:15-15:15 Room A4",
+        "2026-06-24 10:30-11:30 Room A4",
+        "2026-06-25 11:45-12:45 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 10:30-11:30 Room A1",
+        "2026-06-02 14:15-15:15 Room A3",
+        "2026-06-04 10:30-11:30 Room A4",
+        "2026-06-10 14:15-15:15 Room A3",
+        "2026-06-11 13:00-14:00 Room A3",
+        "2026-06-12 08:00-09:00 Room A2",
+        "2026-06-12 11:45-12:45 Room A1",
+        "2026-06-15 10:30-11:30 Room A4",
+        "2026-06-16 14:15-15:15 Room A1",
+        "2026-06-17 08:00-09:00 Room A2",
+        "2026-06-18 10:30-11:30 Room A1",
+        "2026-06-23 08:00-09:00 Room A2",
+        "2026-06-24 09:15-10:15 Room A2",
+        "2026-06-30 11:45-12:45 Room A1"
+      ],
+      "assigned_total": 14,
+      "assigned_by_role": {
+        "encadreur": 5,
+        "rapporteur": 2,
+        "president": 7
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-028",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 11:45-12:45 Room A4",
+          "slot_id": "S0016"
+        },
+        {
+          "subject_id": "PFE-034",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 13:00-14:00 Room A1",
+          "slot_id": "S0017"
+        },
+        {
+          "subject_id": "PFE-080",
+          "role": "encadreur",
+          "slot_label": "2026-06-05 08:00-09:00 Room A4",
+          "slot_id": "S0100"
+        },
+        {
+          "subject_id": "PFE-006",
+          "role": "president",
+          "slot_label": "2026-06-11 13:00-14:00 Room A3",
+          "slot_id": "S0211"
+        },
+        {
+          "subject_id": "PFE-053",
+          "role": "president",
+          "slot_label": "2026-06-12 11:45-12:45 Room A1",
+          "slot_id": "S0229"
+        },
+        {
+          "subject_id": "PFE-031",
+          "role": "president",
+          "slot_label": "2026-06-12 11:45-12:45 Room A4",
+          "slot_id": "S0232"
+        },
+        {
+          "subject_id": "PFE-068",
+          "role": "president",
+          "slot_label": "2026-06-15 10:30-11:30 Room A4",
+          "slot_id": "S0252"
+        },
+        {
+          "subject_id": "PFE-047",
+          "role": "president",
+          "slot_label": "2026-06-16 09:15-10:15 Room A4",
+          "slot_id": "S0272"
+        },
+        {
+          "subject_id": "PFE-075",
+          "role": "president",
+          "slot_label": "2026-06-16 11:45-12:45 Room A1",
+          "slot_id": "S0277"
+        },
+        {
+          "subject_id": "PFE-089",
+          "role": "encadreur",
+          "slot_label": "2026-06-16 14:15-15:15 Room A2",
+          "slot_id": "S0286"
+        },
+        {
+          "subject_id": "PFE-061",
+          "role": "president",
+          "slot_label": "2026-06-17 11:45-12:45 Room A3",
+          "slot_id": "S0303"
+        },
+        {
+          "subject_id": "PFE-092",
+          "role": "encadreur",
+          "slot_label": "2026-06-19 14:15-15:15 Room A2",
+          "slot_id": "S0358"
+        },
+        {
+          "subject_id": "PFE-056",
+          "role": "rapporteur",
+          "slot_label": "2026-06-19 14:15-15:15 Room A3",
+          "slot_id": "S0359"
+        },
+        {
+          "subject_id": "PFE-094",
+          "role": "encadreur",
+          "slot_label": "2026-06-22 14:15-15:15 Room A4",
+          "slot_id": "S0384"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T08",
+      "teacher_name": "Teacher 08",
+      "target_presentations": 14,
+      "preferred_sessions_count": 26,
+      "available_not_preferred_sessions_count": 22,
+      "preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A4",
+        "2026-06-02 13:00-14:00 Room A4",
+        "2026-06-03 10:30-11:30 Room A2",
+        "2026-06-03 10:30-11:30 Room A3",
+        "2026-06-04 09:15-10:15 Room A4",
+        "2026-06-05 13:00-14:00 Room A3",
+        "2026-06-08 08:00-09:00 Room A3",
+        "2026-06-10 09:15-10:15 Room A2",
+        "2026-06-12 08:00-09:00 Room A2",
+        "2026-06-15 08:00-09:00 Room A4",
+        "2026-06-15 09:15-10:15 Room A3",
+        "2026-06-15 13:00-14:00 Room A2",
+        "2026-06-15 13:00-14:00 Room A3",
+        "2026-06-17 13:00-14:00 Room A3",
+        "2026-06-18 10:30-11:30 Room A3",
+        "2026-06-19 08:00-09:00 Room A2",
+        "2026-06-19 10:30-11:30 Room A4",
+        "2026-06-19 14:15-15:15 Room A2",
+        "2026-06-23 13:00-14:00 Room A2",
+        "2026-06-25 10:30-11:30 Room A4",
+        "2026-06-25 13:00-14:00 Room A1",
+        "2026-06-26 11:45-12:45 Room A4",
+        "2026-06-29 08:00-09:00 Room A1",
+        "2026-06-29 10:30-11:30 Room A1",
+        "2026-06-29 13:00-14:00 Room A1",
+        "2026-06-30 08:00-09:00 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 13:00-14:00 Room A1",
+        "2026-06-05 09:15-10:15 Room A1",
+        "2026-06-05 10:30-11:30 Room A1",
+        "2026-06-05 13:00-14:00 Room A2",
+        "2026-06-05 14:15-15:15 Room A4",
+        "2026-06-09 09:15-10:15 Room A4",
+        "2026-06-09 10:30-11:30 Room A4",
+        "2026-06-11 09:15-10:15 Room A4",
+        "2026-06-11 10:30-11:30 Room A1",
+        "2026-06-15 08:00-09:00 Room A3",
+        "2026-06-15 11:45-12:45 Room A2",
+        "2026-06-16 14:15-15:15 Room A1",
+        "2026-06-17 08:00-09:00 Room A2",
+        "2026-06-17 08:00-09:00 Room A4",
+        "2026-06-17 13:00-14:00 Room A2",
+        "2026-06-18 13:00-14:00 Room A1",
+        "2026-06-19 13:00-14:00 Room A2",
+        "2026-06-23 11:45-12:45 Room A2",
+        "2026-06-24 09:15-10:15 Room A3",
+        "2026-06-24 10:30-11:30 Room A3",
+        "2026-06-24 10:30-11:30 Room A4",
+        "2026-06-25 11:45-12:45 Room A3"
+      ],
+      "assigned_total": 21,
+      "assigned_by_role": {
+        "encadreur": 3,
+        "rapporteur": 7,
+        "president": 11
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-034",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 13:00-14:00 Room A1",
+          "slot_id": "S0017"
+        },
+        {
+          "subject_id": "PFE-022",
+          "role": "encadreur",
+          "slot_label": "2026-06-02 13:00-14:00 Room A4",
+          "slot_id": "S0044"
+        },
+        {
+          "subject_id": "PFE-013",
+          "role": "rapporteur",
+          "slot_label": "2026-06-03 10:30-11:30 Room A2",
+          "slot_id": "S0058"
+        },
+        {
+          "subject_id": "PFE-039",
+          "role": "president",
+          "slot_label": "2026-06-03 10:30-11:30 Room A3",
+          "slot_id": "S0059"
+        },
+        {
+          "subject_id": "PFE-048",
+          "role": "president",
+          "slot_label": "2026-06-04 09:15-10:15 Room A4",
+          "slot_id": "S0080"
+        },
+        {
+          "subject_id": "PFE-044",
+          "role": "president",
+          "slot_label": "2026-06-05 09:15-10:15 Room A1",
+          "slot_id": "S0101"
+        },
+        {
+          "subject_id": "PFE-110",
+          "role": "president",
+          "slot_label": "2026-06-05 13:00-14:00 Room A2",
+          "slot_id": "S0114"
+        },
+        {
+          "subject_id": "PFE-052",
+          "role": "encadreur",
+          "slot_label": "2026-06-08 08:00-09:00 Room A3",
+          "slot_id": "S0123"
+        },
+        {
+          "subject_id": "PFE-025",
+          "role": "rapporteur",
+          "slot_label": "2026-06-09 10:30-11:30 Room A4",
+          "slot_id": "S0156"
+        },
+        {
+          "subject_id": "PFE-050",
+          "role": "president",
+          "slot_label": "2026-06-10 09:15-10:15 Room A2",
+          "slot_id": "S0174"
+        },
+        {
+          "subject_id": "PFE-049",
+          "role": "president",
+          "slot_label": "2026-06-11 09:15-10:15 Room A4",
+          "slot_id": "S0200"
+        },
+        {
+          "subject_id": "PFE-040",
+          "role": "president",
+          "slot_label": "2026-06-12 08:00-09:00 Room A2",
+          "slot_id": "S0218"
+        },
+        {
+          "subject_id": "PFE-030",
+          "role": "president",
+          "slot_label": "2026-06-15 08:00-09:00 Room A3",
+          "slot_id": "S0243"
+        },
+        {
+          "subject_id": "PFE-038",
+          "role": "president",
+          "slot_label": "2026-06-15 08:00-09:00 Room A4",
+          "slot_id": "S0244"
+        },
+        {
+          "subject_id": "PFE-046",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 09:15-10:15 Room A3",
+          "slot_id": "S0247"
+        },
+        {
+          "subject_id": "PFE-064",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 13:00-14:00 Room A2",
+          "slot_id": "S0258"
+        },
+        {
+          "subject_id": "PFE-085",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 13:00-14:00 Room A3",
+          "slot_id": "S0259"
+        },
+        {
+          "subject_id": "PFE-105",
+          "role": "president",
+          "slot_label": "2026-06-17 08:00-09:00 Room A4",
+          "slot_id": "S0292"
+        },
+        {
+          "subject_id": "PFE-107",
+          "role": "rapporteur",
+          "slot_label": "2026-06-19 10:30-11:30 Room A4",
+          "slot_id": "S0348"
+        },
+        {
+          "subject_id": "PFE-092",
+          "role": "rapporteur",
+          "slot_label": "2026-06-19 14:15-15:15 Room A2",
+          "slot_id": "S0358"
+        },
+        {
+          "subject_id": "PFE-087",
+          "role": "president",
+          "slot_label": "2026-06-29 10:30-11:30 Room A1",
+          "slot_id": "S0489"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T09",
+      "teacher_name": "Teacher 09",
+      "target_presentations": 14,
+      "preferred_sessions_count": 19,
+      "available_not_preferred_sessions_count": 23,
+      "preferred_sessions": [
+        "2026-06-01 09:15-10:15 Room A1",
+        "2026-06-01 10:30-11:30 Room A3",
+        "2026-06-02 11:45-12:45 Room A4",
+        "2026-06-03 09:15-10:15 Room A1",
+        "2026-06-05 14:15-15:15 Room A1",
+        "2026-06-08 10:30-11:30 Room A4",
+        "2026-06-08 14:15-15:15 Room A2",
+        "2026-06-09 11:45-12:45 Room A3",
+        "2026-06-09 13:00-14:00 Room A4",
+        "2026-06-10 13:00-14:00 Room A4",
+        "2026-06-12 08:00-09:00 Room A2",
+        "2026-06-16 08:00-09:00 Room A3",
+        "2026-06-17 10:30-11:30 Room A3",
+        "2026-06-18 13:00-14:00 Room A4",
+        "2026-06-22 11:45-12:45 Room A4",
+        "2026-06-24 09:15-10:15 Room A4",
+        "2026-06-24 10:30-11:30 Room A2",
+        "2026-06-25 14:15-15:15 Room A4",
+        "2026-06-30 09:15-10:15 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A3",
+        "2026-06-01 10:30-11:30 Room A2",
+        "2026-06-02 14:15-15:15 Room A4",
+        "2026-06-04 13:00-14:00 Room A2",
+        "2026-06-05 10:30-11:30 Room A1",
+        "2026-06-08 11:45-12:45 Room A3",
+        "2026-06-09 08:00-09:00 Room A3",
+        "2026-06-09 11:45-12:45 Room A4",
+        "2026-06-09 13:00-14:00 Room A1",
+        "2026-06-10 09:15-10:15 Room A1",
+        "2026-06-10 10:30-11:30 Room A4",
+        "2026-06-11 13:00-14:00 Room A2",
+        "2026-06-12 14:15-15:15 Room A3",
+        "2026-06-16 08:00-09:00 Room A1",
+        "2026-06-16 08:00-09:00 Room A2",
+        "2026-06-16 11:45-12:45 Room A1",
+        "2026-06-18 10:30-11:30 Room A4",
+        "2026-06-19 10:30-11:30 Room A1",
+        "2026-06-22 13:00-14:00 Room A2",
+        "2026-06-24 08:00-09:00 Room A1",
+        "2026-06-29 10:30-11:30 Room A2",
+        "2026-06-29 11:45-12:45 Room A4",
+        "2026-06-30 08:00-09:00 Room A3"
+      ],
+      "assigned_total": 10,
+      "assigned_by_role": {
+        "encadreur": 5,
+        "rapporteur": 2,
+        "president": 3
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-020",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 09:15-10:15 Room A1",
+          "slot_id": "S0005"
+        },
+        {
+          "subject_id": "PFE-051",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 10:30-11:30 Room A2",
+          "slot_id": "S0010"
+        },
+        {
+          "subject_id": "PFE-036",
+          "role": "encadreur",
+          "slot_label": "2026-06-02 11:45-12:45 Room A4",
+          "slot_id": "S0040"
+        },
+        {
+          "subject_id": "PFE-017",
+          "role": "president",
+          "slot_label": "2026-06-04 13:00-14:00 Room A2",
+          "slot_id": "S0090"
+        },
+        {
+          "subject_id": "PFE-002",
+          "role": "rapporteur",
+          "slot_label": "2026-06-08 10:30-11:30 Room A4",
+          "slot_id": "S0132"
+        },
+        {
+          "subject_id": "PFE-054",
+          "role": "president",
+          "slot_label": "2026-06-09 11:45-12:45 Room A4",
+          "slot_id": "S0160"
+        },
+        {
+          "subject_id": "PFE-003",
+          "role": "president",
+          "slot_label": "2026-06-10 13:00-14:00 Room A4",
+          "slot_id": "S0188"
+        },
+        {
+          "subject_id": "PFE-040",
+          "role": "encadreur",
+          "slot_label": "2026-06-12 08:00-09:00 Room A2",
+          "slot_id": "S0218"
+        },
+        {
+          "subject_id": "PFE-060",
+          "role": "encadreur",
+          "slot_label": "2026-06-24 09:15-10:15 Room A4",
+          "slot_id": "S0416"
+        },
+        {
+          "subject_id": "PFE-096",
+          "role": "encadreur",
+          "slot_label": "2026-06-24 10:30-11:30 Room A2",
+          "slot_id": "S0418"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T10",
+      "teacher_name": "Teacher 10",
+      "target_presentations": 10,
+      "preferred_sessions_count": 16,
+      "available_not_preferred_sessions_count": 17,
+      "preferred_sessions": [
+        "2026-06-01 11:45-12:45 Room A1",
+        "2026-06-01 14:15-15:15 Room A4",
+        "2026-06-02 13:00-14:00 Room A4",
+        "2026-06-04 10:30-11:30 Room A1",
+        "2026-06-04 11:45-12:45 Room A1",
+        "2026-06-05 11:45-12:45 Room A1",
+        "2026-06-08 11:45-12:45 Room A4",
+        "2026-06-10 08:00-09:00 Room A3",
+        "2026-06-11 10:30-11:30 Room A3",
+        "2026-06-11 11:45-12:45 Room A2",
+        "2026-06-12 11:45-12:45 Room A4",
+        "2026-06-17 13:00-14:00 Room A2",
+        "2026-06-17 14:15-15:15 Room A2",
+        "2026-06-22 14:15-15:15 Room A1",
+        "2026-06-22 14:15-15:15 Room A3",
+        "2026-06-24 10:30-11:30 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-02 10:30-11:30 Room A4",
+        "2026-06-04 08:00-09:00 Room A1",
+        "2026-06-08 14:15-15:15 Room A3",
+        "2026-06-10 14:15-15:15 Room A3",
+        "2026-06-11 14:15-15:15 Room A3",
+        "2026-06-12 10:30-11:30 Room A1",
+        "2026-06-12 11:45-12:45 Room A2",
+        "2026-06-12 11:45-12:45 Room A3",
+        "2026-06-15 10:30-11:30 Room A1",
+        "2026-06-15 11:45-12:45 Room A2",
+        "2026-06-16 10:30-11:30 Room A1",
+        "2026-06-18 14:15-15:15 Room A4",
+        "2026-06-22 14:15-15:15 Room A4",
+        "2026-06-23 13:00-14:00 Room A4",
+        "2026-06-23 14:15-15:15 Room A2",
+        "2026-06-24 10:30-11:30 Room A4",
+        "2026-06-26 08:00-09:00 Room A3"
+      ],
+      "assigned_total": 15,
+      "assigned_by_role": {
+        "encadreur": 4,
+        "rapporteur": 4,
+        "president": 7
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-004",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 11:45-12:45 Room A1",
+          "slot_id": "S0013"
+        },
+        {
+          "subject_id": "PFE-005",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 14:15-15:15 Room A4",
+          "slot_id": "S0024"
+        },
+        {
+          "subject_id": "PFE-022",
+          "role": "rapporteur",
+          "slot_label": "2026-06-02 13:00-14:00 Room A4",
+          "slot_id": "S0044"
+        },
+        {
+          "subject_id": "PFE-024",
+          "role": "president",
+          "slot_label": "2026-06-04 08:00-09:00 Room A1",
+          "slot_id": "S0073"
+        },
+        {
+          "subject_id": "PFE-015",
+          "role": "president",
+          "slot_label": "2026-06-04 10:30-11:30 Room A1",
+          "slot_id": "S0081"
+        },
+        {
+          "subject_id": "PFE-023",
+          "role": "encadreur",
+          "slot_label": "2026-06-11 10:30-11:30 Room A3",
+          "slot_id": "S0203"
+        },
+        {
+          "subject_id": "PFE-071",
+          "role": "president",
+          "slot_label": "2026-06-12 11:45-12:45 Room A3",
+          "slot_id": "S0231"
+        },
+        {
+          "subject_id": "PFE-031",
+          "role": "encadreur",
+          "slot_label": "2026-06-12 11:45-12:45 Room A4",
+          "slot_id": "S0232"
+        },
+        {
+          "subject_id": "PFE-111",
+          "role": "president",
+          "slot_label": "2026-06-16 10:30-11:30 Room A1",
+          "slot_id": "S0273"
+        },
+        {
+          "subject_id": "PFE-058",
+          "role": "president",
+          "slot_label": "2026-06-17 13:00-14:00 Room A2",
+          "slot_id": "S0306"
+        },
+        {
+          "subject_id": "PFE-102",
+          "role": "rapporteur",
+          "slot_label": "2026-06-17 14:15-15:15 Room A2",
+          "slot_id": "S0310"
+        },
+        {
+          "subject_id": "PFE-097",
+          "role": "president",
+          "slot_label": "2026-06-18 14:15-15:15 Room A4",
+          "slot_id": "S0336"
+        },
+        {
+          "subject_id": "PFE-112",
+          "role": "encadreur",
+          "slot_label": "2026-06-22 14:15-15:15 Room A1",
+          "slot_id": "S0381"
+        },
+        {
+          "subject_id": "PFE-074",
+          "role": "rapporteur",
+          "slot_label": "2026-06-22 14:15-15:15 Room A3",
+          "slot_id": "S0383"
+        },
+        {
+          "subject_id": "PFE-094",
+          "role": "president",
+          "slot_label": "2026-06-22 14:15-15:15 Room A4",
+          "slot_id": "S0384"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T11",
+      "teacher_name": "Teacher 11",
+      "target_presentations": 6,
+      "preferred_sessions_count": 10,
+      "available_not_preferred_sessions_count": 10,
+      "preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A3",
+        "2026-06-01 11:45-12:45 Room A2",
+        "2026-06-01 13:00-14:00 Room A4",
+        "2026-06-05 09:15-10:15 Room A1",
+        "2026-06-11 08:00-09:00 Room A4",
+        "2026-06-15 08:00-09:00 Room A2",
+        "2026-06-16 13:00-14:00 Room A4",
+        "2026-06-18 11:45-12:45 Room A1",
+        "2026-06-23 11:45-12:45 Room A3",
+        "2026-06-25 08:00-09:00 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-03 14:15-15:15 Room A2",
+        "2026-06-05 09:15-10:15 Room A2",
+        "2026-06-05 11:45-12:45 Room A4",
+        "2026-06-09 08:00-09:00 Room A2",
+        "2026-06-11 13:00-14:00 Room A1",
+        "2026-06-12 10:30-11:30 Room A4",
+        "2026-06-22 11:45-12:45 Room A1",
+        "2026-06-23 11:45-12:45 Room A4",
+        "2026-06-24 13:00-14:00 Room A4",
+        "2026-06-25 10:30-11:30 Room A3"
+      ],
+      "assigned_total": 6,
+      "assigned_by_role": {
+        "encadreur": 4,
+        "rapporteur": 2,
+        "president": 0
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-041",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 08:00-09:00 Room A3",
+          "slot_id": "S0003"
+        },
+        {
+          "subject_id": "PFE-007",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 11:45-12:45 Room A2",
+          "slot_id": "S0014"
+        },
+        {
+          "subject_id": "PFE-021",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 13:00-14:00 Room A4",
+          "slot_id": "S0020"
+        },
+        {
+          "subject_id": "PFE-044",
+          "role": "encadreur",
+          "slot_label": "2026-06-05 09:15-10:15 Room A1",
+          "slot_id": "S0101"
+        },
+        {
+          "subject_id": "PFE-108",
+          "role": "encadreur",
+          "slot_label": "2026-06-05 11:45-12:45 Room A4",
+          "slot_id": "S0112"
+        },
+        {
+          "subject_id": "PFE-077",
+          "role": "encadreur",
+          "slot_label": "2026-06-11 08:00-09:00 Room A4",
+          "slot_id": "S0196"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T12",
+      "teacher_name": "Teacher 12",
+      "target_presentations": 9,
+      "preferred_sessions_count": 14,
+      "available_not_preferred_sessions_count": 19,
+      "preferred_sessions": [
+        "2026-06-01 10:30-11:30 Room A2",
+        "2026-06-03 11:45-12:45 Room A2",
+        "2026-06-04 09:15-10:15 Room A4",
+        "2026-06-05 09:15-10:15 Room A3",
+        "2026-06-09 11:45-12:45 Room A1",
+        "2026-06-10 13:00-14:00 Room A4",
+        "2026-06-18 08:00-09:00 Room A1",
+        "2026-06-19 13:00-14:00 Room A4",
+        "2026-06-22 13:00-14:00 Room A1",
+        "2026-06-22 13:00-14:00 Room A4",
+        "2026-06-24 14:15-15:15 Room A3",
+        "2026-06-25 13:00-14:00 Room A2",
+        "2026-06-26 11:45-12:45 Room A2",
+        "2026-06-29 09:15-10:15 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A1",
+        "2026-06-01 09:15-10:15 Room A4",
+        "2026-06-04 14:15-15:15 Room A4",
+        "2026-06-08 11:45-12:45 Room A1",
+        "2026-06-09 14:15-15:15 Room A1",
+        "2026-06-10 14:15-15:15 Room A4",
+        "2026-06-12 08:00-09:00 Room A1",
+        "2026-06-12 13:00-14:00 Room A4",
+        "2026-06-15 11:45-12:45 Room A1",
+        "2026-06-15 11:45-12:45 Room A4",
+        "2026-06-17 13:00-14:00 Room A3",
+        "2026-06-19 11:45-12:45 Room A4",
+        "2026-06-19 14:15-15:15 Room A2",
+        "2026-06-23 10:30-11:30 Room A2",
+        "2026-06-23 11:45-12:45 Room A2",
+        "2026-06-23 13:00-14:00 Room A2",
+        "2026-06-23 14:15-15:15 Room A3",
+        "2026-06-24 09:15-10:15 Room A4",
+        "2026-06-24 10:30-11:30 Room A3"
+      ],
+      "assigned_total": 12,
+      "assigned_by_role": {
+        "encadreur": 3,
+        "rapporteur": 5,
+        "president": 4
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-051",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 10:30-11:30 Room A2",
+          "slot_id": "S0010"
+        },
+        {
+          "subject_id": "PFE-010",
+          "role": "rapporteur",
+          "slot_label": "2026-06-03 11:45-12:45 Room A2",
+          "slot_id": "S0062"
+        },
+        {
+          "subject_id": "PFE-048",
+          "role": "rapporteur",
+          "slot_label": "2026-06-04 09:15-10:15 Room A4",
+          "slot_id": "S0080"
+        },
+        {
+          "subject_id": "PFE-073",
+          "role": "president",
+          "slot_label": "2026-06-08 11:45-12:45 Room A1",
+          "slot_id": "S0133"
+        },
+        {
+          "subject_id": "PFE-003",
+          "role": "rapporteur",
+          "slot_label": "2026-06-10 13:00-14:00 Room A4",
+          "slot_id": "S0188"
+        },
+        {
+          "subject_id": "PFE-059",
+          "role": "rapporteur",
+          "slot_label": "2026-06-12 08:00-09:00 Room A1",
+          "slot_id": "S0217"
+        },
+        {
+          "subject_id": "PFE-055",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 11:45-12:45 Room A1",
+          "slot_id": "S0253"
+        },
+        {
+          "subject_id": "PFE-098",
+          "role": "president",
+          "slot_label": "2026-06-19 11:45-12:45 Room A4",
+          "slot_id": "S0352"
+        },
+        {
+          "subject_id": "PFE-081",
+          "role": "encadreur",
+          "slot_label": "2026-06-19 13:00-14:00 Room A4",
+          "slot_id": "S0356"
+        },
+        {
+          "subject_id": "PFE-092",
+          "role": "president",
+          "slot_label": "2026-06-19 14:15-15:15 Room A2",
+          "slot_id": "S0358"
+        },
+        {
+          "subject_id": "PFE-091",
+          "role": "encadreur",
+          "slot_label": "2026-06-22 13:00-14:00 Room A1",
+          "slot_id": "S0377"
+        },
+        {
+          "subject_id": "PFE-060",
+          "role": "president",
+          "slot_label": "2026-06-24 09:15-10:15 Room A4",
+          "slot_id": "S0416"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T13",
+      "teacher_name": "Teacher 13",
+      "target_presentations": 8,
+      "preferred_sessions_count": 12,
+      "available_not_preferred_sessions_count": 8,
+      "preferred_sessions": [
+        "2026-06-04 13:00-14:00 Room A1",
+        "2026-06-10 09:15-10:15 Room A3",
+        "2026-06-10 11:45-12:45 Room A2",
+        "2026-06-12 08:00-09:00 Room A3",
+        "2026-06-15 08:00-09:00 Room A4",
+        "2026-06-15 10:30-11:30 Room A2",
+        "2026-06-16 10:30-11:30 Room A1",
+        "2026-06-16 11:45-12:45 Room A3",
+        "2026-06-17 10:30-11:30 Room A2",
+        "2026-06-18 11:45-12:45 Room A2",
+        "2026-06-22 14:15-15:15 Room A4",
+        "2026-06-23 09:15-10:15 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-04 10:30-11:30 Room A4",
+        "2026-06-08 08:00-09:00 Room A3",
+        "2026-06-11 11:45-12:45 Room A4",
+        "2026-06-19 11:45-12:45 Room A3",
+        "2026-06-19 14:15-15:15 Room A3",
+        "2026-06-23 08:00-09:00 Room A1",
+        "2026-06-29 10:30-11:30 Room A2",
+        "2026-06-30 14:15-15:15 Room A1"
+      ],
+      "assigned_total": 9,
+      "assigned_by_role": {
+        "encadreur": 2,
+        "rapporteur": 5,
+        "president": 2
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-037",
+          "role": "president",
+          "slot_label": "2026-06-04 10:30-11:30 Room A4",
+          "slot_id": "S0084"
+        },
+        {
+          "subject_id": "PFE-052",
+          "role": "rapporteur",
+          "slot_label": "2026-06-08 08:00-09:00 Room A3",
+          "slot_id": "S0123"
+        },
+        {
+          "subject_id": "PFE-027",
+          "role": "rapporteur",
+          "slot_label": "2026-06-10 09:15-10:15 Room A3",
+          "slot_id": "S0175"
+        },
+        {
+          "subject_id": "PFE-038",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 08:00-09:00 Room A4",
+          "slot_id": "S0244"
+        },
+        {
+          "subject_id": "PFE-069",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 10:30-11:30 Room A2",
+          "slot_id": "S0250"
+        },
+        {
+          "subject_id": "PFE-111",
+          "role": "encadreur",
+          "slot_label": "2026-06-16 10:30-11:30 Room A1",
+          "slot_id": "S0273"
+        },
+        {
+          "subject_id": "PFE-078",
+          "role": "rapporteur",
+          "slot_label": "2026-06-17 10:30-11:30 Room A2",
+          "slot_id": "S0298"
+        },
+        {
+          "subject_id": "PFE-056",
+          "role": "president",
+          "slot_label": "2026-06-19 14:15-15:15 Room A3",
+          "slot_id": "S0359"
+        },
+        {
+          "subject_id": "PFE-094",
+          "role": "rapporteur",
+          "slot_label": "2026-06-22 14:15-15:15 Room A4",
+          "slot_id": "S0384"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T14",
+      "teacher_name": "Teacher 14",
+      "target_presentations": 7,
+      "preferred_sessions_count": 17,
+      "available_not_preferred_sessions_count": 8,
+      "preferred_sessions": [
+        "2026-06-03 08:00-09:00 Room A3",
+        "2026-06-03 10:30-11:30 Room A3",
+        "2026-06-04 11:45-12:45 Room A4",
+        "2026-06-05 14:15-15:15 Room A4",
+        "2026-06-09 09:15-10:15 Room A3",
+        "2026-06-10 11:45-12:45 Room A1",
+        "2026-06-11 10:30-11:30 Room A4",
+        "2026-06-12 14:15-15:15 Room A2",
+        "2026-06-15 10:30-11:30 Room A1",
+        "2026-06-16 11:45-12:45 Room A1",
+        "2026-06-17 08:00-09:00 Room A1",
+        "2026-06-23 08:00-09:00 Room A1",
+        "2026-06-23 14:15-15:15 Room A2",
+        "2026-06-24 08:00-09:00 Room A1",
+        "2026-06-26 13:00-14:00 Room A4",
+        "2026-06-30 08:00-09:00 Room A3",
+        "2026-06-30 11:45-12:45 Room A1"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 14:15-15:15 Room A4",
+        "2026-06-04 10:30-11:30 Room A2",
+        "2026-06-16 08:00-09:00 Room A4",
+        "2026-06-22 08:00-09:00 Room A1",
+        "2026-06-22 11:45-12:45 Room A2",
+        "2026-06-25 14:15-15:15 Room A4",
+        "2026-06-26 09:15-10:15 Room A3",
+        "2026-06-29 11:45-12:45 Room A1"
+      ],
+      "assigned_total": 7,
+      "assigned_by_role": {
+        "encadreur": 4,
+        "rapporteur": 2,
+        "president": 1
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-005",
+          "role": "president",
+          "slot_label": "2026-06-01 14:15-15:15 Room A4",
+          "slot_id": "S0024"
+        },
+        {
+          "subject_id": "PFE-039",
+          "role": "rapporteur",
+          "slot_label": "2026-06-03 10:30-11:30 Room A3",
+          "slot_id": "S0059"
+        },
+        {
+          "subject_id": "PFE-045",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 10:30-11:30 Room A1",
+          "slot_id": "S0249"
+        },
+        {
+          "subject_id": "PFE-075",
+          "role": "encadreur",
+          "slot_label": "2026-06-16 11:45-12:45 Room A1",
+          "slot_id": "S0277"
+        },
+        {
+          "subject_id": "PFE-101",
+          "role": "encadreur",
+          "slot_label": "2026-06-17 08:00-09:00 Room A1",
+          "slot_id": "S0289"
+        },
+        {
+          "subject_id": "PFE-109",
+          "role": "encadreur",
+          "slot_label": "2026-06-23 14:15-15:15 Room A2",
+          "slot_id": "S0406"
+        },
+        {
+          "subject_id": "PFE-084",
+          "role": "rapporteur",
+          "slot_label": "2026-06-26 13:00-14:00 Room A4",
+          "slot_id": "S0476"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T15",
+      "teacher_name": "Teacher 15",
+      "target_presentations": 14,
+      "preferred_sessions_count": 24,
+      "available_not_preferred_sessions_count": 17,
+      "preferred_sessions": [
+        "2026-06-01 09:15-10:15 Room A2",
+        "2026-06-03 09:15-10:15 Room A1",
+        "2026-06-03 10:30-11:30 Room A2",
+        "2026-06-03 14:15-15:15 Room A4",
+        "2026-06-04 09:15-10:15 Room A2",
+        "2026-06-04 10:30-11:30 Room A2",
+        "2026-06-04 10:30-11:30 Room A3",
+        "2026-06-05 14:15-15:15 Room A1",
+        "2026-06-08 10:30-11:30 Room A2",
+        "2026-06-09 11:45-12:45 Room A3",
+        "2026-06-10 09:15-10:15 Room A4",
+        "2026-06-10 14:15-15:15 Room A1",
+        "2026-06-12 08:00-09:00 Room A4",
+        "2026-06-12 10:30-11:30 Room A4",
+        "2026-06-15 09:15-10:15 Room A2",
+        "2026-06-15 10:30-11:30 Room A3",
+        "2026-06-16 09:15-10:15 Room A2",
+        "2026-06-17 08:00-09:00 Room A4",
+        "2026-06-17 14:15-15:15 Room A3",
+        "2026-06-19 11:45-12:45 Room A2",
+        "2026-06-25 14:15-15:15 Room A1",
+        "2026-06-29 08:00-09:00 Room A2",
+        "2026-06-29 11:45-12:45 Room A4",
+        "2026-06-30 08:00-09:00 Room A1"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-02 13:00-14:00 Room A3",
+        "2026-06-02 13:00-14:00 Room A4",
+        "2026-06-04 09:15-10:15 Room A3",
+        "2026-06-04 11:45-12:45 Room A1",
+        "2026-06-04 13:00-14:00 Room A2",
+        "2026-06-08 11:45-12:45 Room A3",
+        "2026-06-12 09:15-10:15 Room A4",
+        "2026-06-12 11:45-12:45 Room A2",
+        "2026-06-15 13:00-14:00 Room A2",
+        "2026-06-16 11:45-12:45 Room A2",
+        "2026-06-17 13:00-14:00 Room A4",
+        "2026-06-18 11:45-12:45 Room A2",
+        "2026-06-18 13:00-14:00 Room A1",
+        "2026-06-23 08:00-09:00 Room A2",
+        "2026-06-24 09:15-10:15 Room A4",
+        "2026-06-25 13:00-14:00 Room A4",
+        "2026-06-30 11:45-12:45 Room A4"
+      ],
+      "assigned_total": 7,
+      "assigned_by_role": {
+        "encadreur": 1,
+        "rapporteur": 3,
+        "president": 3
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-013",
+          "role": "president",
+          "slot_label": "2026-06-03 10:30-11:30 Room A2",
+          "slot_id": "S0058"
+        },
+        {
+          "subject_id": "PFE-018",
+          "role": "encadreur",
+          "slot_label": "2026-06-08 10:30-11:30 Room A2",
+          "slot_id": "S0130"
+        },
+        {
+          "subject_id": "PFE-029",
+          "role": "president",
+          "slot_label": "2026-06-08 11:45-12:45 Room A3",
+          "slot_id": "S0135"
+        },
+        {
+          "subject_id": "PFE-012",
+          "role": "president",
+          "slot_label": "2026-06-12 11:45-12:45 Room A2",
+          "slot_id": "S0230"
+        },
+        {
+          "subject_id": "PFE-064",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 13:00-14:00 Room A2",
+          "slot_id": "S0258"
+        },
+        {
+          "subject_id": "PFE-105",
+          "role": "rapporteur",
+          "slot_label": "2026-06-17 08:00-09:00 Room A4",
+          "slot_id": "S0292"
+        },
+        {
+          "subject_id": "PFE-060",
+          "role": "rapporteur",
+          "slot_label": "2026-06-24 09:15-10:15 Room A4",
+          "slot_id": "S0416"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T16",
+      "teacher_name": "Teacher 16",
+      "target_presentations": 10,
+      "preferred_sessions_count": 16,
+      "available_not_preferred_sessions_count": 10,
+      "preferred_sessions": [
+        "2026-06-08 10:30-11:30 Room A4",
+        "2026-06-10 13:00-14:00 Room A2",
+        "2026-06-11 13:00-14:00 Room A3",
+        "2026-06-15 09:15-10:15 Room A2",
+        "2026-06-16 14:15-15:15 Room A2",
+        "2026-06-17 08:00-09:00 Room A4",
+        "2026-06-18 09:15-10:15 Room A1",
+        "2026-06-19 13:00-14:00 Room A4",
+        "2026-06-22 14:15-15:15 Room A1",
+        "2026-06-23 09:15-10:15 Room A2",
+        "2026-06-25 10:30-11:30 Room A4",
+        "2026-06-25 14:15-15:15 Room A3",
+        "2026-06-26 14:15-15:15 Room A4",
+        "2026-06-29 08:00-09:00 Room A1",
+        "2026-06-30 08:00-09:00 Room A3",
+        "2026-06-30 14:15-15:15 Room A2"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-03 11:45-12:45 Room A2",
+        "2026-06-05 10:30-11:30 Room A4",
+        "2026-06-09 13:00-14:00 Room A2",
+        "2026-06-10 09:15-10:15 Room A2",
+        "2026-06-10 14:15-15:15 Room A3",
+        "2026-06-23 13:00-14:00 Room A2",
+        "2026-06-24 10:30-11:30 Room A1",
+        "2026-06-25 08:00-09:00 Room A1",
+        "2026-06-25 08:00-09:00 Room A2",
+        "2026-06-29 08:00-09:00 Room A2"
+      ],
+      "assigned_total": 9,
+      "assigned_by_role": {
+        "encadreur": 3,
+        "rapporteur": 4,
+        "president": 2
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-008",
+          "role": "president",
+          "slot_label": "2026-06-05 10:30-11:30 Room A4",
+          "slot_id": "S0108"
+        },
+        {
+          "subject_id": "PFE-002",
+          "role": "encadreur",
+          "slot_label": "2026-06-08 10:30-11:30 Room A4",
+          "slot_id": "S0132"
+        },
+        {
+          "subject_id": "PFE-006",
+          "role": "encadreur",
+          "slot_label": "2026-06-11 13:00-14:00 Room A3",
+          "slot_id": "S0211"
+        },
+        {
+          "subject_id": "PFE-032",
+          "role": "president",
+          "slot_label": "2026-06-15 09:15-10:15 Room A2",
+          "slot_id": "S0246"
+        },
+        {
+          "subject_id": "PFE-089",
+          "role": "rapporteur",
+          "slot_label": "2026-06-16 14:15-15:15 Room A2",
+          "slot_id": "S0286"
+        },
+        {
+          "subject_id": "PFE-105",
+          "role": "encadreur",
+          "slot_label": "2026-06-17 08:00-09:00 Room A4",
+          "slot_id": "S0292"
+        },
+        {
+          "subject_id": "PFE-057",
+          "role": "rapporteur",
+          "slot_label": "2026-06-18 09:15-10:15 Room A1",
+          "slot_id": "S0317"
+        },
+        {
+          "subject_id": "PFE-081",
+          "role": "rapporteur",
+          "slot_label": "2026-06-19 13:00-14:00 Room A4",
+          "slot_id": "S0356"
+        },
+        {
+          "subject_id": "PFE-112",
+          "role": "rapporteur",
+          "slot_label": "2026-06-22 14:15-15:15 Room A1",
+          "slot_id": "S0381"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T17",
+      "teacher_name": "Teacher 17",
+      "target_presentations": 9,
+      "preferred_sessions_count": 19,
+      "available_not_preferred_sessions_count": 18,
+      "preferred_sessions": [
+        "2026-06-01 11:45-12:45 Room A1",
+        "2026-06-03 08:00-09:00 Room A2",
+        "2026-06-03 08:00-09:00 Room A4",
+        "2026-06-03 14:15-15:15 Room A4",
+        "2026-06-05 11:45-12:45 Room A1",
+        "2026-06-05 11:45-12:45 Room A4",
+        "2026-06-05 13:00-14:00 Room A1",
+        "2026-06-08 13:00-14:00 Room A2",
+        "2026-06-10 08:00-09:00 Room A2",
+        "2026-06-10 09:15-10:15 Room A2",
+        "2026-06-10 14:15-15:15 Room A3",
+        "2026-06-11 09:15-10:15 Room A4",
+        "2026-06-17 11:45-12:45 Room A3",
+        "2026-06-18 11:45-12:45 Room A4",
+        "2026-06-22 14:15-15:15 Room A3",
+        "2026-06-23 13:00-14:00 Room A4",
+        "2026-06-23 14:15-15:15 Room A2",
+        "2026-06-25 10:30-11:30 Room A1",
+        "2026-06-25 10:30-11:30 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-03 09:15-10:15 Room A2",
+        "2026-06-04 09:15-10:15 Room A4",
+        "2026-06-08 10:30-11:30 Room A4",
+        "2026-06-09 10:30-11:30 Room A2",
+        "2026-06-09 14:15-15:15 Room A3",
+        "2026-06-10 08:00-09:00 Room A4",
+        "2026-06-11 10:30-11:30 Room A3",
+        "2026-06-11 11:45-12:45 Room A2",
+        "2026-06-15 10:30-11:30 Room A1",
+        "2026-06-15 14:15-15:15 Room A2",
+        "2026-06-15 14:15-15:15 Room A3",
+        "2026-06-17 08:00-09:00 Room A1",
+        "2026-06-18 10:30-11:30 Room A1",
+        "2026-06-18 10:30-11:30 Room A2",
+        "2026-06-23 08:00-09:00 Room A4",
+        "2026-06-24 09:15-10:15 Room A2",
+        "2026-06-30 09:15-10:15 Room A3",
+        "2026-06-30 10:30-11:30 Room A2"
+      ],
+      "assigned_total": 13,
+      "assigned_by_role": {
+        "encadreur": 0,
+        "rapporteur": 7,
+        "president": 6
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-004",
+          "role": "president",
+          "slot_label": "2026-06-01 11:45-12:45 Room A1",
+          "slot_id": "S0013"
+        },
+        {
+          "subject_id": "PFE-108",
+          "role": "rapporteur",
+          "slot_label": "2026-06-05 11:45-12:45 Room A4",
+          "slot_id": "S0112"
+        },
+        {
+          "subject_id": "PFE-002",
+          "role": "president",
+          "slot_label": "2026-06-08 10:30-11:30 Room A4",
+          "slot_id": "S0132"
+        },
+        {
+          "subject_id": "PFE-063",
+          "role": "rapporteur",
+          "slot_label": "2026-06-08 13:00-14:00 Room A2",
+          "slot_id": "S0138"
+        },
+        {
+          "subject_id": "PFE-016",
+          "role": "president",
+          "slot_label": "2026-06-09 10:30-11:30 Room A2",
+          "slot_id": "S0154"
+        },
+        {
+          "subject_id": "PFE-050",
+          "role": "rapporteur",
+          "slot_label": "2026-06-10 09:15-10:15 Room A2",
+          "slot_id": "S0174"
+        },
+        {
+          "subject_id": "PFE-049",
+          "role": "rapporteur",
+          "slot_label": "2026-06-11 09:15-10:15 Room A4",
+          "slot_id": "S0200"
+        },
+        {
+          "subject_id": "PFE-023",
+          "role": "president",
+          "slot_label": "2026-06-11 10:30-11:30 Room A3",
+          "slot_id": "S0203"
+        },
+        {
+          "subject_id": "PFE-061",
+          "role": "rapporteur",
+          "slot_label": "2026-06-17 11:45-12:45 Room A3",
+          "slot_id": "S0303"
+        },
+        {
+          "subject_id": "PFE-070",
+          "role": "president",
+          "slot_label": "2026-06-18 10:30-11:30 Room A2",
+          "slot_id": "S0322"
+        },
+        {
+          "subject_id": "PFE-072",
+          "role": "rapporteur",
+          "slot_label": "2026-06-18 11:45-12:45 Room A4",
+          "slot_id": "S0328"
+        },
+        {
+          "subject_id": "PFE-074",
+          "role": "president",
+          "slot_label": "2026-06-22 14:15-15:15 Room A3",
+          "slot_id": "S0383"
+        },
+        {
+          "subject_id": "PFE-109",
+          "role": "rapporteur",
+          "slot_label": "2026-06-23 14:15-15:15 Room A2",
+          "slot_id": "S0406"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T18",
+      "teacher_name": "Teacher 18",
+      "target_presentations": 12,
+      "preferred_sessions_count": 19,
+      "available_not_preferred_sessions_count": 16,
+      "preferred_sessions": [
+        "2026-06-01 13:00-14:00 Room A4",
+        "2026-06-02 10:30-11:30 Room A2",
+        "2026-06-02 13:00-14:00 Room A1",
+        "2026-06-03 09:15-10:15 Room A2",
+        "2026-06-05 11:45-12:45 Room A3",
+        "2026-06-10 09:15-10:15 Room A2",
+        "2026-06-10 11:45-12:45 Room A2",
+        "2026-06-10 11:45-12:45 Room A3",
+        "2026-06-15 10:30-11:30 Room A2",
+        "2026-06-15 11:45-12:45 Room A3",
+        "2026-06-16 09:15-10:15 Room A4",
+        "2026-06-17 10:30-11:30 Room A1",
+        "2026-06-18 13:00-14:00 Room A2",
+        "2026-06-23 13:00-14:00 Room A1",
+        "2026-06-24 08:00-09:00 Room A3",
+        "2026-06-26 08:00-09:00 Room A4",
+        "2026-06-26 13:00-14:00 Room A2",
+        "2026-06-29 10:30-11:30 Room A4",
+        "2026-06-29 11:45-12:45 Room A2"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-04 10:30-11:30 Room A3",
+        "2026-06-05 13:00-14:00 Room A2",
+        "2026-06-08 11:45-12:45 Room A1",
+        "2026-06-11 13:00-14:00 Room A2",
+        "2026-06-16 08:00-09:00 Room A4",
+        "2026-06-16 14:15-15:15 Room A2",
+        "2026-06-17 09:15-10:15 Room A3",
+        "2026-06-22 10:30-11:30 Room A2",
+        "2026-06-22 11:45-12:45 Room A4",
+        "2026-06-23 10:30-11:30 Room A3",
+        "2026-06-24 09:15-10:15 Room A3",
+        "2026-06-24 13:00-14:00 Room A2",
+        "2026-06-24 14:15-15:15 Room A4",
+        "2026-06-26 09:15-10:15 Room A3",
+        "2026-06-30 10:30-11:30 Room A1",
+        "2026-06-30 13:00-14:00 Room A3"
+      ],
+      "assigned_total": 13,
+      "assigned_by_role": {
+        "encadreur": 3,
+        "rapporteur": 7,
+        "president": 3
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-021",
+          "role": "president",
+          "slot_label": "2026-06-01 13:00-14:00 Room A4",
+          "slot_id": "S0020"
+        },
+        {
+          "subject_id": "PFE-011",
+          "role": "rapporteur",
+          "slot_label": "2026-06-03 09:15-10:15 Room A2",
+          "slot_id": "S0054"
+        },
+        {
+          "subject_id": "PFE-042",
+          "role": "rapporteur",
+          "slot_label": "2026-06-05 11:45-12:45 Room A3",
+          "slot_id": "S0111"
+        },
+        {
+          "subject_id": "PFE-110",
+          "role": "rapporteur",
+          "slot_label": "2026-06-05 13:00-14:00 Room A2",
+          "slot_id": "S0114"
+        },
+        {
+          "subject_id": "PFE-073",
+          "role": "rapporteur",
+          "slot_label": "2026-06-08 11:45-12:45 Room A1",
+          "slot_id": "S0133"
+        },
+        {
+          "subject_id": "PFE-050",
+          "role": "encadreur",
+          "slot_label": "2026-06-10 09:15-10:15 Room A2",
+          "slot_id": "S0174"
+        },
+        {
+          "subject_id": "PFE-090",
+          "role": "encadreur",
+          "slot_label": "2026-06-10 11:45-12:45 Room A3",
+          "slot_id": "S0183"
+        },
+        {
+          "subject_id": "PFE-083",
+          "role": "president",
+          "slot_label": "2026-06-11 13:00-14:00 Room A2",
+          "slot_id": "S0210"
+        },
+        {
+          "subject_id": "PFE-069",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 10:30-11:30 Room A2",
+          "slot_id": "S0250"
+        },
+        {
+          "subject_id": "PFE-047",
+          "role": "rapporteur",
+          "slot_label": "2026-06-16 09:15-10:15 Room A4",
+          "slot_id": "S0272"
+        },
+        {
+          "subject_id": "PFE-089",
+          "role": "president",
+          "slot_label": "2026-06-16 14:15-15:15 Room A2",
+          "slot_id": "S0286"
+        },
+        {
+          "subject_id": "PFE-104",
+          "role": "rapporteur",
+          "slot_label": "2026-06-24 13:00-14:00 Room A2",
+          "slot_id": "S0426"
+        },
+        {
+          "subject_id": "PFE-093",
+          "role": "encadreur",
+          "slot_label": "2026-06-26 08:00-09:00 Room A4",
+          "slot_id": "S0460"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T19",
+      "teacher_name": "Teacher 19",
+      "target_presentations": 8,
+      "preferred_sessions_count": 13,
+      "available_not_preferred_sessions_count": 17,
+      "preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A4",
+        "2026-06-01 09:15-10:15 Room A1",
+        "2026-06-01 13:00-14:00 Room A4",
+        "2026-06-02 09:15-10:15 Room A3",
+        "2026-06-02 13:00-14:00 Room A3",
+        "2026-06-05 09:15-10:15 Room A1",
+        "2026-06-05 14:15-15:15 Room A3",
+        "2026-06-08 13:00-14:00 Room A2",
+        "2026-06-09 11:45-12:45 Room A1",
+        "2026-06-15 11:45-12:45 Room A4",
+        "2026-06-23 09:15-10:15 Room A1",
+        "2026-06-23 10:30-11:30 Room A1",
+        "2026-06-25 09:15-10:15 Room A1"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-04 08:00-09:00 Room A4",
+        "2026-06-05 09:15-10:15 Room A2",
+        "2026-06-05 10:30-11:30 Room A3",
+        "2026-06-05 10:30-11:30 Room A4",
+        "2026-06-09 08:00-09:00 Room A4",
+        "2026-06-10 10:30-11:30 Room A4",
+        "2026-06-12 09:15-10:15 Room A2",
+        "2026-06-15 14:15-15:15 Room A3",
+        "2026-06-16 11:45-12:45 Room A4",
+        "2026-06-16 13:00-14:00 Room A3",
+        "2026-06-17 10:30-11:30 Room A2",
+        "2026-06-17 14:15-15:15 Room A2",
+        "2026-06-19 11:45-12:45 Room A3",
+        "2026-06-24 09:15-10:15 Room A2",
+        "2026-06-24 11:45-12:45 Room A4",
+        "2026-06-25 09:15-10:15 Room A4",
+        "2026-06-25 10:30-11:30 Room A2"
+      ],
+      "assigned_total": 13,
+      "assigned_by_role": {
+        "encadreur": 5,
+        "rapporteur": 3,
+        "president": 5
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-001",
+          "role": "president",
+          "slot_label": "2026-06-01 08:00-09:00 Room A4",
+          "slot_id": "S0004"
+        },
+        {
+          "subject_id": "PFE-020",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 09:15-10:15 Room A1",
+          "slot_id": "S0005"
+        },
+        {
+          "subject_id": "PFE-021",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 13:00-14:00 Room A4",
+          "slot_id": "S0020"
+        },
+        {
+          "subject_id": "PFE-033",
+          "role": "encadreur",
+          "slot_label": "2026-06-02 09:15-10:15 Room A3",
+          "slot_id": "S0031"
+        },
+        {
+          "subject_id": "PFE-035",
+          "role": "president",
+          "slot_label": "2026-06-02 13:00-14:00 Room A3",
+          "slot_id": "S0043"
+        },
+        {
+          "subject_id": "PFE-044",
+          "role": "rapporteur",
+          "slot_label": "2026-06-05 09:15-10:15 Room A1",
+          "slot_id": "S0101"
+        },
+        {
+          "subject_id": "PFE-008",
+          "role": "rapporteur",
+          "slot_label": "2026-06-05 10:30-11:30 Room A4",
+          "slot_id": "S0108"
+        },
+        {
+          "subject_id": "PFE-063",
+          "role": "encadreur",
+          "slot_label": "2026-06-08 13:00-14:00 Room A2",
+          "slot_id": "S0138"
+        },
+        {
+          "subject_id": "PFE-062",
+          "role": "president",
+          "slot_label": "2026-06-15 14:15-15:15 Room A3",
+          "slot_id": "S0263"
+        },
+        {
+          "subject_id": "PFE-078",
+          "role": "encadreur",
+          "slot_label": "2026-06-17 10:30-11:30 Room A2",
+          "slot_id": "S0298"
+        },
+        {
+          "subject_id": "PFE-102",
+          "role": "president",
+          "slot_label": "2026-06-17 14:15-15:15 Room A2",
+          "slot_id": "S0310"
+        },
+        {
+          "subject_id": "PFE-066",
+          "role": "encadreur",
+          "slot_label": "2026-06-23 10:30-11:30 Room A1",
+          "slot_id": "S0393"
+        },
+        {
+          "subject_id": "PFE-106",
+          "role": "president",
+          "slot_label": "2026-06-25 09:15-10:15 Room A4",
+          "slot_id": "S0440"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T20",
+      "teacher_name": "Teacher 20",
+      "target_presentations": 12,
+      "preferred_sessions_count": 16,
+      "available_not_preferred_sessions_count": 22,
+      "preferred_sessions": [
+        "2026-06-08 08:00-09:00 Room A4",
+        "2026-06-09 14:15-15:15 Room A3",
+        "2026-06-11 13:00-14:00 Room A3",
+        "2026-06-11 14:15-15:15 Room A4",
+        "2026-06-12 09:15-10:15 Room A3",
+        "2026-06-12 10:30-11:30 Room A3",
+        "2026-06-12 13:00-14:00 Room A1",
+        "2026-06-15 14:15-15:15 Room A3",
+        "2026-06-17 14:15-15:15 Room A3",
+        "2026-06-18 10:30-11:30 Room A2",
+        "2026-06-19 11:45-12:45 Room A4",
+        "2026-06-22 10:30-11:30 Room A2",
+        "2026-06-22 10:30-11:30 Room A4",
+        "2026-06-22 13:00-14:00 Room A1",
+        "2026-06-25 09:15-10:15 Room A3",
+        "2026-06-26 08:00-09:00 Room A2"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 10:30-11:30 Room A4",
+        "2026-06-02 11:45-12:45 Room A1",
+        "2026-06-04 09:15-10:15 Room A1",
+        "2026-06-09 10:30-11:30 Room A1",
+        "2026-06-09 13:00-14:00 Room A4",
+        "2026-06-10 11:45-12:45 Room A3",
+        "2026-06-12 08:00-09:00 Room A2",
+        "2026-06-15 09:15-10:15 Room A2",
+        "2026-06-15 13:00-14:00 Room A1",
+        "2026-06-15 13:00-14:00 Room A3",
+        "2026-06-16 09:15-10:15 Room A3",
+        "2026-06-17 10:30-11:30 Room A4",
+        "2026-06-19 13:00-14:00 Room A4",
+        "2026-06-22 08:00-09:00 Room A4",
+        "2026-06-22 11:45-12:45 Room A3",
+        "2026-06-22 13:00-14:00 Room A3",
+        "2026-06-23 09:15-10:15 Room A1",
+        "2026-06-23 10:30-11:30 Room A3",
+        "2026-06-23 13:00-14:00 Room A3",
+        "2026-06-25 08:00-09:00 Room A1",
+        "2026-06-25 10:30-11:30 Room A4",
+        "2026-06-29 13:00-14:00 Room A3"
+      ],
+      "assigned_total": 11,
+      "assigned_by_role": {
+        "encadreur": 4,
+        "rapporteur": 3,
+        "president": 4
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-019",
+          "role": "encadreur",
+          "slot_label": "2026-06-09 14:15-15:15 Room A3",
+          "slot_id": "S0167"
+        },
+        {
+          "subject_id": "PFE-090",
+          "role": "rapporteur",
+          "slot_label": "2026-06-10 11:45-12:45 Room A3",
+          "slot_id": "S0183"
+        },
+        {
+          "subject_id": "PFE-006",
+          "role": "rapporteur",
+          "slot_label": "2026-06-11 13:00-14:00 Room A3",
+          "slot_id": "S0211"
+        },
+        {
+          "subject_id": "PFE-085",
+          "role": "president",
+          "slot_label": "2026-06-15 13:00-14:00 Room A3",
+          "slot_id": "S0259"
+        },
+        {
+          "subject_id": "PFE-062",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 14:15-15:15 Room A3",
+          "slot_id": "S0263"
+        },
+        {
+          "subject_id": "PFE-065",
+          "role": "president",
+          "slot_label": "2026-06-16 09:15-10:15 Room A3",
+          "slot_id": "S0271"
+        },
+        {
+          "subject_id": "PFE-070",
+          "role": "encadreur",
+          "slot_label": "2026-06-18 10:30-11:30 Room A2",
+          "slot_id": "S0322"
+        },
+        {
+          "subject_id": "PFE-098",
+          "role": "encadreur",
+          "slot_label": "2026-06-19 11:45-12:45 Room A4",
+          "slot_id": "S0352"
+        },
+        {
+          "subject_id": "PFE-099",
+          "role": "president",
+          "slot_label": "2026-06-22 11:45-12:45 Room A3",
+          "slot_id": "S0375"
+        },
+        {
+          "subject_id": "PFE-091",
+          "role": "rapporteur",
+          "slot_label": "2026-06-22 13:00-14:00 Room A1",
+          "slot_id": "S0377"
+        },
+        {
+          "subject_id": "PFE-103",
+          "role": "president",
+          "slot_label": "2026-06-25 09:15-10:15 Room A3",
+          "slot_id": "S0439"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T21",
+      "teacher_name": "Teacher 21",
+      "target_presentations": 14,
+      "preferred_sessions_count": 22,
+      "available_not_preferred_sessions_count": 20,
+      "preferred_sessions": [
+        "2026-06-01 13:00-14:00 Room A4",
+        "2026-06-01 14:15-15:15 Room A3",
+        "2026-06-03 10:30-11:30 Room A3",
+        "2026-06-08 09:15-10:15 Room A3",
+        "2026-06-08 09:15-10:15 Room A4",
+        "2026-06-09 10:30-11:30 Room A2",
+        "2026-06-10 11:45-12:45 Room A4",
+        "2026-06-11 08:00-09:00 Room A2",
+        "2026-06-11 10:30-11:30 Room A3",
+        "2026-06-15 13:00-14:00 Room A4",
+        "2026-06-17 08:00-09:00 Room A1",
+        "2026-06-17 13:00-14:00 Room A1",
+        "2026-06-17 14:15-15:15 Room A2",
+        "2026-06-18 13:00-14:00 Room A4",
+        "2026-06-19 11:45-12:45 Room A2",
+        "2026-06-23 14:15-15:15 Room A3",
+        "2026-06-24 08:00-09:00 Room A1",
+        "2026-06-25 08:00-09:00 Room A1",
+        "2026-06-25 11:45-12:45 Room A2",
+        "2026-06-29 11:45-12:45 Room A4",
+        "2026-06-30 10:30-11:30 Room A1",
+        "2026-06-30 11:45-12:45 Room A1"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-02 09:15-10:15 Room A2",
+        "2026-06-02 10:30-11:30 Room A3",
+        "2026-06-02 13:00-14:00 Room A4",
+        "2026-06-03 09:15-10:15 Room A2",
+        "2026-06-04 09:15-10:15 Room A4",
+        "2026-06-04 14:15-15:15 Room A2",
+        "2026-06-05 10:30-11:30 Room A2",
+        "2026-06-11 08:00-09:00 Room A4",
+        "2026-06-12 10:30-11:30 Room A4",
+        "2026-06-15 14:15-15:15 Room A3",
+        "2026-06-17 10:30-11:30 Room A3",
+        "2026-06-18 11:45-12:45 Room A4",
+        "2026-06-19 09:15-10:15 Room A4",
+        "2026-06-22 14:15-15:15 Room A1",
+        "2026-06-24 11:45-12:45 Room A1",
+        "2026-06-24 13:00-14:00 Room A3",
+        "2026-06-29 14:15-15:15 Room A2",
+        "2026-06-30 10:30-11:30 Room A2",
+        "2026-06-30 13:00-14:00 Room A1",
+        "2026-06-30 14:15-15:15 Room A2"
+      ],
+      "assigned_total": 12,
+      "assigned_by_role": {
+        "encadreur": 3,
+        "rapporteur": 4,
+        "president": 5
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-022",
+          "role": "president",
+          "slot_label": "2026-06-02 13:00-14:00 Room A4",
+          "slot_id": "S0044"
+        },
+        {
+          "subject_id": "PFE-011",
+          "role": "president",
+          "slot_label": "2026-06-03 09:15-10:15 Room A2",
+          "slot_id": "S0054"
+        },
+        {
+          "subject_id": "PFE-039",
+          "role": "encadreur",
+          "slot_label": "2026-06-03 10:30-11:30 Room A3",
+          "slot_id": "S0059"
+        },
+        {
+          "subject_id": "PFE-026",
+          "role": "president",
+          "slot_label": "2026-06-04 14:15-15:15 Room A2",
+          "slot_id": "S0094"
+        },
+        {
+          "subject_id": "PFE-082",
+          "role": "encadreur",
+          "slot_label": "2026-06-08 09:15-10:15 Room A4",
+          "slot_id": "S0128"
+        },
+        {
+          "subject_id": "PFE-016",
+          "role": "rapporteur",
+          "slot_label": "2026-06-09 10:30-11:30 Room A2",
+          "slot_id": "S0154"
+        },
+        {
+          "subject_id": "PFE-077",
+          "role": "president",
+          "slot_label": "2026-06-11 08:00-09:00 Room A4",
+          "slot_id": "S0196"
+        },
+        {
+          "subject_id": "PFE-023",
+          "role": "rapporteur",
+          "slot_label": "2026-06-11 10:30-11:30 Room A3",
+          "slot_id": "S0203"
+        },
+        {
+          "subject_id": "PFE-062",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 14:15-15:15 Room A3",
+          "slot_id": "S0263"
+        },
+        {
+          "subject_id": "PFE-101",
+          "role": "rapporteur",
+          "slot_label": "2026-06-17 08:00-09:00 Room A1",
+          "slot_id": "S0289"
+        },
+        {
+          "subject_id": "PFE-102",
+          "role": "encadreur",
+          "slot_label": "2026-06-17 14:15-15:15 Room A2",
+          "slot_id": "S0310"
+        },
+        {
+          "subject_id": "PFE-112",
+          "role": "president",
+          "slot_label": "2026-06-22 14:15-15:15 Room A1",
+          "slot_id": "S0381"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T22",
+      "teacher_name": "Teacher 22",
+      "target_presentations": 6,
+      "preferred_sessions_count": 12,
+      "available_not_preferred_sessions_count": 8,
+      "preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A4",
+        "2026-06-05 10:30-11:30 Room A4",
+        "2026-06-05 11:45-12:45 Room A2",
+        "2026-06-08 13:00-14:00 Room A1",
+        "2026-06-12 08:00-09:00 Room A2",
+        "2026-06-16 09:15-10:15 Room A3",
+        "2026-06-16 13:00-14:00 Room A1",
+        "2026-06-17 09:15-10:15 Room A3",
+        "2026-06-18 10:30-11:30 Room A3",
+        "2026-06-23 10:30-11:30 Room A4",
+        "2026-06-24 11:45-12:45 Room A1",
+        "2026-06-25 09:15-10:15 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-03 10:30-11:30 Room A3",
+        "2026-06-04 10:30-11:30 Room A4",
+        "2026-06-05 13:00-14:00 Room A3",
+        "2026-06-11 08:00-09:00 Room A3",
+        "2026-06-22 14:15-15:15 Room A2",
+        "2026-06-25 11:45-12:45 Room A2",
+        "2026-06-26 11:45-12:45 Room A1",
+        "2026-06-30 14:15-15:15 Room A2"
+      ],
+      "assigned_total": 6,
+      "assigned_by_role": {
+        "encadreur": 3,
+        "rapporteur": 3,
+        "president": 0
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-001",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 08:00-09:00 Room A4",
+          "slot_id": "S0004"
+        },
+        {
+          "subject_id": "PFE-008",
+          "role": "encadreur",
+          "slot_label": "2026-06-05 10:30-11:30 Room A4",
+          "slot_id": "S0108"
+        },
+        {
+          "subject_id": "PFE-040",
+          "role": "rapporteur",
+          "slot_label": "2026-06-12 08:00-09:00 Room A2",
+          "slot_id": "S0218"
+        },
+        {
+          "subject_id": "PFE-065",
+          "role": "rapporteur",
+          "slot_label": "2026-06-16 09:15-10:15 Room A3",
+          "slot_id": "S0271"
+        },
+        {
+          "subject_id": "PFE-086",
+          "role": "encadreur",
+          "slot_label": "2026-06-18 10:30-11:30 Room A3",
+          "slot_id": "S0323"
+        },
+        {
+          "subject_id": "PFE-103",
+          "role": "encadreur",
+          "slot_label": "2026-06-25 09:15-10:15 Room A3",
+          "slot_id": "S0439"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T23",
+      "teacher_name": "Teacher 23",
+      "target_presentations": 11,
+      "preferred_sessions_count": 21,
+      "available_not_preferred_sessions_count": 16,
+      "preferred_sessions": [
+        "2026-06-01 10:30-11:30 Room A1",
+        "2026-06-01 11:45-12:45 Room A3",
+        "2026-06-03 08:00-09:00 Room A4",
+        "2026-06-04 14:15-15:15 Room A3",
+        "2026-06-05 09:15-10:15 Room A4",
+        "2026-06-08 09:15-10:15 Room A1",
+        "2026-06-10 13:00-14:00 Room A4",
+        "2026-06-11 13:00-14:00 Room A2",
+        "2026-06-12 11:45-12:45 Room A4",
+        "2026-06-15 14:15-15:15 Room A4",
+        "2026-06-16 10:30-11:30 Room A2",
+        "2026-06-18 08:00-09:00 Room A2",
+        "2026-06-19 09:15-10:15 Room A1",
+        "2026-06-19 14:15-15:15 Room A4",
+        "2026-06-23 08:00-09:00 Room A4",
+        "2026-06-23 10:30-11:30 Room A3",
+        "2026-06-25 10:30-11:30 Room A1",
+        "2026-06-25 13:00-14:00 Room A3",
+        "2026-06-26 08:00-09:00 Room A2",
+        "2026-06-26 09:15-10:15 Room A2",
+        "2026-06-26 13:00-14:00 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-03 10:30-11:30 Room A4",
+        "2026-06-04 10:30-11:30 Room A1",
+        "2026-06-08 13:00-14:00 Room A3",
+        "2026-06-15 10:30-11:30 Room A1",
+        "2026-06-15 11:45-12:45 Room A2",
+        "2026-06-17 10:30-11:30 Room A2",
+        "2026-06-17 11:45-12:45 Room A4",
+        "2026-06-19 08:00-09:00 Room A2",
+        "2026-06-22 09:15-10:15 Room A2",
+        "2026-06-24 10:30-11:30 Room A2",
+        "2026-06-24 11:45-12:45 Room A2",
+        "2026-06-25 11:45-12:45 Room A4",
+        "2026-06-26 10:30-11:30 Room A3",
+        "2026-06-30 09:15-10:15 Room A2",
+        "2026-06-30 09:15-10:15 Room A3",
+        "2026-06-30 11:45-12:45 Room A4"
+      ],
+      "assigned_total": 12,
+      "assigned_by_role": {
+        "encadreur": 2,
+        "rapporteur": 4,
+        "president": 6
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-003",
+          "role": "encadreur",
+          "slot_label": "2026-06-10 13:00-14:00 Room A4",
+          "slot_id": "S0188"
+        },
+        {
+          "subject_id": "PFE-083",
+          "role": "encadreur",
+          "slot_label": "2026-06-11 13:00-14:00 Room A2",
+          "slot_id": "S0210"
+        },
+        {
+          "subject_id": "PFE-031",
+          "role": "rapporteur",
+          "slot_label": "2026-06-12 11:45-12:45 Room A4",
+          "slot_id": "S0232"
+        },
+        {
+          "subject_id": "PFE-045",
+          "role": "president",
+          "slot_label": "2026-06-15 10:30-11:30 Room A1",
+          "slot_id": "S0249"
+        },
+        {
+          "subject_id": "PFE-043",
+          "role": "president",
+          "slot_label": "2026-06-15 11:45-12:45 Room A2",
+          "slot_id": "S0254"
+        },
+        {
+          "subject_id": "PFE-079",
+          "role": "rapporteur",
+          "slot_label": "2026-06-16 10:30-11:30 Room A2",
+          "slot_id": "S0274"
+        },
+        {
+          "subject_id": "PFE-078",
+          "role": "president",
+          "slot_label": "2026-06-17 10:30-11:30 Room A2",
+          "slot_id": "S0298"
+        },
+        {
+          "subject_id": "PFE-076",
+          "role": "president",
+          "slot_label": "2026-06-19 09:15-10:15 Room A1",
+          "slot_id": "S0341"
+        },
+        {
+          "subject_id": "PFE-095",
+          "role": "president",
+          "slot_label": "2026-06-22 09:15-10:15 Room A2",
+          "slot_id": "S0366"
+        },
+        {
+          "subject_id": "PFE-096",
+          "role": "rapporteur",
+          "slot_label": "2026-06-24 10:30-11:30 Room A2",
+          "slot_id": "S0418"
+        },
+        {
+          "subject_id": "PFE-067",
+          "role": "rapporteur",
+          "slot_label": "2026-06-25 10:30-11:30 Room A1",
+          "slot_id": "S0441"
+        },
+        {
+          "subject_id": "PFE-084",
+          "role": "president",
+          "slot_label": "2026-06-26 13:00-14:00 Room A4",
+          "slot_id": "S0476"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T24",
+      "teacher_name": "Teacher 24",
+      "target_presentations": 7,
+      "preferred_sessions_count": 17,
+      "available_not_preferred_sessions_count": 12,
+      "preferred_sessions": [
+        "2026-06-01 11:45-12:45 Room A2",
+        "2026-06-02 09:15-10:15 Room A3",
+        "2026-06-03 11:45-12:45 Room A3",
+        "2026-06-05 09:15-10:15 Room A3",
+        "2026-06-05 10:30-11:30 Room A3",
+        "2026-06-12 08:00-09:00 Room A1",
+        "2026-06-12 11:45-12:45 Room A3",
+        "2026-06-15 14:15-15:15 Room A1",
+        "2026-06-16 08:00-09:00 Room A4",
+        "2026-06-16 10:30-11:30 Room A4",
+        "2026-06-16 11:45-12:45 Room A1",
+        "2026-06-17 08:00-09:00 Room A2",
+        "2026-06-17 09:15-10:15 Room A1",
+        "2026-06-24 10:30-11:30 Room A1",
+        "2026-06-26 09:15-10:15 Room A3",
+        "2026-06-26 11:45-12:45 Room A3",
+        "2026-06-26 11:45-12:45 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A2",
+        "2026-06-01 13:00-14:00 Room A4",
+        "2026-06-03 11:45-12:45 Room A2",
+        "2026-06-03 11:45-12:45 Room A4",
+        "2026-06-04 09:15-10:15 Room A1",
+        "2026-06-05 08:00-09:00 Room A4",
+        "2026-06-08 09:15-10:15 Room A1",
+        "2026-06-08 10:30-11:30 Room A3",
+        "2026-06-08 11:45-12:45 Room A2",
+        "2026-06-11 08:00-09:00 Room A3",
+        "2026-06-15 14:15-15:15 Room A2",
+        "2026-06-25 13:00-14:00 Room A3"
+      ],
+      "assigned_total": 8,
+      "assigned_by_role": {
+        "encadreur": 3,
+        "rapporteur": 3,
+        "president": 2
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-007",
+          "role": "encadreur",
+          "slot_label": "2026-06-01 11:45-12:45 Room A2",
+          "slot_id": "S0014"
+        },
+        {
+          "subject_id": "PFE-033",
+          "role": "rapporteur",
+          "slot_label": "2026-06-02 09:15-10:15 Room A3",
+          "slot_id": "S0031"
+        },
+        {
+          "subject_id": "PFE-010",
+          "role": "president",
+          "slot_label": "2026-06-03 11:45-12:45 Room A2",
+          "slot_id": "S0062"
+        },
+        {
+          "subject_id": "PFE-014",
+          "role": "rapporteur",
+          "slot_label": "2026-06-03 11:45-12:45 Room A3",
+          "slot_id": "S0063"
+        },
+        {
+          "subject_id": "PFE-080",
+          "role": "president",
+          "slot_label": "2026-06-05 08:00-09:00 Room A4",
+          "slot_id": "S0100"
+        },
+        {
+          "subject_id": "PFE-059",
+          "role": "encadreur",
+          "slot_label": "2026-06-12 08:00-09:00 Room A1",
+          "slot_id": "S0217"
+        },
+        {
+          "subject_id": "PFE-071",
+          "role": "encadreur",
+          "slot_label": "2026-06-12 11:45-12:45 Room A3",
+          "slot_id": "S0231"
+        },
+        {
+          "subject_id": "PFE-075",
+          "role": "rapporteur",
+          "slot_label": "2026-06-16 11:45-12:45 Room A1",
+          "slot_id": "S0277"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T25",
+      "teacher_name": "Teacher 25",
+      "target_presentations": 14,
+      "preferred_sessions_count": 20,
+      "available_not_preferred_sessions_count": 19,
+      "preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A3",
+        "2026-06-01 11:45-12:45 Room A2",
+        "2026-06-04 13:00-14:00 Room A2",
+        "2026-06-09 14:15-15:15 Room A3",
+        "2026-06-11 09:15-10:15 Room A1",
+        "2026-06-11 11:45-12:45 Room A1",
+        "2026-06-12 14:15-15:15 Room A3",
+        "2026-06-15 13:00-14:00 Room A1",
+        "2026-06-16 09:15-10:15 Room A4",
+        "2026-06-19 13:00-14:00 Room A1",
+        "2026-06-19 14:15-15:15 Room A3",
+        "2026-06-22 09:15-10:15 Room A2",
+        "2026-06-22 11:45-12:45 Room A2",
+        "2026-06-24 08:00-09:00 Room A1",
+        "2026-06-24 14:15-15:15 Room A4",
+        "2026-06-25 09:15-10:15 Room A3",
+        "2026-06-25 10:30-11:30 Room A1",
+        "2026-06-25 10:30-11:30 Room A2",
+        "2026-06-29 10:30-11:30 Room A2",
+        "2026-06-29 14:15-15:15 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 11:45-12:45 Room A4",
+        "2026-06-02 10:30-11:30 Room A1",
+        "2026-06-02 14:15-15:15 Room A2",
+        "2026-06-08 10:30-11:30 Room A1",
+        "2026-06-08 13:00-14:00 Room A4",
+        "2026-06-09 14:15-15:15 Room A1",
+        "2026-06-15 09:15-10:15 Room A2",
+        "2026-06-15 10:30-11:30 Room A3",
+        "2026-06-15 14:15-15:15 Room A4",
+        "2026-06-18 08:00-09:00 Room A3",
+        "2026-06-19 09:15-10:15 Room A1",
+        "2026-06-19 09:15-10:15 Room A4",
+        "2026-06-23 13:00-14:00 Room A2",
+        "2026-06-23 14:15-15:15 Room A2",
+        "2026-06-24 10:30-11:30 Room A4",
+        "2026-06-24 11:45-12:45 Room A3",
+        "2026-06-25 14:15-15:15 Room A2",
+        "2026-06-29 08:00-09:00 Room A2",
+        "2026-06-30 08:00-09:00 Room A4"
+      ],
+      "assigned_total": 9,
+      "assigned_by_role": {
+        "encadreur": 2,
+        "rapporteur": 4,
+        "president": 3
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-041",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 08:00-09:00 Room A3",
+          "slot_id": "S0003"
+        },
+        {
+          "subject_id": "PFE-007",
+          "role": "president",
+          "slot_label": "2026-06-01 11:45-12:45 Room A2",
+          "slot_id": "S0014"
+        },
+        {
+          "subject_id": "PFE-017",
+          "role": "rapporteur",
+          "slot_label": "2026-06-04 13:00-14:00 Room A2",
+          "slot_id": "S0090"
+        },
+        {
+          "subject_id": "PFE-019",
+          "role": "president",
+          "slot_label": "2026-06-09 14:15-15:15 Room A3",
+          "slot_id": "S0167"
+        },
+        {
+          "subject_id": "PFE-047",
+          "role": "encadreur",
+          "slot_label": "2026-06-16 09:15-10:15 Room A4",
+          "slot_id": "S0272"
+        },
+        {
+          "subject_id": "PFE-056",
+          "role": "encadreur",
+          "slot_label": "2026-06-19 14:15-15:15 Room A3",
+          "slot_id": "S0359"
+        },
+        {
+          "subject_id": "PFE-095",
+          "role": "rapporteur",
+          "slot_label": "2026-06-22 09:15-10:15 Room A2",
+          "slot_id": "S0366"
+        },
+        {
+          "subject_id": "PFE-103",
+          "role": "rapporteur",
+          "slot_label": "2026-06-25 09:15-10:15 Room A3",
+          "slot_id": "S0439"
+        },
+        {
+          "subject_id": "PFE-067",
+          "role": "president",
+          "slot_label": "2026-06-25 10:30-11:30 Room A1",
+          "slot_id": "S0441"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T26",
+      "teacher_name": "Teacher 26",
+      "target_presentations": 8,
+      "preferred_sessions_count": 17,
+      "available_not_preferred_sessions_count": 14,
+      "preferred_sessions": [
+        "2026-06-03 09:15-10:15 Room A2",
+        "2026-06-04 08:00-09:00 Room A1",
+        "2026-06-04 09:15-10:15 Room A4",
+        "2026-06-04 14:15-15:15 Room A1",
+        "2026-06-09 11:45-12:45 Room A2",
+        "2026-06-10 09:15-10:15 Room A3",
+        "2026-06-11 14:15-15:15 Room A3",
+        "2026-06-12 13:00-14:00 Room A2",
+        "2026-06-17 08:00-09:00 Room A3",
+        "2026-06-17 11:45-12:45 Room A3",
+        "2026-06-22 08:00-09:00 Room A2",
+        "2026-06-23 11:45-12:45 Room A1",
+        "2026-06-24 08:00-09:00 Room A4",
+        "2026-06-25 10:30-11:30 Room A1",
+        "2026-06-25 13:00-14:00 Room A2",
+        "2026-06-29 10:30-11:30 Room A1",
+        "2026-06-29 10:30-11:30 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-02 09:15-10:15 Room A3",
+        "2026-06-02 10:30-11:30 Room A3",
+        "2026-06-02 10:30-11:30 Room A4",
+        "2026-06-02 14:15-15:15 Room A1",
+        "2026-06-08 08:00-09:00 Room A4",
+        "2026-06-09 14:15-15:15 Room A4",
+        "2026-06-16 08:00-09:00 Room A2",
+        "2026-06-16 10:30-11:30 Room A1",
+        "2026-06-18 08:00-09:00 Room A1",
+        "2026-06-18 10:30-11:30 Room A2",
+        "2026-06-19 09:15-10:15 Room A2",
+        "2026-06-22 11:45-12:45 Room A3",
+        "2026-06-23 13:00-14:00 Room A3",
+        "2026-06-25 14:15-15:15 Room A4"
+      ],
+      "assigned_total": 11,
+      "assigned_by_role": {
+        "encadreur": 6,
+        "rapporteur": 3,
+        "president": 2
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-033",
+          "role": "president",
+          "slot_label": "2026-06-02 09:15-10:15 Room A3",
+          "slot_id": "S0031"
+        },
+        {
+          "subject_id": "PFE-011",
+          "role": "encadreur",
+          "slot_label": "2026-06-03 09:15-10:15 Room A2",
+          "slot_id": "S0054"
+        },
+        {
+          "subject_id": "PFE-024",
+          "role": "encadreur",
+          "slot_label": "2026-06-04 08:00-09:00 Room A1",
+          "slot_id": "S0073"
+        },
+        {
+          "subject_id": "PFE-048",
+          "role": "encadreur",
+          "slot_label": "2026-06-04 09:15-10:15 Room A4",
+          "slot_id": "S0080"
+        },
+        {
+          "subject_id": "PFE-027",
+          "role": "president",
+          "slot_label": "2026-06-10 09:15-10:15 Room A3",
+          "slot_id": "S0175"
+        },
+        {
+          "subject_id": "PFE-111",
+          "role": "rapporteur",
+          "slot_label": "2026-06-16 10:30-11:30 Room A1",
+          "slot_id": "S0273"
+        },
+        {
+          "subject_id": "PFE-061",
+          "role": "encadreur",
+          "slot_label": "2026-06-17 11:45-12:45 Room A3",
+          "slot_id": "S0303"
+        },
+        {
+          "subject_id": "PFE-070",
+          "role": "rapporteur",
+          "slot_label": "2026-06-18 10:30-11:30 Room A2",
+          "slot_id": "S0322"
+        },
+        {
+          "subject_id": "PFE-099",
+          "role": "rapporteur",
+          "slot_label": "2026-06-22 11:45-12:45 Room A3",
+          "slot_id": "S0375"
+        },
+        {
+          "subject_id": "PFE-067",
+          "role": "encadreur",
+          "slot_label": "2026-06-25 10:30-11:30 Room A1",
+          "slot_id": "S0441"
+        },
+        {
+          "subject_id": "PFE-087",
+          "role": "encadreur",
+          "slot_label": "2026-06-29 10:30-11:30 Room A1",
+          "slot_id": "S0489"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T27",
+      "teacher_name": "Teacher 27",
+      "target_presentations": 13,
+      "preferred_sessions_count": 22,
+      "available_not_preferred_sessions_count": 17,
+      "preferred_sessions": [
+        "2026-06-02 13:00-14:00 Room A2",
+        "2026-06-03 13:00-14:00 Room A2",
+        "2026-06-05 10:30-11:30 Room A2",
+        "2026-06-05 14:15-15:15 Room A3",
+        "2026-06-11 13:00-14:00 Room A4",
+        "2026-06-12 11:45-12:45 Room A2",
+        "2026-06-12 13:00-14:00 Room A3",
+        "2026-06-15 08:00-09:00 Room A3",
+        "2026-06-15 08:00-09:00 Room A4",
+        "2026-06-15 09:15-10:15 Room A2",
+        "2026-06-15 11:45-12:45 Room A1",
+        "2026-06-18 14:15-15:15 Room A2",
+        "2026-06-19 14:15-15:15 Room A1",
+        "2026-06-22 10:30-11:30 Room A3",
+        "2026-06-22 11:45-12:45 Room A3",
+        "2026-06-22 13:00-14:00 Room A1",
+        "2026-06-24 13:00-14:00 Room A2",
+        "2026-06-25 09:15-10:15 Room A4",
+        "2026-06-26 13:00-14:00 Room A1",
+        "2026-06-26 13:00-14:00 Room A2",
+        "2026-06-30 09:15-10:15 Room A2",
+        "2026-06-30 09:15-10:15 Room A4"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 13:00-14:00 Room A2",
+        "2026-06-03 14:15-15:15 Room A1",
+        "2026-06-05 08:00-09:00 Room A4",
+        "2026-06-08 13:00-14:00 Room A2",
+        "2026-06-09 09:15-10:15 Room A2",
+        "2026-06-12 10:30-11:30 Room A3",
+        "2026-06-15 13:00-14:00 Room A3",
+        "2026-06-16 09:15-10:15 Room A1",
+        "2026-06-19 11:45-12:45 Room A2",
+        "2026-06-19 14:15-15:15 Room A4",
+        "2026-06-23 13:00-14:00 Room A4",
+        "2026-06-24 14:15-15:15 Room A4",
+        "2026-06-25 10:30-11:30 Room A3",
+        "2026-06-26 09:15-10:15 Room A4",
+        "2026-06-26 10:30-11:30 Room A3",
+        "2026-06-29 08:00-09:00 Room A2",
+        "2026-06-30 11:45-12:45 Room A2"
+      ],
+      "assigned_total": 11,
+      "assigned_by_role": {
+        "encadreur": 6,
+        "rapporteur": 3,
+        "president": 2
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-080",
+          "role": "rapporteur",
+          "slot_label": "2026-06-05 08:00-09:00 Room A4",
+          "slot_id": "S0100"
+        },
+        {
+          "subject_id": "PFE-063",
+          "role": "president",
+          "slot_label": "2026-06-08 13:00-14:00 Room A2",
+          "slot_id": "S0138"
+        },
+        {
+          "subject_id": "PFE-012",
+          "role": "encadreur",
+          "slot_label": "2026-06-12 11:45-12:45 Room A2",
+          "slot_id": "S0230"
+        },
+        {
+          "subject_id": "PFE-030",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 08:00-09:00 Room A3",
+          "slot_id": "S0243"
+        },
+        {
+          "subject_id": "PFE-038",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 08:00-09:00 Room A4",
+          "slot_id": "S0244"
+        },
+        {
+          "subject_id": "PFE-032",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 09:15-10:15 Room A2",
+          "slot_id": "S0246"
+        },
+        {
+          "subject_id": "PFE-055",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 11:45-12:45 Room A1",
+          "slot_id": "S0253"
+        },
+        {
+          "subject_id": "PFE-099",
+          "role": "encadreur",
+          "slot_label": "2026-06-22 11:45-12:45 Room A3",
+          "slot_id": "S0375"
+        },
+        {
+          "subject_id": "PFE-091",
+          "role": "president",
+          "slot_label": "2026-06-22 13:00-14:00 Room A1",
+          "slot_id": "S0377"
+        },
+        {
+          "subject_id": "PFE-104",
+          "role": "encadreur",
+          "slot_label": "2026-06-24 13:00-14:00 Room A2",
+          "slot_id": "S0426"
+        },
+        {
+          "subject_id": "PFE-106",
+          "role": "rapporteur",
+          "slot_label": "2026-06-25 09:15-10:15 Room A4",
+          "slot_id": "S0440"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T28",
+      "teacher_name": "Teacher 28",
+      "target_presentations": 13,
+      "preferred_sessions_count": 25,
+      "available_not_preferred_sessions_count": 21,
+      "preferred_sessions": [
+        "2026-06-01 14:15-15:15 Room A3",
+        "2026-06-01 14:15-15:15 Room A4",
+        "2026-06-03 10:30-11:30 Room A2",
+        "2026-06-04 08:00-09:00 Room A4",
+        "2026-06-04 10:30-11:30 Room A1",
+        "2026-06-09 10:30-11:30 Room A2",
+        "2026-06-10 10:30-11:30 Room A2",
+        "2026-06-10 11:45-12:45 Room A1",
+        "2026-06-10 11:45-12:45 Room A4",
+        "2026-06-11 14:15-15:15 Room A1",
+        "2026-06-11 14:15-15:15 Room A2",
+        "2026-06-15 09:15-10:15 Room A2",
+        "2026-06-15 11:45-12:45 Room A2",
+        "2026-06-17 11:45-12:45 Room A2",
+        "2026-06-18 10:30-11:30 Room A1",
+        "2026-06-19 10:30-11:30 Room A4",
+        "2026-06-19 14:15-15:15 Room A1",
+        "2026-06-23 09:15-10:15 Room A4",
+        "2026-06-23 10:30-11:30 Room A2",
+        "2026-06-25 14:15-15:15 Room A1",
+        "2026-06-26 13:00-14:00 Room A3",
+        "2026-06-29 10:30-11:30 Room A1",
+        "2026-06-29 11:45-12:45 Room A4",
+        "2026-06-30 08:00-09:00 Room A1",
+        "2026-06-30 14:15-15:15 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 08:00-09:00 Room A3",
+        "2026-06-01 10:30-11:30 Room A2",
+        "2026-06-02 08:00-09:00 Room A1",
+        "2026-06-02 10:30-11:30 Room A2",
+        "2026-06-04 08:00-09:00 Room A3",
+        "2026-06-05 08:00-09:00 Room A3",
+        "2026-06-09 10:30-11:30 Room A4",
+        "2026-06-09 14:15-15:15 Room A3",
+        "2026-06-15 10:30-11:30 Room A1",
+        "2026-06-15 10:30-11:30 Room A2",
+        "2026-06-17 13:00-14:00 Room A3",
+        "2026-06-19 08:00-09:00 Room A1",
+        "2026-06-22 13:00-14:00 Room A3",
+        "2026-06-24 10:30-11:30 Room A3",
+        "2026-06-24 10:30-11:30 Room A4",
+        "2026-06-24 13:00-14:00 Room A2",
+        "2026-06-25 11:45-12:45 Room A3",
+        "2026-06-26 08:00-09:00 Room A1",
+        "2026-06-26 09:15-10:15 Room A1",
+        "2026-06-26 13:00-14:00 Room A4",
+        "2026-06-30 09:15-10:15 Room A2"
+      ],
+      "assigned_total": 14,
+      "assigned_by_role": {
+        "encadreur": 6,
+        "rapporteur": 3,
+        "president": 5
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-041",
+          "role": "president",
+          "slot_label": "2026-06-01 08:00-09:00 Room A3",
+          "slot_id": "S0003"
+        },
+        {
+          "subject_id": "PFE-051",
+          "role": "president",
+          "slot_label": "2026-06-01 10:30-11:30 Room A2",
+          "slot_id": "S0010"
+        },
+        {
+          "subject_id": "PFE-005",
+          "role": "rapporteur",
+          "slot_label": "2026-06-01 14:15-15:15 Room A4",
+          "slot_id": "S0024"
+        },
+        {
+          "subject_id": "PFE-013",
+          "role": "encadreur",
+          "slot_label": "2026-06-03 10:30-11:30 Room A2",
+          "slot_id": "S0058"
+        },
+        {
+          "subject_id": "PFE-015",
+          "role": "encadreur",
+          "slot_label": "2026-06-04 10:30-11:30 Room A1",
+          "slot_id": "S0081"
+        },
+        {
+          "subject_id": "PFE-016",
+          "role": "encadreur",
+          "slot_label": "2026-06-09 10:30-11:30 Room A2",
+          "slot_id": "S0154"
+        },
+        {
+          "subject_id": "PFE-025",
+          "role": "president",
+          "slot_label": "2026-06-09 10:30-11:30 Room A4",
+          "slot_id": "S0156"
+        },
+        {
+          "subject_id": "PFE-032",
+          "role": "encadreur",
+          "slot_label": "2026-06-15 09:15-10:15 Room A2",
+          "slot_id": "S0246"
+        },
+        {
+          "subject_id": "PFE-069",
+          "role": "president",
+          "slot_label": "2026-06-15 10:30-11:30 Room A2",
+          "slot_id": "S0250"
+        },
+        {
+          "subject_id": "PFE-043",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 11:45-12:45 Room A2",
+          "slot_id": "S0254"
+        },
+        {
+          "subject_id": "PFE-088",
+          "role": "encadreur",
+          "slot_label": "2026-06-18 10:30-11:30 Room A1",
+          "slot_id": "S0321"
+        },
+        {
+          "subject_id": "PFE-107",
+          "role": "encadreur",
+          "slot_label": "2026-06-19 10:30-11:30 Room A4",
+          "slot_id": "S0348"
+        },
+        {
+          "subject_id": "PFE-104",
+          "role": "president",
+          "slot_label": "2026-06-24 13:00-14:00 Room A2",
+          "slot_id": "S0426"
+        },
+        {
+          "subject_id": "PFE-087",
+          "role": "rapporteur",
+          "slot_label": "2026-06-29 10:30-11:30 Room A1",
+          "slot_id": "S0489"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T29",
+      "teacher_name": "Teacher 29",
+      "target_presentations": 10,
+      "preferred_sessions_count": 16,
+      "available_not_preferred_sessions_count": 18,
+      "preferred_sessions": [
+        "2026-06-02 13:00-14:00 Room A2",
+        "2026-06-03 09:15-10:15 Room A4",
+        "2026-06-04 14:15-15:15 Room A1",
+        "2026-06-08 08:00-09:00 Room A2",
+        "2026-06-09 10:30-11:30 Room A4",
+        "2026-06-09 11:45-12:45 Room A4",
+        "2026-06-16 10:30-11:30 Room A2",
+        "2026-06-16 11:45-12:45 Room A4",
+        "2026-06-16 13:00-14:00 Room A2",
+        "2026-06-18 10:30-11:30 Room A1",
+        "2026-06-19 09:15-10:15 Room A1",
+        "2026-06-19 11:45-12:45 Room A4",
+        "2026-06-22 10:30-11:30 Room A4",
+        "2026-06-23 10:30-11:30 Room A1",
+        "2026-06-25 13:00-14:00 Room A1",
+        "2026-06-29 11:45-12:45 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-01 13:00-14:00 Room A3",
+        "2026-06-01 14:15-15:15 Room A1",
+        "2026-06-02 09:15-10:15 Room A1",
+        "2026-06-03 11:45-12:45 Room A4",
+        "2026-06-04 11:45-12:45 Room A3",
+        "2026-06-05 13:00-14:00 Room A2",
+        "2026-06-08 09:15-10:15 Room A4",
+        "2026-06-09 08:00-09:00 Room A1",
+        "2026-06-09 09:15-10:15 Room A1",
+        "2026-06-09 10:30-11:30 Room A1",
+        "2026-06-09 13:00-14:00 Room A1",
+        "2026-06-10 10:30-11:30 Room A1",
+        "2026-06-16 14:15-15:15 Room A3",
+        "2026-06-17 08:00-09:00 Room A2",
+        "2026-06-17 13:00-14:00 Room A4",
+        "2026-06-19 08:00-09:00 Room A3",
+        "2026-06-22 10:30-11:30 Room A1",
+        "2026-06-25 10:30-11:30 Room A2"
+      ],
+      "assigned_total": 10,
+      "assigned_by_role": {
+        "encadreur": 4,
+        "rapporteur": 5,
+        "president": 1
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-110",
+          "role": "encadreur",
+          "slot_label": "2026-06-05 13:00-14:00 Room A2",
+          "slot_id": "S0114"
+        },
+        {
+          "subject_id": "PFE-082",
+          "role": "rapporteur",
+          "slot_label": "2026-06-08 09:15-10:15 Room A4",
+          "slot_id": "S0128"
+        },
+        {
+          "subject_id": "PFE-025",
+          "role": "encadreur",
+          "slot_label": "2026-06-09 10:30-11:30 Room A4",
+          "slot_id": "S0156"
+        },
+        {
+          "subject_id": "PFE-054",
+          "role": "encadreur",
+          "slot_label": "2026-06-09 11:45-12:45 Room A4",
+          "slot_id": "S0160"
+        },
+        {
+          "subject_id": "PFE-009",
+          "role": "president",
+          "slot_label": "2026-06-09 13:00-14:00 Room A1",
+          "slot_id": "S0161"
+        },
+        {
+          "subject_id": "PFE-079",
+          "role": "encadreur",
+          "slot_label": "2026-06-16 10:30-11:30 Room A2",
+          "slot_id": "S0274"
+        },
+        {
+          "subject_id": "PFE-088",
+          "role": "rapporteur",
+          "slot_label": "2026-06-18 10:30-11:30 Room A1",
+          "slot_id": "S0321"
+        },
+        {
+          "subject_id": "PFE-076",
+          "role": "rapporteur",
+          "slot_label": "2026-06-19 09:15-10:15 Room A1",
+          "slot_id": "S0341"
+        },
+        {
+          "subject_id": "PFE-098",
+          "role": "rapporteur",
+          "slot_label": "2026-06-19 11:45-12:45 Room A4",
+          "slot_id": "S0352"
+        },
+        {
+          "subject_id": "PFE-066",
+          "role": "rapporteur",
+          "slot_label": "2026-06-23 10:30-11:30 Room A1",
+          "slot_id": "S0393"
+        }
+      ]
+    },
+    {
+      "teacher_id": "T30",
+      "teacher_name": "Teacher 30",
+      "target_presentations": 6,
+      "preferred_sessions_count": 10,
+      "available_not_preferred_sessions_count": 6,
+      "preferred_sessions": [
+        "2026-06-03 13:00-14:00 Room A4",
+        "2026-06-04 10:30-11:30 Room A4",
+        "2026-06-08 11:45-12:45 Room A1",
+        "2026-06-08 11:45-12:45 Room A4",
+        "2026-06-12 10:30-11:30 Room A1",
+        "2026-06-12 13:00-14:00 Room A4",
+        "2026-06-16 13:00-14:00 Room A2",
+        "2026-06-17 10:30-11:30 Room A1",
+        "2026-06-24 14:15-15:15 Room A2",
+        "2026-06-29 13:00-14:00 Room A3"
+      ],
+      "available_not_preferred_sessions": [
+        "2026-06-12 11:45-12:45 Room A1",
+        "2026-06-15 09:15-10:15 Room A2",
+        "2026-06-15 10:30-11:30 Room A4",
+        "2026-06-16 11:45-12:45 Room A1",
+        "2026-06-17 08:00-09:00 Room A1",
+        "2026-06-19 10:30-11:30 Room A4"
+      ],
+      "assigned_total": 6,
+      "assigned_by_role": {
+        "encadreur": 2,
+        "rapporteur": 2,
+        "president": 2
+      },
+      "assigned_presentations": [
+        {
+          "subject_id": "PFE-037",
+          "role": "encadreur",
+          "slot_label": "2026-06-04 10:30-11:30 Room A4",
+          "slot_id": "S0084"
+        },
+        {
+          "subject_id": "PFE-073",
+          "role": "encadreur",
+          "slot_label": "2026-06-08 11:45-12:45 Room A1",
+          "slot_id": "S0133"
+        },
+        {
+          "subject_id": "PFE-053",
+          "role": "rapporteur",
+          "slot_label": "2026-06-12 11:45-12:45 Room A1",
+          "slot_id": "S0229"
+        },
+        {
+          "subject_id": "PFE-068",
+          "role": "rapporteur",
+          "slot_label": "2026-06-15 10:30-11:30 Room A4",
+          "slot_id": "S0252"
+        },
+        {
+          "subject_id": "PFE-101",
+          "role": "president",
+          "slot_label": "2026-06-17 08:00-09:00 Room A1",
+          "slot_id": "S0289"
+        },
+        {
+          "subject_id": "PFE-107",
+          "role": "president",
+          "slot_label": "2026-06-19 10:30-11:30 Room A4",
+          "slot_id": "S0348"
+        }
+      ]
+    }
+  ],
+  "unresolved": [],
+  "assignments": [
+    {
+      "subject_id": "PFE-001",
+      "title": "Sujet PFE 001",
+      "slot_id": "S0004",
+      "slot_label": "2026-06-01 08:00-09:00 Room A4",
+      "supervisor_id": "T06",
+      "rapporteur_id": "T22",
+      "president_id": "T19"
+    },
+    {
+      "subject_id": "PFE-002",
+      "title": "Sujet PFE 002",
+      "slot_id": "S0132",
+      "slot_label": "2026-06-08 10:30-11:30 Room A4",
+      "supervisor_id": "T16",
+      "rapporteur_id": "T09",
+      "president_id": "T17"
+    },
+    {
+      "subject_id": "PFE-003",
+      "title": "Sujet PFE 003",
+      "slot_id": "S0188",
+      "slot_label": "2026-06-10 13:00-14:00 Room A4",
+      "supervisor_id": "T23",
+      "rapporteur_id": "T12",
+      "president_id": "T09"
+    },
+    {
+      "subject_id": "PFE-004",
+      "title": "Sujet PFE 004",
+      "slot_id": "S0013",
+      "slot_label": "2026-06-01 11:45-12:45 Room A1",
+      "supervisor_id": "T04",
+      "rapporteur_id": "T10",
+      "president_id": "T17"
+    },
+    {
+      "subject_id": "PFE-005",
+      "title": "Sujet PFE 005",
+      "slot_id": "S0024",
+      "slot_label": "2026-06-01 14:15-15:15 Room A4",
+      "supervisor_id": "T10",
+      "rapporteur_id": "T28",
+      "president_id": "T14"
+    },
+    {
+      "subject_id": "PFE-006",
+      "title": "Sujet PFE 006",
+      "slot_id": "S0211",
+      "slot_label": "2026-06-11 13:00-14:00 Room A3",
+      "supervisor_id": "T16",
+      "rapporteur_id": "T20",
+      "president_id": "T07"
+    },
+    {
+      "subject_id": "PFE-007",
+      "title": "Sujet PFE 007",
+      "slot_id": "S0014",
+      "slot_label": "2026-06-01 11:45-12:45 Room A2",
+      "supervisor_id": "T24",
+      "rapporteur_id": "T11",
+      "president_id": "T25"
+    },
+    {
+      "subject_id": "PFE-008",
+      "title": "Sujet PFE 008",
+      "slot_id": "S0108",
+      "slot_label": "2026-06-05 10:30-11:30 Room A4",
+      "supervisor_id": "T22",
+      "rapporteur_id": "T19",
+      "president_id": "T16"
+    },
+    {
+      "subject_id": "PFE-009",
+      "title": "Sujet PFE 009",
+      "slot_id": "S0161",
+      "slot_label": "2026-06-09 13:00-14:00 Room A1",
+      "supervisor_id": "T04",
+      "rapporteur_id": "T01",
+      "president_id": "T29"
+    },
+    {
+      "subject_id": "PFE-010",
+      "title": "Sujet PFE 010",
+      "slot_id": "S0062",
+      "slot_label": "2026-06-03 11:45-12:45 Room A2",
+      "supervisor_id": "T01",
+      "rapporteur_id": "T12",
+      "president_id": "T24"
+    },
+    {
+      "subject_id": "PFE-011",
+      "title": "Sujet PFE 011",
+      "slot_id": "S0054",
+      "slot_label": "2026-06-03 09:15-10:15 Room A2",
+      "supervisor_id": "T26",
+      "rapporteur_id": "T18",
+      "president_id": "T21"
+    },
+    {
+      "subject_id": "PFE-012",
+      "title": "Sujet PFE 012",
+      "slot_id": "S0230",
+      "slot_label": "2026-06-12 11:45-12:45 Room A2",
+      "supervisor_id": "T27",
+      "rapporteur_id": "T01",
+      "president_id": "T15"
+    },
+    {
+      "subject_id": "PFE-013",
+      "title": "Sujet PFE 013",
+      "slot_id": "S0058",
+      "slot_label": "2026-06-03 10:30-11:30 Room A2",
+      "supervisor_id": "T28",
+      "rapporteur_id": "T08",
+      "president_id": "T15"
+    },
+    {
+      "subject_id": "PFE-014",
+      "title": "Sujet PFE 014",
+      "slot_id": "S0063",
+      "slot_label": "2026-06-03 11:45-12:45 Room A3",
+      "supervisor_id": "T01",
+      "rapporteur_id": "T24",
+      "president_id": "T04"
+    },
+    {
+      "subject_id": "PFE-015",
+      "title": "Sujet PFE 015",
+      "slot_id": "S0081",
+      "slot_label": "2026-06-04 10:30-11:30 Room A1",
+      "supervisor_id": "T28",
+      "rapporteur_id": "T05",
+      "president_id": "T10"
+    },
+    {
+      "subject_id": "PFE-016",
+      "title": "Sujet PFE 016",
+      "slot_id": "S0154",
+      "slot_label": "2026-06-09 10:30-11:30 Room A2",
+      "supervisor_id": "T28",
+      "rapporteur_id": "T21",
+      "president_id": "T17"
+    },
+    {
+      "subject_id": "PFE-017",
+      "title": "Sujet PFE 017",
+      "slot_id": "S0090",
+      "slot_label": "2026-06-04 13:00-14:00 Room A2",
+      "supervisor_id": "T01",
+      "rapporteur_id": "T25",
+      "president_id": "T09"
+    },
+    {
+      "subject_id": "PFE-018",
+      "title": "Sujet PFE 018",
+      "slot_id": "S0130",
+      "slot_label": "2026-06-08 10:30-11:30 Room A2",
+      "supervisor_id": "T15",
+      "rapporteur_id": "T02",
+      "president_id": "T06"
+    },
+    {
+      "subject_id": "PFE-019",
+      "title": "Sujet PFE 019",
+      "slot_id": "S0167",
+      "slot_label": "2026-06-09 14:15-15:15 Room A3",
+      "supervisor_id": "T20",
+      "rapporteur_id": "T03",
+      "president_id": "T25"
+    },
+    {
+      "subject_id": "PFE-020",
+      "title": "Sujet PFE 020",
+      "slot_id": "S0005",
+      "slot_label": "2026-06-01 09:15-10:15 Room A1",
+      "supervisor_id": "T09",
+      "rapporteur_id": "T19",
+      "president_id": "T06"
+    },
+    {
+      "subject_id": "PFE-021",
+      "title": "Sujet PFE 021",
+      "slot_id": "S0020",
+      "slot_label": "2026-06-01 13:00-14:00 Room A4",
+      "supervisor_id": "T19",
+      "rapporteur_id": "T11",
+      "president_id": "T18"
+    },
+    {
+      "subject_id": "PFE-022",
+      "title": "Sujet PFE 022",
+      "slot_id": "S0044",
+      "slot_label": "2026-06-02 13:00-14:00 Room A4",
+      "supervisor_id": "T08",
+      "rapporteur_id": "T10",
+      "president_id": "T21"
+    },
+    {
+      "subject_id": "PFE-023",
+      "title": "Sujet PFE 023",
+      "slot_id": "S0203",
+      "slot_label": "2026-06-11 10:30-11:30 Room A3",
+      "supervisor_id": "T10",
+      "rapporteur_id": "T21",
+      "president_id": "T17"
+    },
+    {
+      "subject_id": "PFE-024",
+      "title": "Sujet PFE 024",
+      "slot_id": "S0073",
+      "slot_label": "2026-06-04 08:00-09:00 Room A1",
+      "supervisor_id": "T26",
+      "rapporteur_id": "T05",
+      "president_id": "T10"
+    },
+    {
+      "subject_id": "PFE-025",
+      "title": "Sujet PFE 025",
+      "slot_id": "S0156",
+      "slot_label": "2026-06-09 10:30-11:30 Room A4",
+      "supervisor_id": "T29",
+      "rapporteur_id": "T08",
+      "president_id": "T28"
+    },
+    {
+      "subject_id": "PFE-026",
+      "title": "Sujet PFE 026",
+      "slot_id": "S0094",
+      "slot_label": "2026-06-04 14:15-15:15 Room A2",
+      "supervisor_id": "T05",
+      "rapporteur_id": "T02",
+      "president_id": "T21"
+    },
+    {
+      "subject_id": "PFE-027",
+      "title": "Sujet PFE 027",
+      "slot_id": "S0175",
+      "slot_label": "2026-06-10 09:15-10:15 Room A3",
+      "supervisor_id": "T05",
+      "rapporteur_id": "T13",
+      "president_id": "T26"
+    },
+    {
+      "subject_id": "PFE-028",
+      "title": "Sujet PFE 028",
+      "slot_id": "S0016",
+      "slot_label": "2026-06-01 11:45-12:45 Room A4",
+      "supervisor_id": "T02",
+      "rapporteur_id": "T07",
+      "president_id": "T06"
+    },
+    {
+      "subject_id": "PFE-029",
+      "title": "Sujet PFE 029",
+      "slot_id": "S0135",
+      "slot_label": "2026-06-08 11:45-12:45 Room A3",
+      "supervisor_id": "T01",
+      "rapporteur_id": "T04",
+      "president_id": "T15"
+    },
+    {
+      "subject_id": "PFE-030",
+      "title": "Sujet PFE 030",
+      "slot_id": "S0243",
+      "slot_label": "2026-06-15 08:00-09:00 Room A3",
+      "supervisor_id": "T27",
+      "rapporteur_id": "T05",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-031",
+      "title": "Sujet PFE 031",
+      "slot_id": "S0232",
+      "slot_label": "2026-06-12 11:45-12:45 Room A4",
+      "supervisor_id": "T10",
+      "rapporteur_id": "T23",
+      "president_id": "T07"
+    },
+    {
+      "subject_id": "PFE-032",
+      "title": "Sujet PFE 032",
+      "slot_id": "S0246",
+      "slot_label": "2026-06-15 09:15-10:15 Room A2",
+      "supervisor_id": "T28",
+      "rapporteur_id": "T27",
+      "president_id": "T16"
+    },
+    {
+      "subject_id": "PFE-033",
+      "title": "Sujet PFE 033",
+      "slot_id": "S0031",
+      "slot_label": "2026-06-02 09:15-10:15 Room A3",
+      "supervisor_id": "T19",
+      "rapporteur_id": "T24",
+      "president_id": "T26"
+    },
+    {
+      "subject_id": "PFE-034",
+      "title": "Sujet PFE 034",
+      "slot_id": "S0017",
+      "slot_label": "2026-06-01 13:00-14:00 Room A1",
+      "supervisor_id": "T07",
+      "rapporteur_id": "T08",
+      "president_id": "T01"
+    },
+    {
+      "subject_id": "PFE-035",
+      "title": "Sujet PFE 035",
+      "slot_id": "S0043",
+      "slot_label": "2026-06-02 13:00-14:00 Room A3",
+      "supervisor_id": "T03",
+      "rapporteur_id": "T06",
+      "president_id": "T19"
+    },
+    {
+      "subject_id": "PFE-036",
+      "title": "Sujet PFE 036",
+      "slot_id": "S0040",
+      "slot_label": "2026-06-02 11:45-12:45 Room A4",
+      "supervisor_id": "T09",
+      "rapporteur_id": "T03",
+      "president_id": "T04"
+    },
+    {
+      "subject_id": "PFE-037",
+      "title": "Sujet PFE 037",
+      "slot_id": "S0084",
+      "slot_label": "2026-06-04 10:30-11:30 Room A4",
+      "supervisor_id": "T30",
+      "rapporteur_id": "T02",
+      "president_id": "T13"
+    },
+    {
+      "subject_id": "PFE-038",
+      "title": "Sujet PFE 038",
+      "slot_id": "S0244",
+      "slot_label": "2026-06-15 08:00-09:00 Room A4",
+      "supervisor_id": "T27",
+      "rapporteur_id": "T13",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-039",
+      "title": "Sujet PFE 039",
+      "slot_id": "S0059",
+      "slot_label": "2026-06-03 10:30-11:30 Room A3",
+      "supervisor_id": "T21",
+      "rapporteur_id": "T14",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-040",
+      "title": "Sujet PFE 040",
+      "slot_id": "S0218",
+      "slot_label": "2026-06-12 08:00-09:00 Room A2",
+      "supervisor_id": "T09",
+      "rapporteur_id": "T22",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-041",
+      "title": "Sujet PFE 041",
+      "slot_id": "S0003",
+      "slot_label": "2026-06-01 08:00-09:00 Room A3",
+      "supervisor_id": "T11",
+      "rapporteur_id": "T25",
+      "president_id": "T28"
+    },
+    {
+      "subject_id": "PFE-042",
+      "title": "Sujet PFE 042",
+      "slot_id": "S0111",
+      "slot_label": "2026-06-05 11:45-12:45 Room A3",
+      "supervisor_id": "T03",
+      "rapporteur_id": "T18",
+      "president_id": "T01"
+    },
+    {
+      "subject_id": "PFE-043",
+      "title": "Sujet PFE 043",
+      "slot_id": "S0254",
+      "slot_label": "2026-06-15 11:45-12:45 Room A2",
+      "supervisor_id": "T06",
+      "rapporteur_id": "T28",
+      "president_id": "T23"
+    },
+    {
+      "subject_id": "PFE-044",
+      "title": "Sujet PFE 044",
+      "slot_id": "S0101",
+      "slot_label": "2026-06-05 09:15-10:15 Room A1",
+      "supervisor_id": "T11",
+      "rapporteur_id": "T19",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-045",
+      "title": "Sujet PFE 045",
+      "slot_id": "S0249",
+      "slot_label": "2026-06-15 10:30-11:30 Room A1",
+      "supervisor_id": "T14",
+      "rapporteur_id": "T03",
+      "president_id": "T23"
+    },
+    {
+      "subject_id": "PFE-046",
+      "title": "Sujet PFE 046",
+      "slot_id": "S0247",
+      "slot_label": "2026-06-15 09:15-10:15 Room A3",
+      "supervisor_id": "T03",
+      "rapporteur_id": "T08",
+      "president_id": "T01"
+    },
+    {
+      "subject_id": "PFE-047",
+      "title": "Sujet PFE 047",
+      "slot_id": "S0272",
+      "slot_label": "2026-06-16 09:15-10:15 Room A4",
+      "supervisor_id": "T25",
+      "rapporteur_id": "T18",
+      "president_id": "T07"
+    },
+    {
+      "subject_id": "PFE-048",
+      "title": "Sujet PFE 048",
+      "slot_id": "S0080",
+      "slot_label": "2026-06-04 09:15-10:15 Room A4",
+      "supervisor_id": "T26",
+      "rapporteur_id": "T12",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-049",
+      "title": "Sujet PFE 049",
+      "slot_id": "S0200",
+      "slot_label": "2026-06-11 09:15-10:15 Room A4",
+      "supervisor_id": "T05",
+      "rapporteur_id": "T17",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-050",
+      "title": "Sujet PFE 050",
+      "slot_id": "S0174",
+      "slot_label": "2026-06-10 09:15-10:15 Room A2",
+      "supervisor_id": "T18",
+      "rapporteur_id": "T17",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-051",
+      "title": "Sujet PFE 051",
+      "slot_id": "S0010",
+      "slot_label": "2026-06-01 10:30-11:30 Room A2",
+      "supervisor_id": "T12",
+      "rapporteur_id": "T09",
+      "president_id": "T28"
+    },
+    {
+      "subject_id": "PFE-052",
+      "title": "Sujet PFE 052",
+      "slot_id": "S0123",
+      "slot_label": "2026-06-08 08:00-09:00 Room A3",
+      "supervisor_id": "T08",
+      "rapporteur_id": "T13",
+      "president_id": "T06"
+    },
+    {
+      "subject_id": "PFE-053",
+      "title": "Sujet PFE 053",
+      "slot_id": "S0229",
+      "slot_label": "2026-06-12 11:45-12:45 Room A1",
+      "supervisor_id": "T04",
+      "rapporteur_id": "T30",
+      "president_id": "T07"
+    },
+    {
+      "subject_id": "PFE-054",
+      "title": "Sujet PFE 054",
+      "slot_id": "S0160",
+      "slot_label": "2026-06-09 11:45-12:45 Room A4",
+      "supervisor_id": "T29",
+      "rapporteur_id": "T06",
+      "president_id": "T09"
+    },
+    {
+      "subject_id": "PFE-055",
+      "title": "Sujet PFE 055",
+      "slot_id": "S0253",
+      "slot_label": "2026-06-15 11:45-12:45 Room A1",
+      "supervisor_id": "T27",
+      "rapporteur_id": "T12",
+      "president_id": "T03"
+    },
+    {
+      "subject_id": "PFE-056",
+      "title": "Sujet PFE 056",
+      "slot_id": "S0359",
+      "slot_label": "2026-06-19 14:15-15:15 Room A3",
+      "supervisor_id": "T25",
+      "rapporteur_id": "T07",
+      "president_id": "T13"
+    },
+    {
+      "subject_id": "PFE-057",
+      "title": "Sujet PFE 057",
+      "slot_id": "S0317",
+      "slot_label": "2026-06-18 09:15-10:15 Room A1",
+      "supervisor_id": "T01",
+      "rapporteur_id": "T16",
+      "president_id": "T03"
+    },
+    {
+      "subject_id": "PFE-058",
+      "title": "Sujet PFE 058",
+      "slot_id": "S0306",
+      "slot_label": "2026-06-17 13:00-14:00 Room A2",
+      "supervisor_id": "T03",
+      "rapporteur_id": "T05",
+      "president_id": "T10"
+    },
+    {
+      "subject_id": "PFE-059",
+      "title": "Sujet PFE 059",
+      "slot_id": "S0217",
+      "slot_label": "2026-06-12 08:00-09:00 Room A1",
+      "supervisor_id": "T24",
+      "rapporteur_id": "T12",
+      "president_id": "T05"
+    },
+    {
+      "subject_id": "PFE-060",
+      "title": "Sujet PFE 060",
+      "slot_id": "S0416",
+      "slot_label": "2026-06-24 09:15-10:15 Room A4",
+      "supervisor_id": "T09",
+      "rapporteur_id": "T15",
+      "president_id": "T12"
+    },
+    {
+      "subject_id": "PFE-061",
+      "title": "Sujet PFE 061",
+      "slot_id": "S0303",
+      "slot_label": "2026-06-17 11:45-12:45 Room A3",
+      "supervisor_id": "T26",
+      "rapporteur_id": "T17",
+      "president_id": "T07"
+    },
+    {
+      "subject_id": "PFE-062",
+      "title": "Sujet PFE 062",
+      "slot_id": "S0263",
+      "slot_label": "2026-06-15 14:15-15:15 Room A3",
+      "supervisor_id": "T20",
+      "rapporteur_id": "T21",
+      "president_id": "T19"
+    },
+    {
+      "subject_id": "PFE-063",
+      "title": "Sujet PFE 063",
+      "slot_id": "S0138",
+      "slot_label": "2026-06-08 13:00-14:00 Room A2",
+      "supervisor_id": "T19",
+      "rapporteur_id": "T17",
+      "president_id": "T27"
+    },
+    {
+      "subject_id": "PFE-064",
+      "title": "Sujet PFE 064",
+      "slot_id": "S0258",
+      "slot_label": "2026-06-15 13:00-14:00 Room A2",
+      "supervisor_id": "T08",
+      "rapporteur_id": "T15",
+      "president_id": "T04"
+    },
+    {
+      "subject_id": "PFE-065",
+      "title": "Sujet PFE 065",
+      "slot_id": "S0271",
+      "slot_label": "2026-06-16 09:15-10:15 Room A3",
+      "supervisor_id": "T06",
+      "rapporteur_id": "T22",
+      "president_id": "T20"
+    },
+    {
+      "subject_id": "PFE-066",
+      "title": "Sujet PFE 066",
+      "slot_id": "S0393",
+      "slot_label": "2026-06-23 10:30-11:30 Room A1",
+      "supervisor_id": "T19",
+      "rapporteur_id": "T29",
+      "president_id": "T04"
+    },
+    {
+      "subject_id": "PFE-067",
+      "title": "Sujet PFE 067",
+      "slot_id": "S0441",
+      "slot_label": "2026-06-25 10:30-11:30 Room A1",
+      "supervisor_id": "T26",
+      "rapporteur_id": "T23",
+      "president_id": "T25"
+    },
+    {
+      "subject_id": "PFE-068",
+      "title": "Sujet PFE 068",
+      "slot_id": "S0252",
+      "slot_label": "2026-06-15 10:30-11:30 Room A4",
+      "supervisor_id": "T04",
+      "rapporteur_id": "T30",
+      "president_id": "T07"
+    },
+    {
+      "subject_id": "PFE-069",
+      "title": "Sujet PFE 069",
+      "slot_id": "S0250",
+      "slot_label": "2026-06-15 10:30-11:30 Room A2",
+      "supervisor_id": "T13",
+      "rapporteur_id": "T18",
+      "president_id": "T28"
+    },
+    {
+      "subject_id": "PFE-070",
+      "title": "Sujet PFE 070",
+      "slot_id": "S0322",
+      "slot_label": "2026-06-18 10:30-11:30 Room A2",
+      "supervisor_id": "T20",
+      "rapporteur_id": "T26",
+      "president_id": "T17"
+    },
+    {
+      "subject_id": "PFE-071",
+      "title": "Sujet PFE 071",
+      "slot_id": "S0231",
+      "slot_label": "2026-06-12 11:45-12:45 Room A3",
+      "supervisor_id": "T24",
+      "rapporteur_id": "T05",
+      "president_id": "T10"
+    },
+    {
+      "subject_id": "PFE-072",
+      "title": "Sujet PFE 072",
+      "slot_id": "S0328",
+      "slot_label": "2026-06-18 11:45-12:45 Room A4",
+      "supervisor_id": "T06",
+      "rapporteur_id": "T17",
+      "president_id": "T05"
+    },
+    {
+      "subject_id": "PFE-073",
+      "title": "Sujet PFE 073",
+      "slot_id": "S0133",
+      "slot_label": "2026-06-08 11:45-12:45 Room A1",
+      "supervisor_id": "T30",
+      "rapporteur_id": "T18",
+      "president_id": "T12"
+    },
+    {
+      "subject_id": "PFE-074",
+      "title": "Sujet PFE 074",
+      "slot_id": "S0383",
+      "slot_label": "2026-06-22 14:15-15:15 Room A3",
+      "supervisor_id": "T03",
+      "rapporteur_id": "T10",
+      "president_id": "T17"
+    },
+    {
+      "subject_id": "PFE-075",
+      "title": "Sujet PFE 075",
+      "slot_id": "S0277",
+      "slot_label": "2026-06-16 11:45-12:45 Room A1",
+      "supervisor_id": "T14",
+      "rapporteur_id": "T24",
+      "president_id": "T07"
+    },
+    {
+      "subject_id": "PFE-076",
+      "title": "Sujet PFE 076",
+      "slot_id": "S0341",
+      "slot_label": "2026-06-19 09:15-10:15 Room A1",
+      "supervisor_id": "T06",
+      "rapporteur_id": "T29",
+      "president_id": "T23"
+    },
+    {
+      "subject_id": "PFE-077",
+      "title": "Sujet PFE 077",
+      "slot_id": "S0196",
+      "slot_label": "2026-06-11 08:00-09:00 Room A4",
+      "supervisor_id": "T11",
+      "rapporteur_id": "T02",
+      "president_id": "T21"
+    },
+    {
+      "subject_id": "PFE-078",
+      "title": "Sujet PFE 078",
+      "slot_id": "S0298",
+      "slot_label": "2026-06-17 10:30-11:30 Room A2",
+      "supervisor_id": "T19",
+      "rapporteur_id": "T13",
+      "president_id": "T23"
+    },
+    {
+      "subject_id": "PFE-079",
+      "title": "Sujet PFE 079",
+      "slot_id": "S0274",
+      "slot_label": "2026-06-16 10:30-11:30 Room A2",
+      "supervisor_id": "T29",
+      "rapporteur_id": "T23",
+      "president_id": "T05"
+    },
+    {
+      "subject_id": "PFE-080",
+      "title": "Sujet PFE 080",
+      "slot_id": "S0100",
+      "slot_label": "2026-06-05 08:00-09:00 Room A4",
+      "supervisor_id": "T07",
+      "rapporteur_id": "T27",
+      "president_id": "T24"
+    },
+    {
+      "subject_id": "PFE-081",
+      "title": "Sujet PFE 081",
+      "slot_id": "S0356",
+      "slot_label": "2026-06-19 13:00-14:00 Room A4",
+      "supervisor_id": "T12",
+      "rapporteur_id": "T16",
+      "president_id": "T06"
+    },
+    {
+      "subject_id": "PFE-082",
+      "title": "Sujet PFE 082",
+      "slot_id": "S0128",
+      "slot_label": "2026-06-08 09:15-10:15 Room A4",
+      "supervisor_id": "T21",
+      "rapporteur_id": "T29",
+      "president_id": "T06"
+    },
+    {
+      "subject_id": "PFE-083",
+      "title": "Sujet PFE 083",
+      "slot_id": "S0210",
+      "slot_label": "2026-06-11 13:00-14:00 Room A2",
+      "supervisor_id": "T23",
+      "rapporteur_id": "T05",
+      "president_id": "T18"
+    },
+    {
+      "subject_id": "PFE-084",
+      "title": "Sujet PFE 084",
+      "slot_id": "S0476",
+      "slot_label": "2026-06-26 13:00-14:00 Room A4",
+      "supervisor_id": "T03",
+      "rapporteur_id": "T14",
+      "president_id": "T23"
+    },
+    {
+      "subject_id": "PFE-085",
+      "title": "Sujet PFE 085",
+      "slot_id": "S0259",
+      "slot_label": "2026-06-15 13:00-14:00 Room A3",
+      "supervisor_id": "T04",
+      "rapporteur_id": "T08",
+      "president_id": "T20"
+    },
+    {
+      "subject_id": "PFE-086",
+      "title": "Sujet PFE 086",
+      "slot_id": "S0323",
+      "slot_label": "2026-06-18 10:30-11:30 Room A3",
+      "supervisor_id": "T22",
+      "rapporteur_id": "T01",
+      "president_id": "T05"
+    },
+    {
+      "subject_id": "PFE-087",
+      "title": "Sujet PFE 087",
+      "slot_id": "S0489",
+      "slot_label": "2026-06-29 10:30-11:30 Room A1",
+      "supervisor_id": "T26",
+      "rapporteur_id": "T28",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-088",
+      "title": "Sujet PFE 088",
+      "slot_id": "S0321",
+      "slot_label": "2026-06-18 10:30-11:30 Room A1",
+      "supervisor_id": "T28",
+      "rapporteur_id": "T29",
+      "president_id": "T05"
+    },
+    {
+      "subject_id": "PFE-089",
+      "title": "Sujet PFE 089",
+      "slot_id": "S0286",
+      "slot_label": "2026-06-16 14:15-15:15 Room A2",
+      "supervisor_id": "T07",
+      "rapporteur_id": "T16",
+      "president_id": "T18"
+    },
+    {
+      "subject_id": "PFE-090",
+      "title": "Sujet PFE 090",
+      "slot_id": "S0183",
+      "slot_label": "2026-06-10 11:45-12:45 Room A3",
+      "supervisor_id": "T18",
+      "rapporteur_id": "T20",
+      "president_id": "T05"
+    },
+    {
+      "subject_id": "PFE-091",
+      "title": "Sujet PFE 091",
+      "slot_id": "S0377",
+      "slot_label": "2026-06-22 13:00-14:00 Room A1",
+      "supervisor_id": "T12",
+      "rapporteur_id": "T20",
+      "president_id": "T27"
+    },
+    {
+      "subject_id": "PFE-092",
+      "title": "Sujet PFE 092",
+      "slot_id": "S0358",
+      "slot_label": "2026-06-19 14:15-15:15 Room A2",
+      "supervisor_id": "T07",
+      "rapporteur_id": "T08",
+      "president_id": "T12"
+    },
+    {
+      "subject_id": "PFE-093",
+      "title": "Sujet PFE 093",
+      "slot_id": "S0460",
+      "slot_label": "2026-06-26 08:00-09:00 Room A4",
+      "supervisor_id": "T18",
+      "rapporteur_id": "T04",
+      "president_id": "T05"
+    },
+    {
+      "subject_id": "PFE-094",
+      "title": "Sujet PFE 094",
+      "slot_id": "S0384",
+      "slot_label": "2026-06-22 14:15-15:15 Room A4",
+      "supervisor_id": "T07",
+      "rapporteur_id": "T13",
+      "president_id": "T10"
+    },
+    {
+      "subject_id": "PFE-095",
+      "title": "Sujet PFE 095",
+      "slot_id": "S0366",
+      "slot_label": "2026-06-22 09:15-10:15 Room A2",
+      "supervisor_id": "T01",
+      "rapporteur_id": "T25",
+      "president_id": "T23"
+    },
+    {
+      "subject_id": "PFE-096",
+      "title": "Sujet PFE 096",
+      "slot_id": "S0418",
+      "slot_label": "2026-06-24 10:30-11:30 Room A2",
+      "supervisor_id": "T09",
+      "rapporteur_id": "T23",
+      "president_id": "T01"
+    },
+    {
+      "subject_id": "PFE-097",
+      "title": "Sujet PFE 097",
+      "slot_id": "S0336",
+      "slot_label": "2026-06-18 14:15-15:15 Room A4",
+      "supervisor_id": "T02",
+      "rapporteur_id": "T04",
+      "president_id": "T10"
+    },
+    {
+      "subject_id": "PFE-098",
+      "title": "Sujet PFE 098",
+      "slot_id": "S0352",
+      "slot_label": "2026-06-19 11:45-12:45 Room A4",
+      "supervisor_id": "T20",
+      "rapporteur_id": "T29",
+      "president_id": "T12"
+    },
+    {
+      "subject_id": "PFE-099",
+      "title": "Sujet PFE 099",
+      "slot_id": "S0375",
+      "slot_label": "2026-06-22 11:45-12:45 Room A3",
+      "supervisor_id": "T27",
+      "rapporteur_id": "T26",
+      "president_id": "T20"
+    },
+    {
+      "subject_id": "PFE-100",
+      "title": "Sujet PFE 100",
+      "slot_id": "S0479",
+      "slot_label": "2026-06-26 14:15-15:15 Room A3",
+      "supervisor_id": "T03",
+      "rapporteur_id": "T06",
+      "president_id": "T01"
+    },
+    {
+      "subject_id": "PFE-101",
+      "title": "Sujet PFE 101",
+      "slot_id": "S0289",
+      "slot_label": "2026-06-17 08:00-09:00 Room A1",
+      "supervisor_id": "T14",
+      "rapporteur_id": "T21",
+      "president_id": "T30"
+    },
+    {
+      "subject_id": "PFE-102",
+      "title": "Sujet PFE 102",
+      "slot_id": "S0310",
+      "slot_label": "2026-06-17 14:15-15:15 Room A2",
+      "supervisor_id": "T21",
+      "rapporteur_id": "T10",
+      "president_id": "T19"
+    },
+    {
+      "subject_id": "PFE-103",
+      "title": "Sujet PFE 103",
+      "slot_id": "S0439",
+      "slot_label": "2026-06-25 09:15-10:15 Room A3",
+      "supervisor_id": "T22",
+      "rapporteur_id": "T25",
+      "president_id": "T20"
+    },
+    {
+      "subject_id": "PFE-104",
+      "title": "Sujet PFE 104",
+      "slot_id": "S0426",
+      "slot_label": "2026-06-24 13:00-14:00 Room A2",
+      "supervisor_id": "T27",
+      "rapporteur_id": "T18",
+      "president_id": "T28"
+    },
+    {
+      "subject_id": "PFE-105",
+      "title": "Sujet PFE 105",
+      "slot_id": "S0292",
+      "slot_label": "2026-06-17 08:00-09:00 Room A4",
+      "supervisor_id": "T16",
+      "rapporteur_id": "T15",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-106",
+      "title": "Sujet PFE 106",
+      "slot_id": "S0440",
+      "slot_label": "2026-06-25 09:15-10:15 Room A4",
+      "supervisor_id": "T01",
+      "rapporteur_id": "T27",
+      "president_id": "T19"
+    },
+    {
+      "subject_id": "PFE-107",
+      "title": "Sujet PFE 107",
+      "slot_id": "S0348",
+      "slot_label": "2026-06-19 10:30-11:30 Room A4",
+      "supervisor_id": "T28",
+      "rapporteur_id": "T08",
+      "president_id": "T30"
+    },
+    {
+      "subject_id": "PFE-108",
+      "title": "Sujet PFE 108",
+      "slot_id": "S0112",
+      "slot_label": "2026-06-05 11:45-12:45 Room A4",
+      "supervisor_id": "T11",
+      "rapporteur_id": "T17",
+      "president_id": "T01"
+    },
+    {
+      "subject_id": "PFE-109",
+      "title": "Sujet PFE 109",
+      "slot_id": "S0406",
+      "slot_label": "2026-06-23 14:15-15:15 Room A2",
+      "supervisor_id": "T14",
+      "rapporteur_id": "T17",
+      "president_id": "T06"
+    },
+    {
+      "subject_id": "PFE-110",
+      "title": "Sujet PFE 110",
+      "slot_id": "S0114",
+      "slot_label": "2026-06-05 13:00-14:00 Room A2",
+      "supervisor_id": "T29",
+      "rapporteur_id": "T18",
+      "president_id": "T08"
+    },
+    {
+      "subject_id": "PFE-111",
+      "title": "Sujet PFE 111",
+      "slot_id": "S0273",
+      "slot_label": "2026-06-16 10:30-11:30 Room A1",
+      "supervisor_id": "T13",
+      "rapporteur_id": "T26",
+      "president_id": "T10"
+    },
+    {
+      "subject_id": "PFE-112",
+      "title": "Sujet PFE 112",
+      "slot_id": "S0381",
+      "slot_label": "2026-06-22 14:15-15:15 Room A1",
+      "supervisor_id": "T10",
+      "rapporteur_id": "T16",
+      "president_id": "T21"
+    }
+  ]
+}

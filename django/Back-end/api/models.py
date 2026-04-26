@@ -26,6 +26,12 @@ class AvailabilityContext(models.TextChoices):
     PFE = "pfe"
 
 
+class AvailabilityLevel(models.TextChoices):
+    PREFERRED = "preferred"
+    AVAILABLE = "available"
+    UNAVAILABLE = "unavailable"
+
+
 class JuryRole(models.TextChoices):
     ENCADREUR = "encadreur"
     RAPPORTEUR = "rapporteur"
@@ -106,7 +112,7 @@ class Teachers(models.Model):
     age = models.IntegerField(validators=[MinValueValidator(23), MaxValueValidator(65)])
 
     class Meta:
-        managed=False
+        
         db_table = 'teachers'
 
 # Classes Table
@@ -144,7 +150,7 @@ class Classes(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        managed=False
+        
         db_table = 'classes'
 
 # Students Table
@@ -155,7 +161,7 @@ class Students(models.Model):
     access_status = models.BooleanField(default=True)
 
     class Meta:
-        managed=False
+        
         db_table = 'students'
 
 # Schedules Table
@@ -170,7 +176,7 @@ class Schedules(models.Model):
     subject = models.TextField()
 
     class Meta:
-        managed=False
+        
         db_table = 'schedules'
 
     def duration_hours(self):
@@ -217,15 +223,15 @@ class Posts(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed=False
+        
         db_table = 'posts'
 
 
 class Attendance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    student = models.ForeignKey(Students, models.CASCADE)
-    schedule = models.ForeignKey(Schedules, models.CASCADE)
-    session_date = models.DateField()
+    student = models.ForeignKey(Students, models.CASCADE, null=True, blank=True)
+    schedule = models.ForeignKey(Schedules, models.CASCADE, null=True, blank=True)
+    session_date = models.DateField(null=True, blank=True)
     status = models.BooleanField(blank=True, null=True)
     marked_at = models.DateTimeField(auto_now_add=True)
     marked_by = models.ForeignKey(Users, models.CASCADE, blank=True, null=True)
@@ -270,18 +276,94 @@ class ForumAnswers(models.Model):
         db_table = 'forum_answers'
 
 
+class PFECampaigns(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    department = models.ForeignKey(Departments, models.CASCADE, related_name='pfe_campaigns')
+    name = models.CharField(max_length=160)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    day_start_time = models.TimeField()
+    day_end_time = models.TimeField()
+    slot_duration_minutes = models.PositiveIntegerField(default=60)
+    break_duration_minutes = models.PositiveIntegerField(default=15)
+    weekdays = models.JSONField(default=list, blank=True)
+    daily_cap_per_teacher = models.PositiveIntegerField(null=True, blank=True)
+    head_can_start = models.BooleanField(default=False)
+    availability_open = models.BooleanField(default=False)
+    schedule_generated = models.BooleanField(default=False)
+    generated_at = models.DateTimeField(null=True, blank=True)
+    is_active = models.BooleanField(default=False)
+    created_by = models.ForeignKey(Users, models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'pfe_campaigns'
+
+
+class PFECampaignRooms(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    campaign = models.ForeignKey(PFECampaigns, models.CASCADE, related_name='rooms')
+    room_name = models.CharField(max_length=120)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'pfe_campaign_rooms'
+        unique_together = (('campaign', 'room_name'),)
+
+
+class PFETeacherQuotaOverrides(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    campaign = models.ForeignKey(PFECampaigns, models.CASCADE, related_name='teacher_quota_overrides')
+    teacher = models.ForeignKey('Teachers', models.CASCADE, db_column='teacher_id', related_name='pfe_quota_overrides')
+    target_presentations = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'pfe_teacher_quota_overrides'
+        unique_together = (('campaign', 'teacher'),)
+
+
 class TeacherAvailabilities(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     teacher = models.ForeignKey(Teachers, models.CASCADE, db_column='teacher_id', related_name='availabilities')
     context = models.CharField(max_length=20, choices=AvailabilityContext.choices)
+    campaign = models.ForeignKey(PFECampaigns, models.CASCADE, null=True, blank=True, related_name='weekly_availabilities')
     day_of_week = models.CharField(max_length=10, choices=WeekDay.choices)
     start_time = models.TimeField()
     end_time = models.TimeField()
+    level = models.CharField(max_length=20, choices=AvailabilityLevel.choices, default=AvailabilityLevel.AVAILABLE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'teacher_availabilities'
-        unique_together = (('teacher', 'context', 'day_of_week', 'start_time', 'end_time'),)
+        unique_together = (('teacher', 'context', 'campaign', 'day_of_week', 'start_time', 'end_time'),)
+
+
+class TeacherAvailabilityDateExceptions(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    teacher = models.ForeignKey(Teachers, models.CASCADE, db_column='teacher_id', related_name='availability_date_exceptions')
+    context = models.CharField(max_length=20, choices=AvailabilityContext.choices)
+    campaign = models.ForeignKey(PFECampaigns, models.CASCADE, null=True, blank=True, related_name='date_exceptions')
+    availability_date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    level = models.CharField(max_length=20, choices=AvailabilityLevel.choices, default=AvailabilityLevel.AVAILABLE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'teacher_availability_date_exceptions'
+        unique_together = (
+            (
+                'teacher',
+                'context',
+                'campaign',
+                'availability_date',
+                'start_time',
+                'end_time',
+            ),
+        )
 
 
 class ExamSessions(models.Model):
@@ -321,8 +403,11 @@ class PFESubjects(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)
     student_name = models.CharField(max_length=150)
+    student = models.ForeignKey(Students, models.SET_NULL, null=True, blank=True, db_column='student_id', related_name='pfe_subjects')
     supervisor = models.ForeignKey(Teachers, models.CASCADE, db_column='supervisor_id', related_name='supervised_pfe_subjects')
     created_by = models.ForeignKey(Users, models.SET_NULL, null=True, blank=True)
+    description = models.TextField(blank=True, null=True)
+    department = models.ForeignKey(Departments, models.SET_NULL, null=True, blank=True, related_name='pfe_subjects_list')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -335,6 +420,7 @@ class PFEPresentationSlots(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     room = models.CharField(max_length=120)
+    campaign = models.ForeignKey(PFECampaigns, models.SET_NULL, null=True, blank=True, related_name='presentation_slots')
     created_by = models.ForeignKey(Users, models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

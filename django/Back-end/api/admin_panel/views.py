@@ -17,6 +17,8 @@ from api.models import (
     ForumAnswers,
     TeacherAvailabilities,
     AvailabilityContext,
+    AvailabilityLevel,
+    PFECampaigns,
     ExamSessions,
     ExamSurveillanceAssignments,
     PFESubjects,
@@ -1348,10 +1350,21 @@ def set_teacher_availability(request):
         day_of_week = request.data.get('day_of_week')
         start_time = request.data.get('start_time')
         end_time = request.data.get('end_time')
+        level = request.data.get('level', AvailabilityLevel.AVAILABLE)
+        campaign_id = request.data.get('campaign_id')
         teacher_id = request.data.get('teacher_id')
 
         if context not in AvailabilityContext.values:
             return Response({"error": "Invalid context"}, status=400)
+
+        if level not in AvailabilityLevel.values:
+            return Response({"error": "Invalid availability level"}, status=400)
+
+        campaign = None
+        if campaign_id:
+            campaign = PFECampaigns.objects.filter(id=campaign_id).first()
+            if not campaign:
+                return Response({"error": "Campaign not found"}, status=404)
 
         if request.user.role == 'teacher':
             teacher = Teachers.objects.filter(user=request.user).first()
@@ -1366,14 +1379,20 @@ def set_teacher_availability(request):
         if not day_of_week or not start_time or not end_time:
             return Response({"error": "day_of_week, start_time and end_time are required"}, status=400)
 
-        TeacherAvailabilities.objects.create(
+        availability, _ = TeacherAvailabilities.objects.get_or_create(
             teacher=teacher,
             context=context,
+            campaign=campaign,
             day_of_week=day_of_week,
             start_time=start_time,
             end_time=end_time,
+            defaults={"level": level},
         )
-        return Response({"message": "Availability saved"}, status=201)
+        if availability.level != level:
+            availability.level = level
+            availability.save(update_fields=["level"])
+
+        return Response({"message": "Availability saved", "id": str(availability.id)}, status=201)
     except Exception as e:
         return Response({"error": str(e)}, status=400)
 
@@ -1517,11 +1536,14 @@ def create_pfe_subjects_from_excel(request):
             supervisor_name = str(row.get('nom de l’encadreur') or row.get('encadreur'))
             supervisor_user = Users.objects.filter(username=supervisor_name, role='teacher').first()
             supervisor = Teachers.objects.filter(user=supervisor_user).first()
+            student_user = Users.objects.filter(username=student_name, role='student').first()
+            student = Students.objects.filter(user=student_user).first() if student_user else None
             if not supervisor:
                 continue
             PFESubjects.objects.create(
                 title=title,
                 student_name=student_name,
+                student=student,
                 supervisor=supervisor,
                 created_by=request.user,
             )

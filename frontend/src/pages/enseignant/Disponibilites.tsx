@@ -1,413 +1,537 @@
-import { useEffect, useMemo, useState } from "react";
-import { Btn, Input } from "../../components/UI";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Btn, Card, Input, Select, Tag } from "../../components/UI";
+import type { AppUser } from "../../types/app";
 import {
-  getPfeCampaign,
-  getTeacherAvailability,
-  setTeacherAvailabilityDateException,
-  type PfeCampaign,
-} from "../../services/admin";
+  getTeacherPfeSessionState,
+  headGeneratePfeSchedule,
+  headStartPfeDateCollection,
+  submitTeacherPfeAvailability,
+  type TeacherAvailabilityLevel,
+  type TeacherPfeSessionState,
+} from "../../services/teacherPfe";
 
-const A = "var(--ens-accent)";
-const MONTHS = [
-  "Janvier",
-  "Février",
-  "Mars",
-  "Avril",
-  "Mai",
-  "Juin",
-  "Juillet",
-  "Août",
-  "Septembre",
-  "Octobre",
-  "Novembre",
-  "Décembre",
-];
-const DAYS = ["D", "L", "M", "M", "J", "V", "S"];
+const ACCENT = "var(--ens-accent)";
 
-export default function EnseignantDisponibilites() {
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(new Date().getMonth());
-  const [campaign, setCampaign] = useState<PfeCampaign | null>(null);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [initialSelection, setInitialSelection] = useState<Set<string>>(
-    new Set(),
+interface EnseignantDisponibilitesProps {
+  user: AppUser;
+}
+
+interface SlotRow {
+  start: string;
+  end: string;
+}
+
+function parseError(error: unknown): string {
+  const e = error as {
+    response?: { data?: { error?: string; detail?: string } };
+    message?: string;
+  };
+  return (
+    e?.response?.data?.error ??
+    e?.response?.data?.detail ??
+    e?.message ??
+    "Unexpected error"
   );
+}
+
+function toMinutes(value: string): number {
+  const [h, m] = value.split(":").map((part) => Number(part));
+  return (h || 0) * 60 + (m || 0);
+}
+
+function toHHMM(totalMinutes: number): string {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function buildSlots(
+  dayStart: string,
+  dayEnd: string,
+  slotDuration: number,
+  breakDuration: number,
+): SlotRow[] {
+  const start = toMinutes(dayStart);
+  const end = toMinutes(dayEnd);
+  const step = Math.max(slotDuration, 1) + Math.max(breakDuration, 0);
+  const rows: SlotRow[] = [];
+  let cursor = start;
+  while (cursor + slotDuration <= end) {
+    rows.push({
+      start: toHHMM(cursor),
+      end: toHHMM(cursor + slotDuration),
+    });
+    cursor += step;
+  }
+  return rows;
+}
+
+function keyFor(date: string, slot: SlotRow): string {
+  return `${date}|${slot.start}|${slot.end}`;
+}
+
+export default function EnseignantDisponibilites({
+  user,
+}: EnseignantDisponibilitesProps) {
+  const [state, setState] = useState<TeacherPfeSessionState | null>(null);
   const [feedback, setFeedback] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState(false);
 
-  const dayStartTime = campaign?.day_start_time.slice(0, 5) || "08:00";
-  const dayEndTime = campaign?.day_end_time.slice(0, 5) || "16:00";
+  const [selectedDate, setSelectedDate] = useState("");
+  const [slotLevels, setSlotLevels] = useState<
+    Record<string, TeacherAvailabilityLevel>
+  >({});
 
-  useEffect(() => {
-    let mounted = true;
+  const [headName, setHeadName] = useState("PFE Session");
+  const [headStartDate, setHeadStartDate] = useState("");
+  const [headEndDate, setHeadEndDate] = useState("");
+  const [headDayStart, setHeadDayStart] = useState("08:00");
+  const [headDayEnd, setHeadDayEnd] = useState("16:00");
+  const [headSlotDuration, setHeadSlotDuration] = useState(60);
+  const [headBreakDuration, setHeadBreakDuration] = useState(0);
+  const [headDailyCap, setHeadDailyCap] = useState(3);
+  const [headRooms, setHeadRooms] = useState("A1,A2");
 
-    async function load() {
-      try {
-        setLoading(true);
-        const currentCampaign = await getPfeCampaign();
-        if (!mounted) {
-          return;
-        }
-        setCampaign(currentCampaign);
+  const reload = useCallback(async () => {
+    const response = await getTeacherPfeSessionState();
+    setState(response);
 
-        const availability = await getTeacherAvailability({
-          context: "pfe",
-          campaign_id: currentCampaign.id,
-        });
-
-        if (!mounted) {
-          return;
-        }
-
-        const selectedDates = new Set(
-          availability.date_exceptions
-            .filter((item) => item.level !== "unavailable")
-            .map((item) => item.availability_date),
-        );
-        setSelected(selectedDates);
-        setInitialSelection(new Set(selectedDates));
-      } catch {
-        if (mounted) {
-          setFeedback("Aucune période PFE active pour le moment.");
-        }
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
+    if (response.campaign) {
+      setHeadName(response.campaign.name);
+      setHeadStartDate(response.campaign.start_date);
+      setHeadEndDate(response.campaign.end_date);
+      setHeadDayStart(response.campaign.day_start_time.slice(0, 5));
+      setHeadDayEnd(response.campaign.day_end_time.slice(0, 5));
+      setHeadSlotDuration(response.campaign.slot_duration_minutes);
+      setHeadBreakDuration(response.campaign.break_duration_minutes);
+      setHeadDailyCap(response.campaign.daily_cap_per_teacher ?? 3);
+      setHeadRooms(response.campaign.rooms.join(","));
+      if (!selectedDate) {
+        setSelectedDate(response.campaign.start_date);
       }
     }
 
-    void load();
-    return () => {
-      mounted = false;
-    };
+    const map: Record<string, TeacherAvailabilityLevel> = {};
+    response.my_entries.forEach((entry) => {
+      const key = `${entry.availability_date}|${entry.start_time.slice(0, 5)}|${entry.end_time.slice(0, 5)}`;
+      map[key] = entry.level;
+    });
+    setSlotLevels(map);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    setBusy(true);
+    setFeedback("");
+    getTeacherPfeSessionState()
+      .then((response) => {
+        setState(response);
+        if (response.campaign) {
+          setHeadName(response.campaign.name);
+          setHeadStartDate(response.campaign.start_date);
+          setHeadEndDate(response.campaign.end_date);
+          setHeadDayStart(response.campaign.day_start_time.slice(0, 5));
+          setHeadDayEnd(response.campaign.day_end_time.slice(0, 5));
+          setHeadSlotDuration(response.campaign.slot_duration_minutes);
+          setHeadBreakDuration(response.campaign.break_duration_minutes);
+          setHeadDailyCap(response.campaign.daily_cap_per_teacher ?? 3);
+          setHeadRooms(response.campaign.rooms.join(","));
+          setSelectedDate(response.campaign.start_date);
+        }
+
+        const map: Record<string, TeacherAvailabilityLevel> = {};
+        response.my_entries.forEach((entry) => {
+          const key = `${entry.availability_date}|${entry.start_time.slice(0, 5)}|${entry.end_time.slice(0, 5)}`;
+          map[key] = entry.level;
+        });
+        setSlotLevels(map);
+      })
+      .catch((error) => setFeedback(parseError(error)))
+      .finally(() => setBusy(false));
   }, []);
 
-  const first = new Date(year, month, 1).getDay();
-  const lastDay = new Date(year, month + 1, 0).getDate();
-  const cells = [
-    ...Array(first).fill(null),
-    ...Array.from({ length: lastDay }, (_, index) => index + 1),
-  ];
+  const campaign = state?.campaign;
 
-  const dateStr = (day: number) =>
-    `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-
-  const withinCampaignRange = (day: number) => {
+  const slots = useMemo(() => {
     if (!campaign) {
-      return false;
+      return [];
     }
-    const d = dateStr(day);
-    return d >= campaign.start_date && d <= campaign.end_date;
-  };
+    return buildSlots(
+      campaign.day_start_time.slice(0, 5),
+      campaign.day_end_time.slice(0, 5),
+      campaign.slot_duration_minutes,
+      campaign.break_duration_minutes,
+    );
+  }, [campaign]);
 
-  const toggleDay = (day: number) => {
-    const d = dateStr(day);
-    const next = new Set(selected);
-    if (next.has(d)) {
-      next.delete(d);
-    } else {
-      next.add(d);
+  const currentDateSlots = useMemo(() => {
+    if (!selectedDate) {
+      return [] as Array<
+        SlotRow & { key: string; level: TeacherAvailabilityLevel }
+      >;
     }
-    setSelected(next);
-  };
+    return slots.map((slot) => {
+      const key = keyFor(selectedDate, slot);
+      return {
+        ...slot,
+        key,
+        level: slotLevels[key] ?? "unavailable",
+      };
+    });
+  }, [selectedDate, slots, slotLevels]);
 
-  const allDates = useMemo(() => [...selected].sort(), [selected]);
-
-  const saveSelection = async () => {
-    if (!campaign) {
-      setFeedback("Aucune campagne active.");
+  const saveHeadStart = async () => {
+    const roomList = headRooms
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+    if (roomList.length === 0) {
+      setFeedback("At least one room is required.");
       return;
     }
 
+    setBusy(true);
+    setFeedback("");
     try {
-      setLoading(true);
-
-      const adds = [...selected].filter((d) => !initialSelection.has(d));
-      const removals = [...initialSelection].filter((d) => !selected.has(d));
-
-      for (const d of adds) {
-        await setTeacherAvailabilityDateException({
-          context: "pfe",
-          campaign_id: campaign.id,
-          availability_date: d,
-          start_time: dayStartTime,
-          end_time: dayEndTime,
-          level: "preferred",
-        });
-      }
-
-      for (const d of removals) {
-        await setTeacherAvailabilityDateException({
-          context: "pfe",
-          campaign_id: campaign.id,
-          availability_date: d,
-          start_time: dayStartTime,
-          end_time: dayEndTime,
-          level: "unavailable",
-        });
-      }
-
-      setInitialSelection(new Set(selected));
-      setFeedback("Disponibilités envoyées pour la période PFE.");
-    } catch {
-      setFeedback("Erreur lors de l'enregistrement.");
+      const response = await headStartPfeDateCollection({
+        name: headName,
+        start_date: headStartDate,
+        end_date: headEndDate,
+        day_start_time: headDayStart,
+        day_end_time: headDayEnd,
+        slot_duration_minutes: headSlotDuration,
+        break_duration_minutes: headBreakDuration,
+        daily_cap_per_teacher: headDailyCap,
+        weekdays: ["Lundi", "Mardi", "Mercredi", "jeudi", "Vendredi"],
+        rooms: roomList,
+      });
+      setFeedback(response.message);
+      await reload();
+    } catch (error) {
+      setFeedback(parseError(error));
     } finally {
-      setLoading(false);
+      setBusy(false);
     }
   };
 
+  const submitAvailability = async () => {
+    if (!campaign) {
+      setFeedback("No active campaign.");
+      return;
+    }
+
+    const entries = Object.entries(slotLevels).map(([key, level]) => {
+      const [availabilityDate, startTime, endTime] = key.split("|");
+      return {
+        availability_date: availabilityDate,
+        start_time: startTime,
+        end_time: endTime,
+        level,
+      };
+    });
+
+    if (entries.length === 0) {
+      setFeedback("Select at least one hour state before submitting.");
+      return;
+    }
+
+    setBusy(true);
+    setFeedback("");
+    try {
+      const response = await submitTeacherPfeAvailability({
+        campaign_id: campaign.id,
+        entries,
+      });
+      setFeedback(`${response.message} (${response.entries_count} entries)`);
+      await reload();
+    } catch (error) {
+      setFeedback(parseError(error));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const generateSchedule = async () => {
+    if (!campaign) {
+      return;
+    }
+    setBusy(true);
+    setFeedback("");
+    try {
+      const response = await headGeneratePfeSchedule({
+        campaign_id: campaign.id,
+      });
+      setFeedback(
+        `${response.message} - Assigned ${response.plan.stats.assigned_count}/${response.plan.stats.subjects_total}`,
+      );
+      await reload();
+    } catch (error) {
+      setFeedback(parseError(error));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const campaignLocked = !state?.can_submit_availability;
+
   return (
-    <div style={{ padding: "36px 40px", maxWidth: 960 }}>
-      <div style={{ marginBottom: 22 }}>
+    <div style={{ padding: "36px 40px", maxWidth: 1080 }}>
+      <div style={{ marginBottom: 20 }}>
         <div
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: 11,
-            color: A,
+            color: ACCENT,
             textTransform: "uppercase",
-            letterSpacing: "2px",
+            letterSpacing: "1.5px",
             marginBottom: 8,
           }}
         >
-          Disponibilites PFE
+          PFE Availability
         </div>
-        <h1
-          style={{
-            fontSize: 32,
-            fontWeight: 800,
-            letterSpacing: "-1.5px",
-            margin: 0,
-          }}
-        >
-          Soumettre mes créneaux
-        </h1>
+        <h1 style={{ margin: 0, fontSize: 30 }}>Select Available Dates</h1>
         <p style={{ color: "var(--text2)", marginTop: 8 }}>
-          Sélectionnez vos dates disponibles pendant la période active puis
-          sauvegardez.
+          {user.name} · Choose each hour state: available, not available, or not
+          preferred but available.
         </p>
       </div>
 
-      {campaign ? (
-        <div
-          style={{
-            border: "1px solid var(--border)",
-            background: "var(--surface)",
-            borderRadius: "var(--r-md)",
-            padding: "10px 12px",
-            marginBottom: 14,
-            fontFamily: "var(--font-mono)",
-            fontSize: 12,
-            color: "var(--text2)",
-          }}
-        >
-          Campagne: {campaign.name} | {campaign.start_date} →{" "}
-          {campaign.end_date} | {dayStartTime}-{dayEndTime}
-        </div>
-      ) : null}
+      <div
+        style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}
+      >
+        <Btn accent={ACCENT} variant="ghost" onClick={reload}>
+          Refresh
+        </Btn>
+        {busy ? <Tag>Working...</Tag> : null}
+        {campaign ? (
+          <Tag>Campaign: {campaign.name}</Tag>
+        ) : (
+          <Tag>No campaign</Tag>
+        )}
+        {state ? (
+          <Tag>My supervised PFEs: {state.my_supervised_pfe_count}</Tag>
+        ) : null}
+        {state?.teacher.is_department_head ? (
+          <Tag color={ACCENT} bg="var(--ens-dim)">
+            Department head
+          </Tag>
+        ) : null}
+      </div>
 
       {feedback ? (
-        <div
-          style={{
-            border: "1px solid var(--border)",
-            background: "var(--surface)",
-            borderRadius: "var(--r-md)",
-            padding: "10px 12px",
-            marginBottom: 14,
-            color: "var(--text2)",
-          }}
-        >
-          {feedback}
-        </div>
+        <Card style={{ padding: 12, marginBottom: 12 }}>
+          <div style={{ color: "var(--text2)", fontSize: 14 }}>{feedback}</div>
+        </Card>
       ) : null}
 
-      <div
-        style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 18 }}
-      >
-        <div
-          style={{
-            background: "var(--surface)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--r-xl)",
-            padding: 24,
-          }}
-        >
+      {state?.teacher.is_department_head && state.can_start_collection ? (
+        <Card style={{ padding: 14, marginBottom: 12 }}>
+          <div style={{ fontWeight: 700, marginBottom: 10 }}>
+            Head action: start collecting dates
+          </div>
+          <div
+            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}
+          >
+            <Input
+              label="Session name"
+              value={headName}
+              onChange={(event) => setHeadName(event.target.value)}
+            />
+            <Input
+              label="Rooms (comma separated)"
+              value={headRooms}
+              onChange={(event) => setHeadRooms(event.target.value)}
+            />
+            <Input
+              label="Start date"
+              type="date"
+              value={headStartDate}
+              onChange={(event) => setHeadStartDate(event.target.value)}
+            />
+            <Input
+              label="End date"
+              type="date"
+              value={headEndDate}
+              onChange={(event) => setHeadEndDate(event.target.value)}
+            />
+            <Input
+              label="Day start"
+              type="time"
+              value={headDayStart}
+              onChange={(event) => setHeadDayStart(event.target.value)}
+            />
+            <Input
+              label="Day end"
+              type="time"
+              value={headDayEnd}
+              onChange={(event) => setHeadDayEnd(event.target.value)}
+            />
+            <Input
+              label="Slot duration (minutes)"
+              type="number"
+              value={headSlotDuration}
+              onChange={(event) =>
+                setHeadSlotDuration(Number(event.target.value || 60))
+              }
+            />
+            <Input
+              label="Break duration (minutes)"
+              type="number"
+              value={headBreakDuration}
+              onChange={(event) =>
+                setHeadBreakDuration(Number(event.target.value || 0))
+              }
+            />
+            <Input
+              label="Daily cap per teacher"
+              type="number"
+              value={headDailyCap}
+              onChange={(event) =>
+                setHeadDailyCap(Number(event.target.value || 3))
+              }
+            />
+          </div>
+          <div style={{ marginTop: 12 }}>
+            <Btn accent={ACCENT} onClick={saveHeadStart}>
+              Start selecting dates process
+            </Btn>
+          </div>
+        </Card>
+      ) : null}
+
+      {campaign &&
+      state?.teacher.is_department_head &&
+      campaign.availability_open ? (
+        <Card style={{ padding: 14, marginBottom: 12 }}>
           <div
             style={{
               display: "flex",
-              alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: 22,
+              gap: 10,
+              alignItems: "center",
             }}
           >
-            <button
-              onClick={() => {
-                if (month === 0) {
-                  setMonth(11);
-                  setYear((value) => value - 1);
-                } else {
-                  setMonth((value) => value - 1);
-                }
-              }}
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 9,
-                border: "1px solid var(--border2)",
-                background: "none",
-                cursor: "pointer",
-              }}
-            >
-              ‹
-            </button>
-            <span style={{ fontWeight: 700, fontSize: 17 }}>
-              {MONTHS[month]} {year}
-            </span>
-            <button
-              onClick={() => {
-                if (month === 11) {
-                  setMonth(0);
-                  setYear((value) => value + 1);
-                } else {
-                  setMonth((value) => value + 1);
-                }
-              }}
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 9,
-                border: "1px solid var(--border2)",
-                background: "none",
-                cursor: "pointer",
-              }}
-            >
-              ›
-            </button>
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(7,1fr)",
-              gap: 4,
-              marginBottom: 6,
-            }}
-          >
-            {DAYS.map((day, index) => (
-              <div
-                key={`${day}-${index}`}
-                style={{
-                  textAlign: "center",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 10,
-                  color: "var(--text3)",
-                  padding: "4px 0",
-                }}
-              >
-                {day}
+            <div>
+              <div style={{ fontWeight: 700 }}>
+                Head action: end selection and generate schedule
               </div>
-            ))}
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(7,1fr)",
-              gap: 4,
-            }}
-          >
-            {cells.map((day, index) => {
-              if (!day) {
-                return <div key={`empty-${index}`} />;
-              }
-
-              const dayNum = day as number;
-              const dayISO = dateStr(dayNum);
-              const isSelected = selected.has(dayISO);
-              const jsDay = new Date(year, month, dayNum).getDay();
-              const isWeekend = jsDay === 0 || jsDay === 6;
-              const inRange = withinCampaignRange(dayNum);
-              const disabled = !campaign || !inRange || isWeekend;
-
-              return (
-                <button
-                  key={`day-${index}`}
-                  onClick={() => {
-                    if (!disabled) {
-                      toggleDay(dayNum);
-                    }
-                  }}
-                  style={{
-                    aspectRatio: "1",
-                    minHeight: 42,
-                    borderRadius: 10,
-                    border: isSelected
-                      ? `1px solid ${A}`
-                      : "1px solid transparent",
-                    background: isSelected ? "var(--ens-dim)" : "transparent",
-                    color: disabled
-                      ? "var(--text3)"
-                      : isSelected
-                        ? A
-                        : "var(--text)",
-                    cursor: disabled ? "not-allowed" : "pointer",
-                    fontSize: 13,
-                    fontWeight: isSelected ? 700 : 400,
-                  }}
-                >
-                  {dayNum}
-                </button>
-              );
-            })}
-          </div>
-
-          <div style={{ marginTop: 16 }}>
-            <Btn accent={A} onClick={saveSelection}>
-              Envoyer mes disponibilités
+              <div
+                style={{ color: "var(--text3)", fontSize: 13, marginTop: 4 }}
+              >
+                After generation, the PFE schedule page becomes visible for
+                teachers.
+              </div>
+            </div>
+            <Btn accent={ACCENT} onClick={generateSchedule}>
+              End selection and generate
             </Btn>
           </div>
-        </div>
+        </Card>
+      ) : null}
 
-        <div>
-          <Input
-            label="Dates sélectionnées"
-            value={`${allDates.length}`}
-            readOnly
-          />
-          <div style={{ marginTop: 10, display: "grid", gap: 8 }}>
-            {allDates.map((d) => (
+      {campaign ? (
+        <Card style={{ padding: 14 }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "220px 1fr",
+              gap: 12,
+              marginBottom: 12,
+            }}
+          >
+            <Input
+              label="Date"
+              type="date"
+              min={campaign.start_date}
+              max={campaign.end_date}
+              value={selectedDate}
+              onChange={(event) => setSelectedDate(event.target.value)}
+            />
+            <div>
               <div
-                key={d}
+                style={{ fontSize: 12, color: "var(--text3)", marginBottom: 6 }}
+              >
+                Campaign status
+              </div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <Tag>
+                  {campaign.availability_open
+                    ? "Availability open"
+                    : "Availability locked"}
+                </Tag>
+                <Tag>
+                  {campaign.schedule_generated
+                    ? "Schedule generated"
+                    : "Schedule pending"}
+                </Tag>
+              </div>
+            </div>
+          </div>
+
+          {campaignLocked ? (
+            <div
+              style={{
+                padding: "12px 14px",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--r-md)",
+                color: "var(--text2)",
+                marginBottom: 12,
+              }}
+            >
+              Availability submission is locked. Wait for your department head
+              to start the session.
+            </div>
+          ) : null}
+
+          <div style={{ display: "grid", gap: 8 }}>
+            {currentDateSlots.map((slot) => (
+              <div
+                key={slot.key}
                 style={{
+                  display: "grid",
+                  gridTemplateColumns: "180px 1fr",
+                  gap: 10,
+                  alignItems: "center",
                   border: "1px solid var(--border)",
-                  background: "var(--surface)",
                   borderRadius: "var(--r-md)",
-                  padding: "8px 10px",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 11,
+                  padding: "10px 12px",
                 }}
               >
-                {d}
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 13 }}>
+                  {slot.start} - {slot.end}
+                </div>
+                <Select
+                  value={slot.level}
+                  disabled={campaignLocked}
+                  onChange={(event) => {
+                    const level = event.target
+                      .value as TeacherAvailabilityLevel;
+                    setSlotLevels((previous) => ({
+                      ...previous,
+                      [slot.key]: level,
+                    }));
+                  }}
+                >
+                  <option value="preferred">Available (preferred)</option>
+                  <option value="available">Available (not preferred)</option>
+                  <option value="unavailable">Not available</option>
+                </Select>
               </div>
             ))}
-            {!allDates.length ? (
-              <div
-                style={{
-                  color: "var(--text3)",
-                  fontFamily: "var(--font-mono)",
-                  fontSize: 12,
-                }}
-              >
-                Aucune date sélectionnée.
-              </div>
-            ) : null}
           </div>
-        </div>
-      </div>
 
-      {loading ? (
-        <p style={{ color: "var(--text3)", marginTop: 12 }}>Chargement...</p>
-      ) : null}
+          <div style={{ marginTop: 12 }}>
+            <Btn accent={ACCENT} onClick={submitAvailability}>
+              Submit availability
+            </Btn>
+          </div>
+        </Card>
+      ) : (
+        <Card style={{ padding: 16 }}>
+          <div style={{ color: "var(--text2)" }}>
+            No PFE session campaign found for your department yet.
+          </div>
+        </Card>
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import pfe_views
 
 urlpatterns = [
     path('dashboard/stats/', views.get_admin_dashboard_stats, name='get_admin_dashboard_stats'),
@@ -41,4 +42,22 @@ urlpatterns = [
     path('pfe/excel/', views.create_pfe_subjects_from_excel, name='create_pfe_subjects_from_excel'),
     path('pfe/jury/assign/', views.assign_pfe_jury, name='assign_pfe_jury'),
     path('pfe/teacher-quota/', views.get_pfe_teacher_quota, name='get_pfe_teacher_quota'),
+    path('pfe/subjects/', pfe_views.list_pfe_subjects, name='list_pfe_subjects'),
+    path('pfe/sessions/departments/', pfe_views.list_pfe_session_departments, name='list_pfe_session_departments'),
+    path('pfe/sessions/unlock-head/', pfe_views.unlock_pfe_session_for_head, name='unlock_pfe_session_for_head'),
+    path('pfe/sessions/seed-demo/', pfe_views.seed_pfe_session_demo, name='seed_pfe_session_demo'),
+    path('pfe/students/', pfe_views.list_pfe_students, name='list_pfe_students'),
+    path('pfe/subjects/assign-student/', pfe_views.assign_student_to_pfe_subject, name='assign_student_to_pfe_subject'),
+    path('pfe/campaign/upsert/', pfe_views.upsert_pfe_campaign, name='upsert_pfe_campaign'),
+    path('pfe/campaign/get/', pfe_views.get_pfe_campaign, name='get_pfe_campaign'),
+    path('pfe/campaign/activate/', pfe_views.activate_pfe_campaign, name='activate_pfe_campaign'),
+    path('pfe/campaign/quotas/set/', pfe_views.set_pfe_campaign_quota_overrides, name='set_pfe_campaign_quota_overrides'),
+    path('teacher/availability/date-exception/set/', pfe_views.set_teacher_availability_date_exception, name='set_teacher_availability_date_exception'),
+    path('teacher/availability/get/', pfe_views.get_teacher_availability, name='get_teacher_availability'),
+    path('pfe/auto-assign/dry-run/', pfe_views.pfe_auto_assign_dry_run, name='pfe_auto_assign_dry_run'),
+    path('pfe/auto-assign/commit/', pfe_views.pfe_auto_assign_commit, name='pfe_auto_assign_commit'),
+    path('pfe/assignments/list/', pfe_views.list_pfe_assignments, name='list_pfe_assignments'),
+    path('pfe/assignments/export/', pfe_views.export_pfe_assignments, name='export_pfe_assignments'),
+    path('pfe/jury/unassign/', pfe_views.unassign_pfe_jury, name='unassign_pfe_jury'),
+    path('pfe/simulation/seed/', pfe_views.seed_pfe_simulation_dataset, name='seed_pfe_simulation_dataset'),
 ]

@@ -1,0 +1,1550 @@
+PFE Scheduling Simulation Report
+================================================================================
+Random seed: 20260420
+Teachers: 30 + 1 head department
+Presentations: 112
+Completed assignments: 112 | Unresolved: 0
+Generated slots: 528
+-
+
+T01 - Teacher 01 | target=10 | chosen preferred=19 | chosen available_not_preferred=17 | assigned=16
+Role split: encadreur=7, rapporteur=3, president=6
+Preferred sessions selected:
+  - 2026-06-02 10:30-11:30 
+  - 2026-06-03 11:45-12:45 
+  - 2026-06-03 11:45-12:45 
+  - 2026-06-04 13:00-14:00 
+  - 2026-06-08 10:30-11:30 
+  - 2026-06-08 11:45-12:45 
+  - 2026-06-09 13:00-14:00 
+  - 2026-06-10 10:30-11:30 
+  - 2026-06-11 08:00-09:00 
+  - 2026-06-12 11:45-12:45 
+  - 2026-06-15 08:00-09:00 
+  - 2026-06-16 09:15-10:15 
+  - 2026-06-18 09:15-10:15 
+  - 2026-06-18 10:30-11:30 
+  - 2026-06-19 13:00-14:00 
+  - 2026-06-22 09:15-10:15 
+  - 2026-06-25 09:15-10:15 
+  - 2026-06-29 08:00-09:00 
+  - 2026-06-29 10:30-11:30 
+Available (not preferred) sessions selected:
+  - 2026-06-01 13:00-14:00 
+  - 2026-06-02 10:30-11:30 
+  - 2026-06-04 09:15-10:15 
+  - 2026-06-05 11:45-12:45 
+  - 2026-06-05 11:45-12:45 
+  - 2026-06-09 14:15-15:15 
+  - 2026-06-15 09:15-10:15 
+  - 2026-06-15 11:45-12:45 
+  - 2026-06-16 11:45-12:45 
+  - 2026-06-18 13:00-14:00 
+  - 2026-06-19 09:15-10:15 
+  - 2026-06-24 09:15-10:15 
+  - 2026-06-24 10:30-11:30 
+  - 2026-06-24 14:15-15:15 
+  - 2026-06-26 11:45-12:45 
+  - 2026-06-26 14:15-15:15 
+  - 2026-06-30 10:30-11:30 
+Assigned presentation results:
+  - PFE-034 | president | 2026-06-01 13:00-14:00 Room A1
+  - PFE-010 | encadreur | 2026-06-03 11:45-12:45 Room A2
+  - PFE-014 | encadreur | 2026-06-03 11:45-12:45 Room A3
+  - PFE-017 | encadreur | 2026-06-04 13:00-14:00 Room A2
+  - PFE-042 | president | 2026-06-05 11:45-12:45 Room A3
+  - PFE-108 | president | 2026-06-05 11:45-12:45 Room A4
+  - PFE-029 | encadreur | 2026-06-08 11:45-12:45 Room A3
+  - PFE-009 | rapporteur | 2026-06-09 13:00-14:00 Room A1
+  - PFE-012 | rapporteur | 2026-06-12 11:45-12:45 Room A2
+  - PFE-046 | president | 2026-06-15 09:15-10:15 Room A3
+  - PFE-057 | encadreur | 2026-06-18 09:15-10:15 Room A1
+  - PFE-086 | rapporteur | 2026-06-18 10:30-11:30 Room A3
+  - PFE-095 | encadreur | 2026-06-22 09:15-10:15 Room A2
+  - PFE-096 | president | 2026-06-24 10:30-11:30 Room A2
+  - PFE-106 | encadreur | 2026-06-25 09:15-10:15 Room A4
+  - PFE-100 | president | 2026-06-26 14:15-15:15 Room A3
+
+T02 - Teacher 02 | target=7 | chosen preferred=12 | chosen available_not_preferred=12 | assigned=6
+Role split: encadreur=2, rapporteur=4, president=0
+Preferred sessions selected:
+  - 2026-06-01 08:00-09:00 Room A2
+  - 2026-06-01 11:45-12:45 Room A4
+  - 2026-06-04 10:30-11:30 Room A4
+  - 2026-06-04 14:15-15:15 Room A2
+  - 2026-06-08 10:30-11:30 Room A2
+  - 2026-06-11 08:00-09:00 Room A4
+  - 2026-06-12 13:00-14:00 Room A2
+  - 2026-06-18 14:15-15:15 Room A4
+  - 2026-06-24 09:15-10:15 Room A3
+  - 2026-06-25 11:45-12:45 Room A1
+  - 2026-06-29 14:15-15:15 Room A4
+  - 2026-06-30 08:00-09:00 Room A2
+Available (not preferred) sessions selected:
+  - 2026-06-02 08:00-09:00 Room A1
+  - 2026-06-02 14:15-15:15 Room A4
+  - 2026-06-04 09:15-10:15 Room A2
+  - 2026-06-08 13:00-14:00 Room A3
+  - 2026-06-09 09:15-10:15 Room A3
+  - 2026-06-10 09:15-10:15 Room A2
+  - 2026-06-12 08:00-09:00 Room A4
+  - 2026-06-15 08:00-09:00 Room A1
+  - 2026-06-17 13:00-14:00 Room A2
+  - 2026-06-18 09:15-10:15 Room A4
+  - 2026-06-18 10:30-11:30 Room A4
+  - 2026-06-19 11:45-12:45 Room A3
+Assigned presentation results:
+  - PFE-028 | encadreur | 2026-06-01 11:45-12:45 Room A4
+  - PFE-037 | rapporteur | 2026-06-04 10:30-11:30 Room A4
+  - PFE-026 | rapporteur | 2026-06-04 14:15-15:15 Room A2
+  - PFE-018 | rapporteur | 2026-06-08 10:30-11:30 Room A2
+  - PFE-077 | rapporteur | 2026-06-11 08:00-09:00 Room A4
+  - PFE-097 | encadreur | 2026-06-18 14:15-15:15 Room A4
+
+T03 - Teacher 03 | target=14 | chosen preferred=19 | chosen available_not_preferred=24 | assigned=12
+Role split: encadreur=7, rapporteur=3, president=2
+Preferred sessions selected:
+  - 2026-06-02 13:00-14:00 Room A3
+  - 2026-06-03 08:00-09:00 Room A1
+  - 2026-06-03 08:00-09:00 Room A3
+  - 2026-06-05 11:45-12:45 Room A3
+  - 2026-06-09 14:15-15:15 Room A3
+  - 2026-06-12 14:15-15:15 Room A2
+  - 2026-06-15 09:15-10:15 Room A3
+  - 2026-06-15 10:30-11:30 Room A1
+  - 2026-06-17 13:00-14:00 Room A2
+  - 2026-06-18 09:15-10:15 Room A1
+  - 2026-06-22 14:15-15:15 Room A3
+  - 2026-06-24 13:00-14:00 Room A3
+  - 2026-06-26 13:00-14:00 Room A1
+  - 2026-06-26 13:00-14:00 Room A4
+  - 2026-06-26 14:15-15:15 Room A3
+  - 2026-06-30 13:00-14:00 Room A3
+  - 2026-06-30 14:15-15:15 Room A1
+  - 2026-06-30 14:15-15:15 Room A3
+  - 2026-06-30 14:15-15:15 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-01 10:30-11:30 Room A3
+  - 2026-06-02 11:45-12:45 Room A4
+  - 2026-06-02 14:15-15:15 Room A3
+  - 2026-06-05 13:00-14:00 Room A4
+  - 2026-06-09 13:00-14:00 Room A3
+  - 2026-06-12 11:45-12:45 Room A3
+  - 2026-06-15 10:30-11:30 Room A3
+  - 2026-06-15 11:45-12:45 Room A1
+  - 2026-06-16 13:00-14:00 Room A3
+  - 2026-06-17 08:00-09:00 Room A2
+  - 2026-06-17 10:30-11:30 Room A4
+  - 2026-06-18 10:30-11:30 Room A3
+  - 2026-06-19 14:15-15:15 Room A4
+  - 2026-06-22 11:45-12:45 Room A2
+  - 2026-06-22 14:15-15:15 Room A1
+  - 2026-06-23 08:00-09:00 Room A2
+  - 2026-06-24 08:00-09:00 Room A1
+  - 2026-06-25 10:30-11:30 Room A2
+  - 2026-06-25 14:15-15:15 Room A4
+  - 2026-06-26 11:45-12:45 Room A3
+  - 2026-06-26 13:00-14:00 Room A3
+  - 2026-06-29 10:30-11:30 Room A2
+  - 2026-06-29 14:15-15:15 Room A4
+  - 2026-06-30 10:30-11:30 Room A2
+Assigned presentation results:
+  - PFE-036 | rapporteur | 2026-06-02 11:45-12:45 Room A4
+  - PFE-035 | encadreur | 2026-06-02 13:00-14:00 Room A3
+  - PFE-042 | encadreur | 2026-06-05 11:45-12:45 Room A3
+  - PFE-019 | rapporteur | 2026-06-09 14:15-15:15 Room A3
+  - PFE-046 | encadreur | 2026-06-15 09:15-10:15 Room A3
+  - PFE-045 | rapporteur | 2026-06-15 10:30-11:30 Room A1
+  - PFE-055 | president | 2026-06-15 11:45-12:45 Room A1
+  - PFE-058 | encadreur | 2026-06-17 13:00-14:00 Room A2
+  - PFE-057 | president | 2026-06-18 09:15-10:15 Room A1
+  - PFE-074 | encadreur | 2026-06-22 14:15-15:15 Room A3
+  - PFE-084 | encadreur | 2026-06-26 13:00-14:00 Room A4
+  - PFE-100 | encadreur | 2026-06-26 14:15-15:15 Room A3
+
+T04 - Teacher 04 | target=13 | chosen preferred=25 | chosen available_not_preferred=20 | assigned=12
+Role split: encadreur=5, rapporteur=3, president=4
+Preferred sessions selected:
+  - 2026-06-01 08:00-09:00 Room A4
+  - 2026-06-01 11:45-12:45 Room A1
+  - 2026-06-02 08:00-09:00 Room A3
+  - 2026-06-04 13:00-14:00 Room A4
+  - 2026-06-08 10:30-11:30 Room A1
+  - 2026-06-09 13:00-14:00 Room A1
+  - 2026-06-11 09:15-10:15 Room A2
+  - 2026-06-12 11:45-12:45 Room A1
+  - 2026-06-15 10:30-11:30 Room A4
+  - 2026-06-15 13:00-14:00 Room A3
+  - 2026-06-17 10:30-11:30 Room A4
+  - 2026-06-18 13:00-14:00 Room A3
+  - 2026-06-18 14:15-15:15 Room A4
+  - 2026-06-19 11:45-12:45 Room A3
+  - 2026-06-22 11:45-12:45 Room A2
+  - 2026-06-22 13:00-14:00 Room A1
+  - 2026-06-22 14:15-15:15 Room A2
+  - 2026-06-24 09:15-10:15 Room A1
+  - 2026-06-24 11:45-12:45 Room A2
+  - 2026-06-24 11:45-12:45 Room A3
+  - 2026-06-25 09:15-10:15 Room A3
+  - 2026-06-26 08:00-09:00 Room A4
+  - 2026-06-26 14:15-15:15 Room A4
+  - 2026-06-29 09:15-10:15 Room A4
+  - 2026-06-29 14:15-15:15 Room A1
+Available (not preferred) sessions selected:
+  - 2026-06-02 09:15-10:15 Room A4
+  - 2026-06-02 11:45-12:45 Room A4
+  - 2026-06-03 10:30-11:30 Room A3
+  - 2026-06-03 11:45-12:45 Room A3
+  - 2026-06-03 13:00-14:00 Room A1
+  - 2026-06-03 14:15-15:15 Room A2
+  - 2026-06-08 11:45-12:45 Room A3
+  - 2026-06-11 11:45-12:45 Room A3
+  - 2026-06-12 09:15-10:15 Room A4
+  - 2026-06-15 09:15-10:15 Room A4
+  - 2026-06-15 13:00-14:00 Room A2
+  - 2026-06-17 14:15-15:15 Room A4
+  - 2026-06-18 10:30-11:30 Room A1
+  - 2026-06-22 13:00-14:00 Room A2
+  - 2026-06-23 10:30-11:30 Room A1
+  - 2026-06-23 13:00-14:00 Room A1
+  - 2026-06-23 14:15-15:15 Room A3
+  - 2026-06-26 08:00-09:00 Room A3
+  - 2026-06-29 08:00-09:00 Room A4
+  - 2026-06-30 13:00-14:00 Room A1
+Assigned presentation results:
+  - PFE-004 | encadreur | 2026-06-01 11:45-12:45 Room A1
+  - PFE-036 | president | 2026-06-02 11:45-12:45 Room A4
+  - PFE-014 | president | 2026-06-03 11:45-12:45 Room A3
+  - PFE-029 | rapporteur | 2026-06-08 11:45-12:45 Room A3
+  - PFE-009 | encadreur | 2026-06-09 13:00-14:00 Room A1
+  - PFE-053 | encadreur | 2026-06-12 11:45-12:45 Room A1
+  - PFE-068 | encadreur | 2026-06-15 10:30-11:30 Room A4
+  - PFE-064 | president | 2026-06-15 13:00-14:00 Room A2
+  - PFE-085 | encadreur | 2026-06-15 13:00-14:00 Room A3
+  - PFE-097 | rapporteur | 2026-06-18 14:15-15:15 Room A4
+  - PFE-066 | president | 2026-06-23 10:30-11:30 Room A1
+  - PFE-093 | rapporteur | 2026-06-26 08:00-09:00 Room A4
+
+T05 - Teacher 05 | target=13 | chosen preferred=25 | chosen available_not_preferred=19 | assigned=16
+Role split: encadreur=3, rapporteur=6, president=7
+Preferred sessions selected:
+  - 2026-06-01 09:15-10:15 Room A3
+  - 2026-06-01 13:00-14:00 Room A3
+  - 2026-06-04 10:30-11:30 Room A1
+  - 2026-06-04 14:15-15:15 Room A2
+  - 2026-06-08 14:15-15:15 Room A3
+  - 2026-06-09 09:15-10:15 Room A2
+  - 2026-06-09 13:00-14:00 Room A3
+  - 2026-06-10 08:00-09:00 Room A3
+  - 2026-06-10 09:15-10:15 Room A3
+  - 2026-06-10 13:00-14:00 Room A2
+  - 2026-06-11 09:15-10:15 Room A4
+  - 2026-06-11 13:00-14:00 Room A2
+  - 2026-06-12 11:45-12:45 Room A3
+  - 2026-06-15 08:00-09:00 Room A3
+  - 2026-06-16 10:30-11:30 Room A2
+  - 2026-06-17 13:00-14:00 Room A2
+  - 2026-06-18 10:30-11:30 Room A1
+  - 2026-06-18 10:30-11:30 Room A3
+  - 2026-06-18 11:45-12:45 Room A4
+  - 2026-06-19 08:00-09:00 Room A1
+  - 2026-06-22 09:15-10:15 Room A4
+  - 2026-06-26 09:15-10:15 Room A3
+  - 2026-06-26 11:45-12:45 Room A4
+  - 2026-06-29 14:15-15:15 Room A1
+  - 2026-06-29 14:15-15:15 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-03 09:15-10:15 Room A3
+  - 2026-06-04 08:00-09:00 Room A1
+  - 2026-06-04 11:45-12:45 Room A4
+  - 2026-06-05 11:45-12:45 Room A2
+  - 2026-06-08 14:15-15:15 Room A1
+  - 2026-06-10 11:45-12:45 Room A3
+  - 2026-06-11 08:00-09:00 Room A1
+  - 2026-06-11 09:15-10:15 Room A1
+  - 2026-06-11 13:00-14:00 Room A4
+  - 2026-06-12 08:00-09:00 Room A1
+  - 2026-06-12 13:00-14:00 Room A3
+  - 2026-06-15 13:00-14:00 Room A3
+  - 2026-06-15 14:15-15:15 Room A4
+  - 2026-06-26 08:00-09:00 Room A4
+  - 2026-06-26 11:45-12:45 Room A2
+  - 2026-06-26 14:15-15:15 Room A1
+  - 2026-06-29 09:15-10:15 Room A3
+  - 2026-06-30 11:45-12:45 Room A1
+  - 2026-06-30 11:45-12:45 Room A3
+Assigned presentation results:
+  - PFE-024 | rapporteur | 2026-06-04 08:00-09:00 Room A1
+  - PFE-015 | rapporteur | 2026-06-04 10:30-11:30 Room A1
+  - PFE-026 | encadreur | 2026-06-04 14:15-15:15 Room A2
+  - PFE-027 | encadreur | 2026-06-10 09:15-10:15 Room A3
+  - PFE-090 | president | 2026-06-10 11:45-12:45 Room A3
+  - PFE-049 | encadreur | 2026-06-11 09:15-10:15 Room A4
+  - PFE-083 | rapporteur | 2026-06-11 13:00-14:00 Room A2
+  - PFE-059 | president | 2026-06-12 08:00-09:00 Room A1
+  - PFE-071 | rapporteur | 2026-06-12 11:45-12:45 Room A3
+  - PFE-030 | rapporteur | 2026-06-15 08:00-09:00 Room A3
+  - PFE-079 | president | 2026-06-16 10:30-11:30 Room A2
+  - PFE-058 | rapporteur | 2026-06-17 13:00-14:00 Room A2
+  - PFE-088 | president | 2026-06-18 10:30-11:30 Room A1
+  - PFE-086 | president | 2026-06-18 10:30-11:30 Room A3
+  - PFE-072 | president | 2026-06-18 11:45-12:45 Room A4
+  - PFE-093 | president | 2026-06-26 08:00-09:00 Room A4
+
+T06 - Teacher 06 | target=12 | chosen preferred=20 | chosen available_not_preferred=18 | assigned=15
+Role split: encadreur=5, rapporteur=3, president=7
+Preferred sessions selected:
+  - 2026-06-01 08:00-09:00 Room A4
+  - 2026-06-01 09:15-10:15 Room A1
+  - 2026-06-02 13:00-14:00 Room A3
+  - 2026-06-08 10:30-11:30 Room A2
+  - 2026-06-10 09:15-10:15 Room A3
+  - 2026-06-11 11:45-12:45 Room A3
+  - 2026-06-11 13:00-14:00 Room A1
+  - 2026-06-15 09:15-10:15 Room A1
+  - 2026-06-15 11:45-12:45 Room A2
+  - 2026-06-16 09:15-10:15 Room A3
+  - 2026-06-18 11:45-12:45 Room A4
+  - 2026-06-19 09:15-10:15 Room A1
+  - 2026-06-19 13:00-14:00 Room A4
+  - 2026-06-23 11:45-12:45 Room A1
+  - 2026-06-23 14:15-15:15 Room A2
+  - 2026-06-24 10:30-11:30 Room A4
+  - 2026-06-25 10:30-11:30 Room A2
+  - 2026-06-26 14:15-15:15 Room A3
+  - 2026-06-26 14:15-15:15 Room A4
+  - 2026-06-30 08:00-09:00 Room A2
+Available (not preferred) sessions selected:
+  - 2026-06-01 11:45-12:45 Room A4
+  - 2026-06-02 10:30-11:30 Room A4
+  - 2026-06-02 11:45-12:45 Room A1
+  - 2026-06-03 09:15-10:15 Room A4
+  - 2026-06-04 09:15-10:15 Room A4
+  - 2026-06-04 14:15-15:15 Room A4
+  - 2026-06-05 08:00-09:00 Room A2
+  - 2026-06-08 08:00-09:00 Room A3
+  - 2026-06-08 09:15-10:15 Room A4
+  - 2026-06-09 11:45-12:45 Room A4
+  - 2026-06-12 08:00-09:00 Room A2
+  - 2026-06-16 10:30-11:30 Room A1
+  - 2026-06-16 13:00-14:00 Room A4
+  - 2026-06-17 13:00-14:00 Room A2
+  - 2026-06-18 11:45-12:45 Room A2
+  - 2026-06-18 14:15-15:15 Room A1
+  - 2026-06-23 13:00-14:00 Room A2
+  - 2026-06-29 10:30-11:30 Room A3
+Assigned presentation results:
+  - PFE-001 | encadreur | 2026-06-01 08:00-09:00 Room A4
+  - PFE-020 | president | 2026-06-01 09:15-10:15 Room A1
+  - PFE-028 | president | 2026-06-01 11:45-12:45 Room A4
+  - PFE-035 | rapporteur | 2026-06-02 13:00-14:00 Room A3
+  - PFE-052 | president | 2026-06-08 08:00-09:00 Room A3
+  - PFE-082 | president | 2026-06-08 09:15-10:15 Room A4
+  - PFE-018 | president | 2026-06-08 10:30-11:30 Room A2
+  - PFE-054 | rapporteur | 2026-06-09 11:45-12:45 Room A4
+  - PFE-043 | encadreur | 2026-06-15 11:45-12:45 Room A2
+  - PFE-065 | encadreur | 2026-06-16 09:15-10:15 Room A3
+  - PFE-072 | encadreur | 2026-06-18 11:45-12:45 Room A4
+  - PFE-076 | encadreur | 2026-06-19 09:15-10:15 Room A1
+  - PFE-081 | president | 2026-06-19 13:00-14:00 Room A4
+  - PFE-109 | president | 2026-06-23 14:15-15:15 Room A2
+  - PFE-100 | rapporteur | 2026-06-26 14:15-15:15 Room A3
+
+T07 - Teacher 07 | target=8 | chosen preferred=18 | chosen available_not_preferred=14 | assigned=14
+Role split: encadreur=5, rapporteur=2, president=7
+Preferred sessions selected:
+  - 2026-06-01 11:45-12:45 Room A4
+  - 2026-06-01 13:00-14:00 Room A1
+  - 2026-06-03 08:00-09:00 Room A2
+  - 2026-06-03 10:30-11:30 Room A1
+  - 2026-06-05 08:00-09:00 Room A4
+  - 2026-06-08 08:00-09:00 Room A2
+  - 2026-06-12 11:45-12:45 Room A4
+  - 2026-06-12 14:15-15:15 Room A4
+  - 2026-06-15 13:00-14:00 Room A4
+  - 2026-06-16 09:15-10:15 Room A4
+  - 2026-06-16 11:45-12:45 Room A1
+  - 2026-06-16 14:15-15:15 Room A2
+  - 2026-06-17 11:45-12:45 Room A3
+  - 2026-06-19 14:15-15:15 Room A2
+  - 2026-06-19 14:15-15:15 Room A3
+  - 2026-06-22 14:15-15:15 Room A4
+  - 2026-06-24 10:30-11:30 Room A4
+  - 2026-06-25 11:45-12:45 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-01 10:30-11:30 Room A1
+  - 2026-06-02 14:15-15:15 Room A3
+  - 2026-06-04 10:30-11:30 Room A4
+  - 2026-06-10 14:15-15:15 Room A3
+  - 2026-06-11 13:00-14:00 Room A3
+  - 2026-06-12 08:00-09:00 Room A2
+  - 2026-06-12 11:45-12:45 Room A1
+  - 2026-06-15 10:30-11:30 Room A4
+  - 2026-06-16 14:15-15:15 Room A1
+  - 2026-06-17 08:00-09:00 Room A2
+  - 2026-06-18 10:30-11:30 Room A1
+  - 2026-06-23 08:00-09:00 Room A2
+  - 2026-06-24 09:15-10:15 Room A2
+  - 2026-06-30 11:45-12:45 Room A1
+Assigned presentation results:
+  - PFE-028 | rapporteur | 2026-06-01 11:45-12:45 Room A4
+  - PFE-034 | encadreur | 2026-06-01 13:00-14:00 Room A1
+  - PFE-080 | encadreur | 2026-06-05 08:00-09:00 Room A4
+  - PFE-006 | president | 2026-06-11 13:00-14:00 Room A3
+  - PFE-053 | president | 2026-06-12 11:45-12:45 Room A1
+  - PFE-031 | president | 2026-06-12 11:45-12:45 Room A4
+  - PFE-068 | president | 2026-06-15 10:30-11:30 Room A4
+  - PFE-047 | president | 2026-06-16 09:15-10:15 Room A4
+  - PFE-075 | president | 2026-06-16 11:45-12:45 Room A1
+  - PFE-089 | encadreur | 2026-06-16 14:15-15:15 Room A2
+  - PFE-061 | president | 2026-06-17 11:45-12:45 Room A3
+  - PFE-092 | encadreur | 2026-06-19 14:15-15:15 Room A2
+  - PFE-056 | rapporteur | 2026-06-19 14:15-15:15 Room A3
+  - PFE-094 | encadreur | 2026-06-22 14:15-15:15 Room A4
+
+T08 - Teacher 08 | target=14 | chosen preferred=26 | chosen available_not_preferred=22 | assigned=21
+Role split: encadreur=3, rapporteur=7, president=11
+Preferred sessions selected:
+  - 2026-06-01 08:00-09:00 Room A4
+  - 2026-06-02 13:00-14:00 Room A4
+  - 2026-06-03 10:30-11:30 Room A2
+  - 2026-06-03 10:30-11:30 Room A3
+  - 2026-06-04 09:15-10:15 Room A4
+  - 2026-06-05 13:00-14:00 Room A3
+  - 2026-06-08 08:00-09:00 Room A3
+  - 2026-06-10 09:15-10:15 Room A2
+  - 2026-06-12 08:00-09:00 Room A2
+  - 2026-06-15 08:00-09:00 Room A4
+  - 2026-06-15 09:15-10:15 Room A3
+  - 2026-06-15 13:00-14:00 Room A2
+  - 2026-06-15 13:00-14:00 Room A3
+  - 2026-06-17 13:00-14:00 Room A3
+  - 2026-06-18 10:30-11:30 Room A3
+  - 2026-06-19 08:00-09:00 Room A2
+  - 2026-06-19 10:30-11:30 Room A4
+  - 2026-06-19 14:15-15:15 Room A2
+  - 2026-06-23 13:00-14:00 Room A2
+  - 2026-06-25 10:30-11:30 Room A4
+  - 2026-06-25 13:00-14:00 Room A1
+  - 2026-06-26 11:45-12:45 Room A4
+  - 2026-06-29 08:00-09:00 Room A1
+  - 2026-06-29 10:30-11:30 Room A1
+  - 2026-06-29 13:00-14:00 Room A1
+  - 2026-06-30 08:00-09:00 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-01 13:00-14:00 Room A1
+  - 2026-06-05 09:15-10:15 Room A1
+  - 2026-06-05 10:30-11:30 Room A1
+  - 2026-06-05 13:00-14:00 Room A2
+  - 2026-06-05 14:15-15:15 Room A4
+  - 2026-06-09 09:15-10:15 Room A4
+  - 2026-06-09 10:30-11:30 Room A4
+  - 2026-06-11 09:15-10:15 Room A4
+  - 2026-06-11 10:30-11:30 Room A1
+  - 2026-06-15 08:00-09:00 Room A3
+  - 2026-06-15 11:45-12:45 Room A2
+  - 2026-06-16 14:15-15:15 Room A1
+  - 2026-06-17 08:00-09:00 Room A2
+  - 2026-06-17 08:00-09:00 Room A4
+  - 2026-06-17 13:00-14:00 Room A2
+  - 2026-06-18 13:00-14:00 Room A1
+  - 2026-06-19 13:00-14:00 Room A2
+  - 2026-06-23 11:45-12:45 Room A2
+  - 2026-06-24 09:15-10:15 Room A3
+  - 2026-06-24 10:30-11:30 Room A3
+  - 2026-06-24 10:30-11:30 Room A4
+  - 2026-06-25 11:45-12:45 Room A3
+Assigned presentation results:
+  - PFE-034 | rapporteur | 2026-06-01 13:00-14:00 Room A1
+  - PFE-022 | encadreur | 2026-06-02 13:00-14:00 Room A4
+  - PFE-013 | rapporteur | 2026-06-03 10:30-11:30 Room A2
+  - PFE-039 | president | 2026-06-03 10:30-11:30 Room A3
+  - PFE-048 | president | 2026-06-04 09:15-10:15 Room A4
+  - PFE-044 | president | 2026-06-05 09:15-10:15 Room A1
+  - PFE-110 | president | 2026-06-05 13:00-14:00 Room A2
+  - PFE-052 | encadreur | 2026-06-08 08:00-09:00 Room A3
+  - PFE-025 | rapporteur | 2026-06-09 10:30-11:30 Room A4
+  - PFE-050 | president | 2026-06-10 09:15-10:15 Room A2
+  - PFE-049 | president | 2026-06-11 09:15-10:15 Room A4
+  - PFE-040 | president | 2026-06-12 08:00-09:00 Room A2
+  - PFE-030 | president | 2026-06-15 08:00-09:00 Room A3
+  - PFE-038 | president | 2026-06-15 08:00-09:00 Room A4
+  - PFE-046 | rapporteur | 2026-06-15 09:15-10:15 Room A3
+  - PFE-064 | encadreur | 2026-06-15 13:00-14:00 Room A2
+  - PFE-085 | rapporteur | 2026-06-15 13:00-14:00 Room A3
+  - PFE-105 | president | 2026-06-17 08:00-09:00 Room A4
+  - PFE-107 | rapporteur | 2026-06-19 10:30-11:30 Room A4
+  - PFE-092 | rapporteur | 2026-06-19 14:15-15:15 Room A2
+  - PFE-087 | president | 2026-06-29 10:30-11:30 Room A1
+
+T09 - Teacher 09 | target=14 | chosen preferred=19 | chosen available_not_preferred=23 | assigned=10
+Role split: encadreur=5, rapporteur=2, president=3
+Preferred sessions selected:
+  - 2026-06-01 09:15-10:15 Room A1
+  - 2026-06-01 10:30-11:30 Room A3
+  - 2026-06-02 11:45-12:45 Room A4
+  - 2026-06-03 09:15-10:15 Room A1
+  - 2026-06-05 14:15-15:15 Room A1
+  - 2026-06-08 10:30-11:30 Room A4
+  - 2026-06-08 14:15-15:15 Room A2
+  - 2026-06-09 11:45-12:45 Room A3
+  - 2026-06-09 13:00-14:00 Room A4
+  - 2026-06-10 13:00-14:00 Room A4
+  - 2026-06-12 08:00-09:00 Room A2
+  - 2026-06-16 08:00-09:00 Room A3
+  - 2026-06-17 10:30-11:30 Room A3
+  - 2026-06-18 13:00-14:00 Room A4
+  - 2026-06-22 11:45-12:45 Room A4
+  - 2026-06-24 09:15-10:15 Room A4
+  - 2026-06-24 10:30-11:30 Room A2
+  - 2026-06-25 14:15-15:15 Room A4
+  - 2026-06-30 09:15-10:15 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-01 08:00-09:00 Room A3
+  - 2026-06-01 10:30-11:30 Room A2
+  - 2026-06-02 14:15-15:15 Room A4
+  - 2026-06-04 13:00-14:00 Room A2
+  - 2026-06-05 10:30-11:30 Room A1
+  - 2026-06-08 11:45-12:45 Room A3
+  - 2026-06-09 08:00-09:00 Room A3
+  - 2026-06-09 11:45-12:45 Room A4
+  - 2026-06-09 13:00-14:00 Room A1
+  - 2026-06-10 09:15-10:15 Room A1
+  - 2026-06-10 10:30-11:30 Room A4
+  - 2026-06-11 13:00-14:00 Room A2
+  - 2026-06-12 14:15-15:15 Room A3
+  - 2026-06-16 08:00-09:00 Room A1
+  - 2026-06-16 08:00-09:00 Room A2
+  - 2026-06-16 11:45-12:45 Room A1
+  - 2026-06-18 10:30-11:30 Room A4
+  - 2026-06-19 10:30-11:30 Room A1
+  - 2026-06-22 13:00-14:00 Room A2
+  - 2026-06-24 08:00-09:00 Room A1
+  - 2026-06-29 10:30-11:30 Room A2
+  - 2026-06-29 11:45-12:45 Room A4
+  - 2026-06-30 08:00-09:00 Room A3
+Assigned presentation results:
+  - PFE-020 | encadreur | 2026-06-01 09:15-10:15 Room A1
+  - PFE-051 | rapporteur | 2026-06-01 10:30-11:30 Room A2
+  - PFE-036 | encadreur | 2026-06-02 11:45-12:45 Room A4
+  - PFE-017 | president | 2026-06-04 13:00-14:00 Room A2
+  - PFE-002 | rapporteur | 2026-06-08 10:30-11:30 Room A4
+  - PFE-054 | president | 2026-06-09 11:45-12:45 Room A4
+  - PFE-003 | president | 2026-06-10 13:00-14:00 Room A4
+  - PFE-040 | encadreur | 2026-06-12 08:00-09:00 Room A2
+  - PFE-060 | encadreur | 2026-06-24 09:15-10:15 Room A4
+  - PFE-096 | encadreur | 2026-06-24 10:30-11:30 Room A2
+
+T10 - Teacher 10 | target=10 | chosen preferred=16 | chosen available_not_preferred=17 | assigned=15
+Role split: encadreur=4, rapporteur=4, president=7
+Preferred sessions selected:
+  - 2026-06-01 11:45-12:45 Room A1
+  - 2026-06-01 14:15-15:15 Room A4
+  - 2026-06-02 13:00-14:00 Room A4
+  - 2026-06-04 10:30-11:30 Room A1
+  - 2026-06-04 11:45-12:45 Room A1
+  - 2026-06-05 11:45-12:45 Room A1
+  - 2026-06-08 11:45-12:45 Room A4
+  - 2026-06-10 08:00-09:00 Room A3
+  - 2026-06-11 10:30-11:30 Room A3
+  - 2026-06-11 11:45-12:45 Room A2
+  - 2026-06-12 11:45-12:45 Room A4
+  - 2026-06-17 13:00-14:00 Room A2
+  - 2026-06-17 14:15-15:15 Room A2
+  - 2026-06-22 14:15-15:15 Room A1
+  - 2026-06-22 14:15-15:15 Room A3
+  - 2026-06-24 10:30-11:30 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-02 10:30-11:30 Room A4
+  - 2026-06-04 08:00-09:00 Room A1
+  - 2026-06-08 14:15-15:15 Room A3
+  - 2026-06-10 14:15-15:15 Room A3
+  - 2026-06-11 14:15-15:15 Room A3
+  - 2026-06-12 10:30-11:30 Room A1
+  - 2026-06-12 11:45-12:45 Room A2
+  - 2026-06-12 11:45-12:45 Room A3
+  - 2026-06-15 10:30-11:30 Room A1
+  - 2026-06-15 11:45-12:45 Room A2
+  - 2026-06-16 10:30-11:30 Room A1
+  - 2026-06-18 14:15-15:15 Room A4
+  - 2026-06-22 14:15-15:15 Room A4
+  - 2026-06-23 13:00-14:00 Room A4
+  - 2026-06-23 14:15-15:15 Room A2
+  - 2026-06-24 10:30-11:30 Room A4
+  - 2026-06-26 08:00-09:00 Room A3
+Assigned presentation results:
+  - PFE-004 | rapporteur | 2026-06-01 11:45-12:45 Room A1
+  - PFE-005 | encadreur | 2026-06-01 14:15-15:15 Room A4
+  - PFE-022 | rapporteur | 2026-06-02 13:00-14:00 Room A4
+  - PFE-024 | president | 2026-06-04 08:00-09:00 Room A1
+  - PFE-015 | president | 2026-06-04 10:30-11:30 Room A1
+  - PFE-023 | encadreur | 2026-06-11 10:30-11:30 Room A3
+  - PFE-071 | president | 2026-06-12 11:45-12:45 Room A3
+  - PFE-031 | encadreur | 2026-06-12 11:45-12:45 Room A4
+  - PFE-111 | president | 2026-06-16 10:30-11:30 Room A1
+  - PFE-058 | president | 2026-06-17 13:00-14:00 Room A2
+  - PFE-102 | rapporteur | 2026-06-17 14:15-15:15 Room A2
+  - PFE-097 | president | 2026-06-18 14:15-15:15 Room A4
+  - PFE-112 | encadreur | 2026-06-22 14:15-15:15 Room A1
+  - PFE-074 | rapporteur | 2026-06-22 14:15-15:15 Room A3
+  - PFE-094 | president | 2026-06-22 14:15-15:15 Room A4
+
+T11 - Teacher 11 | target=6 | chosen preferred=10 | chosen available_not_preferred=10 | assigned=6
+Role split: encadreur=4, rapporteur=2, president=0
+Preferred sessions selected:
+  - 2026-06-01 08:00-09:00 Room A3
+  - 2026-06-01 11:45-12:45 Room A2
+  - 2026-06-01 13:00-14:00 Room A4
+  - 2026-06-05 09:15-10:15 Room A1
+  - 2026-06-11 08:00-09:00 Room A4
+  - 2026-06-15 08:00-09:00 Room A2
+  - 2026-06-16 13:00-14:00 Room A4
+  - 2026-06-18 11:45-12:45 Room A1
+  - 2026-06-23 11:45-12:45 Room A3
+  - 2026-06-25 08:00-09:00 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-03 14:15-15:15 Room A2
+  - 2026-06-05 09:15-10:15 Room A2
+  - 2026-06-05 11:45-12:45 Room A4
+  - 2026-06-09 08:00-09:00 Room A2
+  - 2026-06-11 13:00-14:00 Room A1
+  - 2026-06-12 10:30-11:30 Room A4
+  - 2026-06-22 11:45-12:45 Room A1
+  - 2026-06-23 11:45-12:45 Room A4
+  - 2026-06-24 13:00-14:00 Room A4
+  - 2026-06-25 10:30-11:30 Room A3
+Assigned presentation results:
+  - PFE-041 | encadreur | 2026-06-01 08:00-09:00 Room A3
+  - PFE-007 | rapporteur | 2026-06-01 11:45-12:45 Room A2
+  - PFE-021 | rapporteur | 2026-06-01 13:00-14:00 Room A4
+  - PFE-044 | encadreur | 2026-06-05 09:15-10:15 Room A1
+  - PFE-108 | encadreur | 2026-06-05 11:45-12:45 Room A4
+  - PFE-077 | encadreur | 2026-06-11 08:00-09:00 Room A4
+
+T12 - Teacher 12 | target=9 | chosen preferred=14 | chosen available_not_preferred=19 | assigned=12
+Role split: encadreur=3, rapporteur=5, president=4
+Preferred sessions selected:
+  - 2026-06-01 10:30-11:30 Room A2
+  - 2026-06-03 11:45-12:45 Room A2
+  - 2026-06-04 09:15-10:15 Room A4
+  - 2026-06-05 09:15-10:15 Room A3
+  - 2026-06-09 11:45-12:45 Room A1
+  - 2026-06-10 13:00-14:00 Room A4
+  - 2026-06-18 08:00-09:00 Room A1
+  - 2026-06-19 13:00-14:00 Room A4
+  - 2026-06-22 13:00-14:00 Room A1
+  - 2026-06-22 13:00-14:00 Room A4
+  - 2026-06-24 14:15-15:15 Room A3
+  - 2026-06-25 13:00-14:00 Room A2
+  - 2026-06-26 11:45-12:45 Room A2
+  - 2026-06-29 09:15-10:15 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-01 08:00-09:00 Room A1
+  - 2026-06-01 09:15-10:15 Room A4
+  - 2026-06-04 14:15-15:15 Room A4
+  - 2026-06-08 11:45-12:45 Room A1
+  - 2026-06-09 14:15-15:15 Room A1
+  - 2026-06-10 14:15-15:15 Room A4
+  - 2026-06-12 08:00-09:00 Room A1
+  - 2026-06-12 13:00-14:00 Room A4
+  - 2026-06-15 11:45-12:45 Room A1
+  - 2026-06-15 11:45-12:45 Room A4
+  - 2026-06-17 13:00-14:00 Room A3
+  - 2026-06-19 11:45-12:45 Room A4
+  - 2026-06-19 14:15-15:15 Room A2
+  - 2026-06-23 10:30-11:30 Room A2
+  - 2026-06-23 11:45-12:45 Room A2
+  - 2026-06-23 13:00-14:00 Room A2
+  - 2026-06-23 14:15-15:15 Room A3
+  - 2026-06-24 09:15-10:15 Room A4
+  - 2026-06-24 10:30-11:30 Room A3
+Assigned presentation results:
+  - PFE-051 | encadreur | 2026-06-01 10:30-11:30 Room A2
+  - PFE-010 | rapporteur | 2026-06-03 11:45-12:45 Room A2
+  - PFE-048 | rapporteur | 2026-06-04 09:15-10:15 Room A4
+  - PFE-073 | president | 2026-06-08 11:45-12:45 Room A1
+  - PFE-003 | rapporteur | 2026-06-10 13:00-14:00 Room A4
+  - PFE-059 | rapporteur | 2026-06-12 08:00-09:00 Room A1
+  - PFE-055 | rapporteur | 2026-06-15 11:45-12:45 Room A1
+  - PFE-098 | president | 2026-06-19 11:45-12:45 Room A4
+  - PFE-081 | encadreur | 2026-06-19 13:00-14:00 Room A4
+  - PFE-092 | president | 2026-06-19 14:15-15:15 Room A2
+  - PFE-091 | encadreur | 2026-06-22 13:00-14:00 Room A1
+  - PFE-060 | president | 2026-06-24 09:15-10:15 Room A4
+
+T13 - Teacher 13 | target=8 | chosen preferred=12 | chosen available_not_preferred=8 | assigned=9
+Role split: encadreur=2, rapporteur=5, president=2
+Preferred sessions selected:
+  - 2026-06-04 13:00-14:00 Room A1
+  - 2026-06-10 09:15-10:15 Room A3
+  - 2026-06-10 11:45-12:45 Room A2
+  - 2026-06-12 08:00-09:00 Room A3
+  - 2026-06-15 08:00-09:00 Room A4
+  - 2026-06-15 10:30-11:30 Room A2
+  - 2026-06-16 10:30-11:30 Room A1
+  - 2026-06-16 11:45-12:45 Room A3
+  - 2026-06-17 10:30-11:30 Room A2
+  - 2026-06-18 11:45-12:45 Room A2
+  - 2026-06-22 14:15-15:15 Room A4
+  - 2026-06-23 09:15-10:15 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-04 10:30-11:30 Room A4
+  - 2026-06-08 08:00-09:00 Room A3
+  - 2026-06-11 11:45-12:45 Room A4
+  - 2026-06-19 11:45-12:45 Room A3
+  - 2026-06-19 14:15-15:15 Room A3
+  - 2026-06-23 08:00-09:00 Room A1
+  - 2026-06-29 10:30-11:30 Room A2
+  - 2026-06-30 14:15-15:15 Room A1
+Assigned presentation results:
+  - PFE-037 | president | 2026-06-04 10:30-11:30 Room A4
+  - PFE-052 | rapporteur | 2026-06-08 08:00-09:00 Room A3
+  - PFE-027 | rapporteur | 2026-06-10 09:15-10:15 Room A3
+  - PFE-038 | rapporteur | 2026-06-15 08:00-09:00 Room A4
+  - PFE-069 | encadreur | 2026-06-15 10:30-11:30 Room A2
+  - PFE-111 | encadreur | 2026-06-16 10:30-11:30 Room A1
+  - PFE-078 | rapporteur | 2026-06-17 10:30-11:30 Room A2
+  - PFE-056 | president | 2026-06-19 14:15-15:15 Room A3
+  - PFE-094 | rapporteur | 2026-06-22 14:15-15:15 Room A4
+
+T14 - Teacher 14 | target=7 | chosen preferred=17 | chosen available_not_preferred=8 | assigned=7
+Role split: encadreur=4, rapporteur=2, president=1
+Preferred sessions selected:
+  - 2026-06-03 08:00-09:00 Room A3
+  - 2026-06-03 10:30-11:30 Room A3
+  - 2026-06-04 11:45-12:45 Room A4
+  - 2026-06-05 14:15-15:15 Room A4
+  - 2026-06-09 09:15-10:15 Room A3
+  - 2026-06-10 11:45-12:45 Room A1
+  - 2026-06-11 10:30-11:30 Room A4
+  - 2026-06-12 14:15-15:15 Room A2
+  - 2026-06-15 10:30-11:30 Room A1
+  - 2026-06-16 11:45-12:45 Room A1
+  - 2026-06-17 08:00-09:00 Room A1
+  - 2026-06-23 08:00-09:00 Room A1
+  - 2026-06-23 14:15-15:15 Room A2
+  - 2026-06-24 08:00-09:00 Room A1
+  - 2026-06-26 13:00-14:00 Room A4
+  - 2026-06-30 08:00-09:00 Room A3
+  - 2026-06-30 11:45-12:45 Room A1
+Available (not preferred) sessions selected:
+  - 2026-06-01 14:15-15:15 Room A4
+  - 2026-06-04 10:30-11:30 Room A2
+  - 2026-06-16 08:00-09:00 Room A4
+  - 2026-06-22 08:00-09:00 Room A1
+  - 2026-06-22 11:45-12:45 Room A2
+  - 2026-06-25 14:15-15:15 Room A4
+  - 2026-06-26 09:15-10:15 Room A3
+  - 2026-06-29 11:45-12:45 Room A1
+Assigned presentation results:
+  - PFE-005 | president | 2026-06-01 14:15-15:15 Room A4
+  - PFE-039 | rapporteur | 2026-06-03 10:30-11:30 Room A3
+  - PFE-045 | encadreur | 2026-06-15 10:30-11:30 Room A1
+  - PFE-075 | encadreur | 2026-06-16 11:45-12:45 Room A1
+  - PFE-101 | encadreur | 2026-06-17 08:00-09:00 Room A1
+  - PFE-109 | encadreur | 2026-06-23 14:15-15:15 Room A2
+  - PFE-084 | rapporteur | 2026-06-26 13:00-14:00 Room A4
+
+T15 - Teacher 15 | target=14 | chosen preferred=24 | chosen available_not_preferred=17 | assigned=7
+Role split: encadreur=1, rapporteur=3, president=3
+Preferred sessions selected:
+  - 2026-06-01 09:15-10:15 Room A2
+  - 2026-06-03 09:15-10:15 Room A1
+  - 2026-06-03 10:30-11:30 Room A2
+  - 2026-06-03 14:15-15:15 Room A4
+  - 2026-06-04 09:15-10:15 Room A2
+  - 2026-06-04 10:30-11:30 Room A2
+  - 2026-06-04 10:30-11:30 Room A3
+  - 2026-06-05 14:15-15:15 Room A1
+  - 2026-06-08 10:30-11:30 Room A2
+  - 2026-06-09 11:45-12:45 Room A3
+  - 2026-06-10 09:15-10:15 Room A4
+  - 2026-06-10 14:15-15:15 Room A1
+  - 2026-06-12 08:00-09:00 Room A4
+  - 2026-06-12 10:30-11:30 Room A4
+  - 2026-06-15 09:15-10:15 Room A2
+  - 2026-06-15 10:30-11:30 Room A3
+  - 2026-06-16 09:15-10:15 Room A2
+  - 2026-06-17 08:00-09:00 Room A4
+  - 2026-06-17 14:15-15:15 Room A3
+  - 2026-06-19 11:45-12:45 Room A2
+  - 2026-06-25 14:15-15:15 Room A1
+  - 2026-06-29 08:00-09:00 Room A2
+  - 2026-06-29 11:45-12:45 Room A4
+  - 2026-06-30 08:00-09:00 Room A1
+Available (not preferred) sessions selected:
+  - 2026-06-02 13:00-14:00 Room A3
+  - 2026-06-02 13:00-14:00 Room A4
+  - 2026-06-04 09:15-10:15 Room A3
+  - 2026-06-04 11:45-12:45 Room A1
+  - 2026-06-04 13:00-14:00 Room A2
+  - 2026-06-08 11:45-12:45 Room A3
+  - 2026-06-12 09:15-10:15 Room A4
+  - 2026-06-12 11:45-12:45 Room A2
+  - 2026-06-15 13:00-14:00 Room A2
+  - 2026-06-16 11:45-12:45 Room A2
+  - 2026-06-17 13:00-14:00 Room A4
+  - 2026-06-18 11:45-12:45 Room A2
+  - 2026-06-18 13:00-14:00 Room A1
+  - 2026-06-23 08:00-09:00 Room A2
+  - 2026-06-24 09:15-10:15 Room A4
+  - 2026-06-25 13:00-14:00 Room A4
+  - 2026-06-30 11:45-12:45 Room A4
+Assigned presentation results:
+  - PFE-013 | president | 2026-06-03 10:30-11:30 Room A2
+  - PFE-018 | encadreur | 2026-06-08 10:30-11:30 Room A2
+  - PFE-029 | president | 2026-06-08 11:45-12:45 Room A3
+  - PFE-012 | president | 2026-06-12 11:45-12:45 Room A2
+  - PFE-064 | rapporteur | 2026-06-15 13:00-14:00 Room A2
+  - PFE-105 | rapporteur | 2026-06-17 08:00-09:00 Room A4
+  - PFE-060 | rapporteur | 2026-06-24 09:15-10:15 Room A4
+
+T16 - Teacher 16 | target=10 | chosen preferred=16 | chosen available_not_preferred=10 | assigned=9
+Role split: encadreur=3, rapporteur=4, president=2
+Preferred sessions selected:
+  - 2026-06-08 10:30-11:30 Room A4
+  - 2026-06-10 13:00-14:00 Room A2
+  - 2026-06-11 13:00-14:00 Room A3
+  - 2026-06-15 09:15-10:15 Room A2
+  - 2026-06-16 14:15-15:15 Room A2
+  - 2026-06-17 08:00-09:00 Room A4
+  - 2026-06-18 09:15-10:15 Room A1
+  - 2026-06-19 13:00-14:00 Room A4
+  - 2026-06-22 14:15-15:15 Room A1
+  - 2026-06-23 09:15-10:15 Room A2
+  - 2026-06-25 10:30-11:30 Room A4
+  - 2026-06-25 14:15-15:15 Room A3
+  - 2026-06-26 14:15-15:15 Room A4
+  - 2026-06-29 08:00-09:00 Room A1
+  - 2026-06-30 08:00-09:00 Room A3
+  - 2026-06-30 14:15-15:15 Room A2
+Available (not preferred) sessions selected:
+  - 2026-06-03 11:45-12:45 Room A2
+  - 2026-06-05 10:30-11:30 Room A4
+  - 2026-06-09 13:00-14:00 Room A2
+  - 2026-06-10 09:15-10:15 Room A2
+  - 2026-06-10 14:15-15:15 Room A3
+  - 2026-06-23 13:00-14:00 Room A2
+  - 2026-06-24 10:30-11:30 Room A1
+  - 2026-06-25 08:00-09:00 Room A1
+  - 2026-06-25 08:00-09:00 Room A2
+  - 2026-06-29 08:00-09:00 Room A2
+Assigned presentation results:
+  - PFE-008 | president | 2026-06-05 10:30-11:30 Room A4
+  - PFE-002 | encadreur | 2026-06-08 10:30-11:30 Room A4
+  - PFE-006 | encadreur | 2026-06-11 13:00-14:00 Room A3
+  - PFE-032 | president | 2026-06-15 09:15-10:15 Room A2
+  - PFE-089 | rapporteur | 2026-06-16 14:15-15:15 Room A2
+  - PFE-105 | encadreur | 2026-06-17 08:00-09:00 Room A4
+  - PFE-057 | rapporteur | 2026-06-18 09:15-10:15 Room A1
+  - PFE-081 | rapporteur | 2026-06-19 13:00-14:00 Room A4
+  - PFE-112 | rapporteur | 2026-06-22 14:15-15:15 Room A1
+
+T17 - Teacher 17 | target=9 | chosen preferred=19 | chosen available_not_preferred=18 | assigned=13
+Role split: encadreur=0, rapporteur=7, president=6
+Preferred sessions selected:
+  - 2026-06-01 11:45-12:45 Room A1
+  - 2026-06-03 08:00-09:00 Room A2
+  - 2026-06-03 08:00-09:00 Room A4
+  - 2026-06-03 14:15-15:15 Room A4
+  - 2026-06-05 11:45-12:45 Room A1
+  - 2026-06-05 11:45-12:45 Room A4
+  - 2026-06-05 13:00-14:00 Room A1
+  - 2026-06-08 13:00-14:00 Room A2
+  - 2026-06-10 08:00-09:00 Room A2
+  - 2026-06-10 09:15-10:15 Room A2
+  - 2026-06-10 14:15-15:15 Room A3
+  - 2026-06-11 09:15-10:15 Room A4
+  - 2026-06-17 11:45-12:45 Room A3
+  - 2026-06-18 11:45-12:45 Room A4
+  - 2026-06-22 14:15-15:15 Room A3
+  - 2026-06-23 13:00-14:00 Room A4
+  - 2026-06-23 14:15-15:15 Room A2
+  - 2026-06-25 10:30-11:30 Room A1
+  - 2026-06-25 10:30-11:30 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-03 09:15-10:15 Room A2
+  - 2026-06-04 09:15-10:15 Room A4
+  - 2026-06-08 10:30-11:30 Room A4
+  - 2026-06-09 10:30-11:30 Room A2
+  - 2026-06-09 14:15-15:15 Room A3
+  - 2026-06-10 08:00-09:00 Room A4
+  - 2026-06-11 10:30-11:30 Room A3
+  - 2026-06-11 11:45-12:45 Room A2
+  - 2026-06-15 10:30-11:30 Room A1
+  - 2026-06-15 14:15-15:15 Room A2
+  - 2026-06-15 14:15-15:15 Room A3
+  - 2026-06-17 08:00-09:00 Room A1
+  - 2026-06-18 10:30-11:30 Room A1
+  - 2026-06-18 10:30-11:30 Room A2
+  - 2026-06-23 08:00-09:00 Room A4
+  - 2026-06-24 09:15-10:15 Room A2
+  - 2026-06-30 09:15-10:15 Room A3
+  - 2026-06-30 10:30-11:30 Room A2
+Assigned presentation results:
+  - PFE-004 | president | 2026-06-01 11:45-12:45 Room A1
+  - PFE-108 | rapporteur | 2026-06-05 11:45-12:45 Room A4
+  - PFE-002 | president | 2026-06-08 10:30-11:30 Room A4
+  - PFE-063 | rapporteur | 2026-06-08 13:00-14:00 Room A2
+  - PFE-016 | president | 2026-06-09 10:30-11:30 Room A2
+  - PFE-050 | rapporteur | 2026-06-10 09:15-10:15 Room A2
+  - PFE-049 | rapporteur | 2026-06-11 09:15-10:15 Room A4
+  - PFE-023 | president | 2026-06-11 10:30-11:30 Room A3
+  - PFE-061 | rapporteur | 2026-06-17 11:45-12:45 Room A3
+  - PFE-070 | president | 2026-06-18 10:30-11:30 Room A2
+  - PFE-072 | rapporteur | 2026-06-18 11:45-12:45 Room A4
+  - PFE-074 | president | 2026-06-22 14:15-15:15 Room A3
+  - PFE-109 | rapporteur | 2026-06-23 14:15-15:15 Room A2
+
+T18 - Teacher 18 | target=12 | chosen preferred=19 | chosen available_not_preferred=16 | assigned=13
+Role split: encadreur=3, rapporteur=7, president=3
+Preferred sessions selected:
+  - 2026-06-01 13:00-14:00 Room A4
+  - 2026-06-02 10:30-11:30 Room A2
+  - 2026-06-02 13:00-14:00 Room A1
+  - 2026-06-03 09:15-10:15 Room A2
+  - 2026-06-05 11:45-12:45 Room A3
+  - 2026-06-10 09:15-10:15 Room A2
+  - 2026-06-10 11:45-12:45 Room A2
+  - 2026-06-10 11:45-12:45 Room A3
+  - 2026-06-15 10:30-11:30 Room A2
+  - 2026-06-15 11:45-12:45 Room A3
+  - 2026-06-16 09:15-10:15 Room A4
+  - 2026-06-17 10:30-11:30 Room A1
+  - 2026-06-18 13:00-14:00 Room A2
+  - 2026-06-23 13:00-14:00 Room A1
+  - 2026-06-24 08:00-09:00 Room A3
+  - 2026-06-26 08:00-09:00 Room A4
+  - 2026-06-26 13:00-14:00 Room A2
+  - 2026-06-29 10:30-11:30 Room A4
+  - 2026-06-29 11:45-12:45 Room A2
+Available (not preferred) sessions selected:
+  - 2026-06-04 10:30-11:30 Room A3
+  - 2026-06-05 13:00-14:00 Room A2
+  - 2026-06-08 11:45-12:45 Room A1
+  - 2026-06-11 13:00-14:00 Room A2
+  - 2026-06-16 08:00-09:00 Room A4
+  - 2026-06-16 14:15-15:15 Room A2
+  - 2026-06-17 09:15-10:15 Room A3
+  - 2026-06-22 10:30-11:30 Room A2
+  - 2026-06-22 11:45-12:45 Room A4
+  - 2026-06-23 10:30-11:30 Room A3
+  - 2026-06-24 09:15-10:15 Room A3
+  - 2026-06-24 13:00-14:00 Room A2
+  - 2026-06-24 14:15-15:15 Room A4
+  - 2026-06-26 09:15-10:15 Room A3
+  - 2026-06-30 10:30-11:30 Room A1
+  - 2026-06-30 13:00-14:00 Room A3
+Assigned presentation results:
+  - PFE-021 | president | 2026-06-01 13:00-14:00 Room A4
+  - PFE-011 | rapporteur | 2026-06-03 09:15-10:15 Room A2
+  - PFE-042 | rapporteur | 2026-06-05 11:45-12:45 Room A3
+  - PFE-110 | rapporteur | 2026-06-05 13:00-14:00 Room A2
+  - PFE-073 | rapporteur | 2026-06-08 11:45-12:45 Room A1
+  - PFE-050 | encadreur | 2026-06-10 09:15-10:15 Room A2
+  - PFE-090 | encadreur | 2026-06-10 11:45-12:45 Room A3
+  - PFE-083 | president | 2026-06-11 13:00-14:00 Room A2
+  - PFE-069 | rapporteur | 2026-06-15 10:30-11:30 Room A2
+  - PFE-047 | rapporteur | 2026-06-16 09:15-10:15 Room A4
+  - PFE-089 | president | 2026-06-16 14:15-15:15 Room A2
+  - PFE-104 | rapporteur | 2026-06-24 13:00-14:00 Room A2
+  - PFE-093 | encadreur | 2026-06-26 08:00-09:00 Room A4
+
+T19 - Teacher 19 | target=8 | chosen preferred=13 | chosen available_not_preferred=17 | assigned=13
+Role split: encadreur=5, rapporteur=3, president=5
+Preferred sessions selected:
+  - 2026-06-01 08:00-09:00 Room A4
+  - 2026-06-01 09:15-10:15 Room A1
+  - 2026-06-01 13:00-14:00 Room A4
+  - 2026-06-02 09:15-10:15 Room A3
+  - 2026-06-02 13:00-14:00 Room A3
+  - 2026-06-05 09:15-10:15 Room A1
+  - 2026-06-05 14:15-15:15 Room A3
+  - 2026-06-08 13:00-14:00 Room A2
+  - 2026-06-09 11:45-12:45 Room A1
+  - 2026-06-15 11:45-12:45 Room A4
+  - 2026-06-23 09:15-10:15 Room A1
+  - 2026-06-23 10:30-11:30 Room A1
+  - 2026-06-25 09:15-10:15 Room A1
+Available (not preferred) sessions selected:
+  - 2026-06-04 08:00-09:00 Room A4
+  - 2026-06-05 09:15-10:15 Room A2
+  - 2026-06-05 10:30-11:30 Room A3
+  - 2026-06-05 10:30-11:30 Room A4
+  - 2026-06-09 08:00-09:00 Room A4
+  - 2026-06-10 10:30-11:30 Room A4
+  - 2026-06-12 09:15-10:15 Room A2
+  - 2026-06-15 14:15-15:15 Room A3
+  - 2026-06-16 11:45-12:45 Room A4
+  - 2026-06-16 13:00-14:00 Room A3
+  - 2026-06-17 10:30-11:30 Room A2
+  - 2026-06-17 14:15-15:15 Room A2
+  - 2026-06-19 11:45-12:45 Room A3
+  - 2026-06-24 09:15-10:15 Room A2
+  - 2026-06-24 11:45-12:45 Room A4
+  - 2026-06-25 09:15-10:15 Room A4
+  - 2026-06-25 10:30-11:30 Room A2
+Assigned presentation results:
+  - PFE-001 | president | 2026-06-01 08:00-09:00 Room A4
+  - PFE-020 | rapporteur | 2026-06-01 09:15-10:15 Room A1
+  - PFE-021 | encadreur | 2026-06-01 13:00-14:00 Room A4
+  - PFE-033 | encadreur | 2026-06-02 09:15-10:15 Room A3
+  - PFE-035 | president | 2026-06-02 13:00-14:00 Room A3
+  - PFE-044 | rapporteur | 2026-06-05 09:15-10:15 Room A1
+  - PFE-008 | rapporteur | 2026-06-05 10:30-11:30 Room A4
+  - PFE-063 | encadreur | 2026-06-08 13:00-14:00 Room A2
+  - PFE-062 | president | 2026-06-15 14:15-15:15 Room A3
+  - PFE-078 | encadreur | 2026-06-17 10:30-11:30 Room A2
+  - PFE-102 | president | 2026-06-17 14:15-15:15 Room A2
+  - PFE-066 | encadreur | 2026-06-23 10:30-11:30 Room A1
+  - PFE-106 | president | 2026-06-25 09:15-10:15 Room A4
+
+T20 - Teacher 20 | target=12 | chosen preferred=16 | chosen available_not_preferred=22 | assigned=11
+Role split: encadreur=4, rapporteur=3, president=4
+Preferred sessions selected:
+  - 2026-06-08 08:00-09:00 Room A4
+  - 2026-06-09 14:15-15:15 Room A3
+  - 2026-06-11 13:00-14:00 Room A3
+  - 2026-06-11 14:15-15:15 Room A4
+  - 2026-06-12 09:15-10:15 Room A3
+  - 2026-06-12 10:30-11:30 Room A3
+  - 2026-06-12 13:00-14:00 Room A1
+  - 2026-06-15 14:15-15:15 Room A3
+  - 2026-06-17 14:15-15:15 Room A3
+  - 2026-06-18 10:30-11:30 Room A2
+  - 2026-06-19 11:45-12:45 Room A4
+  - 2026-06-22 10:30-11:30 Room A2
+  - 2026-06-22 10:30-11:30 Room A4
+  - 2026-06-22 13:00-14:00 Room A1
+  - 2026-06-25 09:15-10:15 Room A3
+  - 2026-06-26 08:00-09:00 Room A2
+Available (not preferred) sessions selected:
+  - 2026-06-01 10:30-11:30 Room A4
+  - 2026-06-02 11:45-12:45 Room A1
+  - 2026-06-04 09:15-10:15 Room A1
+  - 2026-06-09 10:30-11:30 Room A1
+  - 2026-06-09 13:00-14:00 Room A4
+  - 2026-06-10 11:45-12:45 Room A3
+  - 2026-06-12 08:00-09:00 Room A2
+  - 2026-06-15 09:15-10:15 Room A2
+  - 2026-06-15 13:00-14:00 Room A1
+  - 2026-06-15 13:00-14:00 Room A3
+  - 2026-06-16 09:15-10:15 Room A3
+  - 2026-06-17 10:30-11:30 Room A4
+  - 2026-06-19 13:00-14:00 Room A4
+  - 2026-06-22 08:00-09:00 Room A4
+  - 2026-06-22 11:45-12:45 Room A3
+  - 2026-06-22 13:00-14:00 Room A3
+  - 2026-06-23 09:15-10:15 Room A1
+  - 2026-06-23 10:30-11:30 Room A3
+  - 2026-06-23 13:00-14:00 Room A3
+  - 2026-06-25 08:00-09:00 Room A1
+  - 2026-06-25 10:30-11:30 Room A4
+  - 2026-06-29 13:00-14:00 Room A3
+Assigned presentation results:
+  - PFE-019 | encadreur | 2026-06-09 14:15-15:15 Room A3
+  - PFE-090 | rapporteur | 2026-06-10 11:45-12:45 Room A3
+  - PFE-006 | rapporteur | 2026-06-11 13:00-14:00 Room A3
+  - PFE-085 | president | 2026-06-15 13:00-14:00 Room A3
+  - PFE-062 | encadreur | 2026-06-15 14:15-15:15 Room A3
+  - PFE-065 | president | 2026-06-16 09:15-10:15 Room A3
+  - PFE-070 | encadreur | 2026-06-18 10:30-11:30 Room A2
+  - PFE-098 | encadreur | 2026-06-19 11:45-12:45 Room A4
+  - PFE-099 | president | 2026-06-22 11:45-12:45 Room A3
+  - PFE-091 | rapporteur | 2026-06-22 13:00-14:00 Room A1
+  - PFE-103 | president | 2026-06-25 09:15-10:15 Room A3
+
+T21 - Teacher 21 | target=14 | chosen preferred=22 | chosen available_not_preferred=20 | assigned=12
+Role split: encadreur=3, rapporteur=4, president=5
+Preferred sessions selected:
+  - 2026-06-01 13:00-14:00 Room A4
+  - 2026-06-01 14:15-15:15 Room A3
+  - 2026-06-03 10:30-11:30 Room A3
+  - 2026-06-08 09:15-10:15 Room A3
+  - 2026-06-08 09:15-10:15 Room A4
+  - 2026-06-09 10:30-11:30 Room A2
+  - 2026-06-10 11:45-12:45 Room A4
+  - 2026-06-11 08:00-09:00 Room A2
+  - 2026-06-11 10:30-11:30 Room A3
+  - 2026-06-15 13:00-14:00 Room A4
+  - 2026-06-17 08:00-09:00 Room A1
+  - 2026-06-17 13:00-14:00 Room A1
+  - 2026-06-17 14:15-15:15 Room A2
+  - 2026-06-18 13:00-14:00 Room A4
+  - 2026-06-19 11:45-12:45 Room A2
+  - 2026-06-23 14:15-15:15 Room A3
+  - 2026-06-24 08:00-09:00 Room A1
+  - 2026-06-25 08:00-09:00 Room A1
+  - 2026-06-25 11:45-12:45 Room A2
+  - 2026-06-29 11:45-12:45 Room A4
+  - 2026-06-30 10:30-11:30 Room A1
+  - 2026-06-30 11:45-12:45 Room A1
+Available (not preferred) sessions selected:
+  - 2026-06-02 09:15-10:15 Room A2
+  - 2026-06-02 10:30-11:30 Room A3
+  - 2026-06-02 13:00-14:00 Room A4
+  - 2026-06-03 09:15-10:15 Room A2
+  - 2026-06-04 09:15-10:15 Room A4
+  - 2026-06-04 14:15-15:15 Room A2
+  - 2026-06-05 10:30-11:30 Room A2
+  - 2026-06-11 08:00-09:00 Room A4
+  - 2026-06-12 10:30-11:30 Room A4
+  - 2026-06-15 14:15-15:15 Room A3
+  - 2026-06-17 10:30-11:30 Room A3
+  - 2026-06-18 11:45-12:45 Room A4
+  - 2026-06-19 09:15-10:15 Room A4
+  - 2026-06-22 14:15-15:15 Room A1
+  - 2026-06-24 11:45-12:45 Room A1
+  - 2026-06-24 13:00-14:00 Room A3
+  - 2026-06-29 14:15-15:15 Room A2
+  - 2026-06-30 10:30-11:30 Room A2
+  - 2026-06-30 13:00-14:00 Room A1
+  - 2026-06-30 14:15-15:15 Room A2
+Assigned presentation results:
+  - PFE-022 | president | 2026-06-02 13:00-14:00 Room A4
+  - PFE-011 | president | 2026-06-03 09:15-10:15 Room A2
+  - PFE-039 | encadreur | 2026-06-03 10:30-11:30 Room A3
+  - PFE-026 | president | 2026-06-04 14:15-15:15 Room A2
+  - PFE-082 | encadreur | 2026-06-08 09:15-10:15 Room A4
+  - PFE-016 | rapporteur | 2026-06-09 10:30-11:30 Room A2
+  - PFE-077 | president | 2026-06-11 08:00-09:00 Room A4
+  - PFE-023 | rapporteur | 2026-06-11 10:30-11:30 Room A3
+  - PFE-062 | rapporteur | 2026-06-15 14:15-15:15 Room A3
+  - PFE-101 | rapporteur | 2026-06-17 08:00-09:00 Room A1
+  - PFE-102 | encadreur | 2026-06-17 14:15-15:15 Room A2
+  - PFE-112 | president | 2026-06-22 14:15-15:15 Room A1
+
+T22 - Teacher 22 | target=6 | chosen preferred=12 | chosen available_not_preferred=8 | assigned=6
+Role split: encadreur=3, rapporteur=3, president=0
+Preferred sessions selected:
+  - 2026-06-01 08:00-09:00 Room A4
+  - 2026-06-05 10:30-11:30 Room A4
+  - 2026-06-05 11:45-12:45 Room A2
+  - 2026-06-08 13:00-14:00 Room A1
+  - 2026-06-12 08:00-09:00 Room A2
+  - 2026-06-16 09:15-10:15 Room A3
+  - 2026-06-16 13:00-14:00 Room A1
+  - 2026-06-17 09:15-10:15 Room A3
+  - 2026-06-18 10:30-11:30 Room A3
+  - 2026-06-23 10:30-11:30 Room A4
+  - 2026-06-24 11:45-12:45 Room A1
+  - 2026-06-25 09:15-10:15 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-03 10:30-11:30 Room A3
+  - 2026-06-04 10:30-11:30 Room A4
+  - 2026-06-05 13:00-14:00 Room A3
+  - 2026-06-11 08:00-09:00 Room A3
+  - 2026-06-22 14:15-15:15 Room A2
+  - 2026-06-25 11:45-12:45 Room A2
+  - 2026-06-26 11:45-12:45 Room A1
+  - 2026-06-30 14:15-15:15 Room A2
+Assigned presentation results:
+  - PFE-001 | rapporteur | 2026-06-01 08:00-09:00 Room A4
+  - PFE-008 | encadreur | 2026-06-05 10:30-11:30 Room A4
+  - PFE-040 | rapporteur | 2026-06-12 08:00-09:00 Room A2
+  - PFE-065 | rapporteur | 2026-06-16 09:15-10:15 Room A3
+  - PFE-086 | encadreur | 2026-06-18 10:30-11:30 Room A3
+  - PFE-103 | encadreur | 2026-06-25 09:15-10:15 Room A3
+
+T23 - Teacher 23 | target=11 | chosen preferred=21 | chosen available_not_preferred=16 | assigned=12
+Role split: encadreur=2, rapporteur=4, president=6
+Preferred sessions selected:
+  - 2026-06-01 10:30-11:30 Room A1
+  - 2026-06-01 11:45-12:45 Room A3
+  - 2026-06-03 08:00-09:00 Room A4
+  - 2026-06-04 14:15-15:15 Room A3
+  - 2026-06-05 09:15-10:15 Room A4
+  - 2026-06-08 09:15-10:15 Room A1
+  - 2026-06-10 13:00-14:00 Room A4
+  - 2026-06-11 13:00-14:00 Room A2
+  - 2026-06-12 11:45-12:45 Room A4
+  - 2026-06-15 14:15-15:15 Room A4
+  - 2026-06-16 10:30-11:30 Room A2
+  - 2026-06-18 08:00-09:00 Room A2
+  - 2026-06-19 09:15-10:15 Room A1
+  - 2026-06-19 14:15-15:15 Room A4
+  - 2026-06-23 08:00-09:00 Room A4
+  - 2026-06-23 10:30-11:30 Room A3
+  - 2026-06-25 10:30-11:30 Room A1
+  - 2026-06-25 13:00-14:00 Room A3
+  - 2026-06-26 08:00-09:00 Room A2
+  - 2026-06-26 09:15-10:15 Room A2
+  - 2026-06-26 13:00-14:00 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-03 10:30-11:30 Room A4
+  - 2026-06-04 10:30-11:30 Room A1
+  - 2026-06-08 13:00-14:00 Room A3
+  - 2026-06-15 10:30-11:30 Room A1
+  - 2026-06-15 11:45-12:45 Room A2
+  - 2026-06-17 10:30-11:30 Room A2
+  - 2026-06-17 11:45-12:45 Room A4
+  - 2026-06-19 08:00-09:00 Room A2
+  - 2026-06-22 09:15-10:15 Room A2
+  - 2026-06-24 10:30-11:30 Room A2
+  - 2026-06-24 11:45-12:45 Room A2
+  - 2026-06-25 11:45-12:45 Room A4
+  - 2026-06-26 10:30-11:30 Room A3
+  - 2026-06-30 09:15-10:15 Room A2
+  - 2026-06-30 09:15-10:15 Room A3
+  - 2026-06-30 11:45-12:45 Room A4
+Assigned presentation results:
+  - PFE-003 | encadreur | 2026-06-10 13:00-14:00 Room A4
+  - PFE-083 | encadreur | 2026-06-11 13:00-14:00 Room A2
+  - PFE-031 | rapporteur | 2026-06-12 11:45-12:45 Room A4
+  - PFE-045 | president | 2026-06-15 10:30-11:30 Room A1
+  - PFE-043 | president | 2026-06-15 11:45-12:45 Room A2
+  - PFE-079 | rapporteur | 2026-06-16 10:30-11:30 Room A2
+  - PFE-078 | president | 2026-06-17 10:30-11:30 Room A2
+  - PFE-076 | president | 2026-06-19 09:15-10:15 Room A1
+  - PFE-095 | president | 2026-06-22 09:15-10:15 Room A2
+  - PFE-096 | rapporteur | 2026-06-24 10:30-11:30 Room A2
+  - PFE-067 | rapporteur | 2026-06-25 10:30-11:30 Room A1
+  - PFE-084 | president | 2026-06-26 13:00-14:00 Room A4
+
+T24 - Teacher 24 | target=7 | chosen preferred=17 | chosen available_not_preferred=12 | assigned=8
+Role split: encadreur=3, rapporteur=3, president=2
+Preferred sessions selected:
+  - 2026-06-01 11:45-12:45 Room A2
+  - 2026-06-02 09:15-10:15 Room A3
+  - 2026-06-03 11:45-12:45 Room A3
+  - 2026-06-05 09:15-10:15 Room A3
+  - 2026-06-05 10:30-11:30 Room A3
+  - 2026-06-12 08:00-09:00 Room A1
+  - 2026-06-12 11:45-12:45 Room A3
+  - 2026-06-15 14:15-15:15 Room A1
+  - 2026-06-16 08:00-09:00 Room A4
+  - 2026-06-16 10:30-11:30 Room A4
+  - 2026-06-16 11:45-12:45 Room A1
+  - 2026-06-17 08:00-09:00 Room A2
+  - 2026-06-17 09:15-10:15 Room A1
+  - 2026-06-24 10:30-11:30 Room A1
+  - 2026-06-26 09:15-10:15 Room A3
+  - 2026-06-26 11:45-12:45 Room A3
+  - 2026-06-26 11:45-12:45 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-01 08:00-09:00 Room A2
+  - 2026-06-01 13:00-14:00 Room A4
+  - 2026-06-03 11:45-12:45 Room A2
+  - 2026-06-03 11:45-12:45 Room A4
+  - 2026-06-04 09:15-10:15 Room A1
+  - 2026-06-05 08:00-09:00 Room A4
+  - 2026-06-08 09:15-10:15 Room A1
+  - 2026-06-08 10:30-11:30 Room A3
+  - 2026-06-08 11:45-12:45 Room A2
+  - 2026-06-11 08:00-09:00 Room A3
+  - 2026-06-15 14:15-15:15 Room A2
+  - 2026-06-25 13:00-14:00 Room A3
+Assigned presentation results:
+  - PFE-007 | encadreur | 2026-06-01 11:45-12:45 Room A2
+  - PFE-033 | rapporteur | 2026-06-02 09:15-10:15 Room A3
+  - PFE-010 | president | 2026-06-03 11:45-12:45 Room A2
+  - PFE-014 | rapporteur | 2026-06-03 11:45-12:45 Room A3
+  - PFE-080 | president | 2026-06-05 08:00-09:00 Room A4
+  - PFE-059 | encadreur | 2026-06-12 08:00-09:00 Room A1
+  - PFE-071 | encadreur | 2026-06-12 11:45-12:45 Room A3
+  - PFE-075 | rapporteur | 2026-06-16 11:45-12:45 Room A1
+
+T25 - Teacher 25 | target=14 | chosen preferred=20 | chosen available_not_preferred=19 | assigned=9
+Role split: encadreur=2, rapporteur=4, president=3
+Preferred sessions selected:
+  - 2026-06-01 08:00-09:00 Room A3
+  - 2026-06-01 11:45-12:45 Room A2
+  - 2026-06-04 13:00-14:00 Room A2
+  - 2026-06-09 14:15-15:15 Room A3
+  - 2026-06-11 09:15-10:15 Room A1
+  - 2026-06-11 11:45-12:45 Room A1
+  - 2026-06-12 14:15-15:15 Room A3
+  - 2026-06-15 13:00-14:00 Room A1
+  - 2026-06-16 09:15-10:15 Room A4
+  - 2026-06-19 13:00-14:00 Room A1
+  - 2026-06-19 14:15-15:15 Room A3
+  - 2026-06-22 09:15-10:15 Room A2
+  - 2026-06-22 11:45-12:45 Room A2
+  - 2026-06-24 08:00-09:00 Room A1
+  - 2026-06-24 14:15-15:15 Room A4
+  - 2026-06-25 09:15-10:15 Room A3
+  - 2026-06-25 10:30-11:30 Room A1
+  - 2026-06-25 10:30-11:30 Room A2
+  - 2026-06-29 10:30-11:30 Room A2
+  - 2026-06-29 14:15-15:15 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-01 11:45-12:45 Room A4
+  - 2026-06-02 10:30-11:30 Room A1
+  - 2026-06-02 14:15-15:15 Room A2
+  - 2026-06-08 10:30-11:30 Room A1
+  - 2026-06-08 13:00-14:00 Room A4
+  - 2026-06-09 14:15-15:15 Room A1
+  - 2026-06-15 09:15-10:15 Room A2
+  - 2026-06-15 10:30-11:30 Room A3
+  - 2026-06-15 14:15-15:15 Room A4
+  - 2026-06-18 08:00-09:00 Room A3
+  - 2026-06-19 09:15-10:15 Room A1
+  - 2026-06-19 09:15-10:15 Room A4
+  - 2026-06-23 13:00-14:00 Room A2
+  - 2026-06-23 14:15-15:15 Room A2
+  - 2026-06-24 10:30-11:30 Room A4
+  - 2026-06-24 11:45-12:45 Room A3
+  - 2026-06-25 14:15-15:15 Room A2
+  - 2026-06-29 08:00-09:00 Room A2
+  - 2026-06-30 08:00-09:00 Room A4
+Assigned presentation results:
+  - PFE-041 | rapporteur | 2026-06-01 08:00-09:00 Room A3
+  - PFE-007 | president | 2026-06-01 11:45-12:45 Room A2
+  - PFE-017 | rapporteur | 2026-06-04 13:00-14:00 Room A2
+  - PFE-019 | president | 2026-06-09 14:15-15:15 Room A3
+  - PFE-047 | encadreur | 2026-06-16 09:15-10:15 Room A4
+  - PFE-056 | encadreur | 2026-06-19 14:15-15:15 Room A3
+  - PFE-095 | rapporteur | 2026-06-22 09:15-10:15 Room A2
+  - PFE-103 | rapporteur | 2026-06-25 09:15-10:15 Room A3
+  - PFE-067 | president | 2026-06-25 10:30-11:30 Room A1
+
+T26 - Teacher 26 | target=8 | chosen preferred=17 | chosen available_not_preferred=14 | assigned=11
+Role split: encadreur=6, rapporteur=3, president=2
+Preferred sessions selected:
+  - 2026-06-03 09:15-10:15 Room A2
+  - 2026-06-04 08:00-09:00 Room A1
+  - 2026-06-04 09:15-10:15 Room A4
+  - 2026-06-04 14:15-15:15 Room A1
+  - 2026-06-09 11:45-12:45 Room A2
+  - 2026-06-10 09:15-10:15 Room A3
+  - 2026-06-11 14:15-15:15 Room A3
+  - 2026-06-12 13:00-14:00 Room A2
+  - 2026-06-17 08:00-09:00 Room A3
+  - 2026-06-17 11:45-12:45 Room A3
+  - 2026-06-22 08:00-09:00 Room A2
+  - 2026-06-23 11:45-12:45 Room A1
+  - 2026-06-24 08:00-09:00 Room A4
+  - 2026-06-25 10:30-11:30 Room A1
+  - 2026-06-25 13:00-14:00 Room A2
+  - 2026-06-29 10:30-11:30 Room A1
+  - 2026-06-29 10:30-11:30 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-02 09:15-10:15 Room A3
+  - 2026-06-02 10:30-11:30 Room A3
+  - 2026-06-02 10:30-11:30 Room A4
+  - 2026-06-02 14:15-15:15 Room A1
+  - 2026-06-08 08:00-09:00 Room A4
+  - 2026-06-09 14:15-15:15 Room A4
+  - 2026-06-16 08:00-09:00 Room A2
+  - 2026-06-16 10:30-11:30 Room A1
+  - 2026-06-18 08:00-09:00 Room A1
+  - 2026-06-18 10:30-11:30 Room A2
+  - 2026-06-19 09:15-10:15 Room A2
+  - 2026-06-22 11:45-12:45 Room A3
+  - 2026-06-23 13:00-14:00 Room A3
+  - 2026-06-25 14:15-15:15 Room A4
+Assigned presentation results:
+  - PFE-033 | president | 2026-06-02 09:15-10:15 Room A3
+  - PFE-011 | encadreur | 2026-06-03 09:15-10:15 Room A2
+  - PFE-024 | encadreur | 2026-06-04 08:00-09:00 Room A1
+  - PFE-048 | encadreur | 2026-06-04 09:15-10:15 Room A4
+  - PFE-027 | president | 2026-06-10 09:15-10:15 Room A3
+  - PFE-111 | rapporteur | 2026-06-16 10:30-11:30 Room A1
+  - PFE-061 | encadreur | 2026-06-17 11:45-12:45 Room A3
+  - PFE-070 | rapporteur | 2026-06-18 10:30-11:30 Room A2
+  - PFE-099 | rapporteur | 2026-06-22 11:45-12:45 Room A3
+  - PFE-067 | encadreur | 2026-06-25 10:30-11:30 Room A1
+  - PFE-087 | encadreur | 2026-06-29 10:30-11:30 Room A1
+
+T27 - Teacher 27 | target=13 | chosen preferred=22 | chosen available_not_preferred=17 | assigned=11
+Role split: encadreur=6, rapporteur=3, president=2
+Preferred sessions selected:
+  - 2026-06-02 13:00-14:00 Room A2
+  - 2026-06-03 13:00-14:00 Room A2
+  - 2026-06-05 10:30-11:30 Room A2
+  - 2026-06-05 14:15-15:15 Room A3
+  - 2026-06-11 13:00-14:00 Room A4
+  - 2026-06-12 11:45-12:45 Room A2
+  - 2026-06-12 13:00-14:00 Room A3
+  - 2026-06-15 08:00-09:00 Room A3
+  - 2026-06-15 08:00-09:00 Room A4
+  - 2026-06-15 09:15-10:15 Room A2
+  - 2026-06-15 11:45-12:45 Room A1
+  - 2026-06-18 14:15-15:15 Room A2
+  - 2026-06-19 14:15-15:15 Room A1
+  - 2026-06-22 10:30-11:30 Room A3
+  - 2026-06-22 11:45-12:45 Room A3
+  - 2026-06-22 13:00-14:00 Room A1
+  - 2026-06-24 13:00-14:00 Room A2
+  - 2026-06-25 09:15-10:15 Room A4
+  - 2026-06-26 13:00-14:00 Room A1
+  - 2026-06-26 13:00-14:00 Room A2
+  - 2026-06-30 09:15-10:15 Room A2
+  - 2026-06-30 09:15-10:15 Room A4
+Available (not preferred) sessions selected:
+  - 2026-06-01 13:00-14:00 Room A2
+  - 2026-06-03 14:15-15:15 Room A1
+  - 2026-06-05 08:00-09:00 Room A4
+  - 2026-06-08 13:00-14:00 Room A2
+  - 2026-06-09 09:15-10:15 Room A2
+  - 2026-06-12 10:30-11:30 Room A3
+  - 2026-06-15 13:00-14:00 Room A3
+  - 2026-06-16 09:15-10:15 Room A1
+  - 2026-06-19 11:45-12:45 Room A2
+  - 2026-06-19 14:15-15:15 Room A4
+  - 2026-06-23 13:00-14:00 Room A4
+  - 2026-06-24 14:15-15:15 Room A4
+  - 2026-06-25 10:30-11:30 Room A3
+  - 2026-06-26 09:15-10:15 Room A4
+  - 2026-06-26 10:30-11:30 Room A3
+  - 2026-06-29 08:00-09:00 Room A2
+  - 2026-06-30 11:45-12:45 Room A2
+Assigned presentation results:
+  - PFE-080 | rapporteur | 2026-06-05 08:00-09:00 Room A4
+  - PFE-063 | president | 2026-06-08 13:00-14:00 Room A2
+  - PFE-012 | encadreur | 2026-06-12 11:45-12:45 Room A2
+  - PFE-030 | encadreur | 2026-06-15 08:00-09:00 Room A3
+  - PFE-038 | encadreur | 2026-06-15 08:00-09:00 Room A4
+  - PFE-032 | rapporteur | 2026-06-15 09:15-10:15 Room A2
+  - PFE-055 | encadreur | 2026-06-15 11:45-12:45 Room A1
+  - PFE-099 | encadreur | 2026-06-22 11:45-12:45 Room A3
+  - PFE-091 | president | 2026-06-22 13:00-14:00 Room A1
+  - PFE-104 | encadreur | 2026-06-24 13:00-14:00 Room A2
+  - PFE-106 | rapporteur | 2026-06-25 09:15-10:15 Room A4
+
+T28 - Teacher 28 | target=13 | chosen preferred=25 | chosen available_not_preferred=21 | assigned=14
+Role split: encadreur=6, rapporteur=3, president=5
+Preferred sessions selected:
+  - 2026-06-01 14:15-15:15 Room A3
+  - 2026-06-01 14:15-15:15 Room A4
+  - 2026-06-03 10:30-11:30 Room A2
+  - 2026-06-04 08:00-09:00 Room A4
+  - 2026-06-04 10:30-11:30 Room A1
+  - 2026-06-09 10:30-11:30 Room A2
+  - 2026-06-10 10:30-11:30 Room A2
+  - 2026-06-10 11:45-12:45 Room A1
+  - 2026-06-10 11:45-12:45 Room A4
+  - 2026-06-11 14:15-15:15 Room A1
+  - 2026-06-11 14:15-15:15 Room A2
+  - 2026-06-15 09:15-10:15 Room A2
+  - 2026-06-15 11:45-12:45 Room A2
+  - 2026-06-17 11:45-12:45 Room A2
+  - 2026-06-18 10:30-11:30 Room A1
+  - 2026-06-19 10:30-11:30 Room A4
+  - 2026-06-19 14:15-15:15 Room A1
+  - 2026-06-23 09:15-10:15 Room A4
+  - 2026-06-23 10:30-11:30 Room A2
+  - 2026-06-25 14:15-15:15 Room A1
+  - 2026-06-26 13:00-14:00 Room A3
+  - 2026-06-29 10:30-11:30 Room A1
+  - 2026-06-29 11:45-12:45 Room A4
+  - 2026-06-30 08:00-09:00 Room A1
+  - 2026-06-30 14:15-15:15 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-01 08:00-09:00 Room A3
+  - 2026-06-01 10:30-11:30 Room A2
+  - 2026-06-02 08:00-09:00 Room A1
+  - 2026-06-02 10:30-11:30 Room A2
+  - 2026-06-04 08:00-09:00 Room A3
+  - 2026-06-05 08:00-09:00 Room A3
+  - 2026-06-09 10:30-11:30 Room A4
+  - 2026-06-09 14:15-15:15 Room A3
+  - 2026-06-15 10:30-11:30 Room A1
+  - 2026-06-15 10:30-11:30 Room A2
+  - 2026-06-17 13:00-14:00 Room A3
+  - 2026-06-19 08:00-09:00 Room A1
+  - 2026-06-22 13:00-14:00 Room A3
+  - 2026-06-24 10:30-11:30 Room A3
+  - 2026-06-24 10:30-11:30 Room A4
+  - 2026-06-24 13:00-14:00 Room A2
+  - 2026-06-25 11:45-12:45 Room A3
+  - 2026-06-26 08:00-09:00 Room A1
+  - 2026-06-26 09:15-10:15 Room A1
+  - 2026-06-26 13:00-14:00 Room A4
+  - 2026-06-30 09:15-10:15 Room A2
+Assigned presentation results:
+  - PFE-041 | president | 2026-06-01 08:00-09:00 Room A3
+  - PFE-051 | president | 2026-06-01 10:30-11:30 Room A2
+  - PFE-005 | rapporteur | 2026-06-01 14:15-15:15 Room A4
+  - PFE-013 | encadreur | 2026-06-03 10:30-11:30 Room A2
+  - PFE-015 | encadreur | 2026-06-04 10:30-11:30 Room A1
+  - PFE-016 | encadreur | 2026-06-09 10:30-11:30 Room A2
+  - PFE-025 | president | 2026-06-09 10:30-11:30 Room A4
+  - PFE-032 | encadreur | 2026-06-15 09:15-10:15 Room A2
+  - PFE-069 | president | 2026-06-15 10:30-11:30 Room A2
+  - PFE-043 | rapporteur | 2026-06-15 11:45-12:45 Room A2
+  - PFE-088 | encadreur | 2026-06-18 10:30-11:30 Room A1
+  - PFE-107 | encadreur | 2026-06-19 10:30-11:30 Room A4
+  - PFE-104 | president | 2026-06-24 13:00-14:00 Room A2
+  - PFE-087 | rapporteur | 2026-06-29 10:30-11:30 Room A1
+
+T29 - Teacher 29 | target=10 | chosen preferred=16 | chosen available_not_preferred=18 | assigned=10
+Role split: encadreur=4, rapporteur=5, president=1
+Preferred sessions selected:
+  - 2026-06-02 13:00-14:00 Room A2
+  - 2026-06-03 09:15-10:15 Room A4
+  - 2026-06-04 14:15-15:15 Room A1
+  - 2026-06-08 08:00-09:00 Room A2
+  - 2026-06-09 10:30-11:30 Room A4
+  - 2026-06-09 11:45-12:45 Room A4
+  - 2026-06-16 10:30-11:30 Room A2
+  - 2026-06-16 11:45-12:45 Room A4
+  - 2026-06-16 13:00-14:00 Room A2
+  - 2026-06-18 10:30-11:30 Room A1
+  - 2026-06-19 09:15-10:15 Room A1
+  - 2026-06-19 11:45-12:45 Room A4
+  - 2026-06-22 10:30-11:30 Room A4
+  - 2026-06-23 10:30-11:30 Room A1
+  - 2026-06-25 13:00-14:00 Room A1
+  - 2026-06-29 11:45-12:45 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-01 13:00-14:00 Room A3
+  - 2026-06-01 14:15-15:15 Room A1
+  - 2026-06-02 09:15-10:15 Room A1
+  - 2026-06-03 11:45-12:45 Room A4
+  - 2026-06-04 11:45-12:45 Room A3
+  - 2026-06-05 13:00-14:00 Room A2
+  - 2026-06-08 09:15-10:15 Room A4
+  - 2026-06-09 08:00-09:00 Room A1
+  - 2026-06-09 09:15-10:15 Room A1
+  - 2026-06-09 10:30-11:30 Room A1
+  - 2026-06-09 13:00-14:00 Room A1
+  - 2026-06-10 10:30-11:30 Room A1
+  - 2026-06-16 14:15-15:15 Room A3
+  - 2026-06-17 08:00-09:00 Room A2
+  - 2026-06-17 13:00-14:00 Room A4
+  - 2026-06-19 08:00-09:00 Room A3
+  - 2026-06-22 10:30-11:30 Room A1
+  - 2026-06-25 10:30-11:30 Room A2
+Assigned presentation results:
+  - PFE-110 | encadreur | 2026-06-05 13:00-14:00 Room A2
+  - PFE-082 | rapporteur | 2026-06-08 09:15-10:15 Room A4
+  - PFE-025 | encadreur | 2026-06-09 10:30-11:30 Room A4
+  - PFE-054 | encadreur | 2026-06-09 11:45-12:45 Room A4
+  - PFE-009 | president | 2026-06-09 13:00-14:00 Room A1
+  - PFE-079 | encadreur | 2026-06-16 10:30-11:30 Room A2
+  - PFE-088 | rapporteur | 2026-06-18 10:30-11:30 Room A1
+  - PFE-076 | rapporteur | 2026-06-19 09:15-10:15 Room A1
+  - PFE-098 | rapporteur | 2026-06-19 11:45-12:45 Room A4
+  - PFE-066 | rapporteur | 2026-06-23 10:30-11:30 Room A1
+
+T30 - Teacher 30 | target=6 | chosen preferred=10 | chosen available_not_preferred=6 | assigned=6
+Role split: encadreur=2, rapporteur=2, president=2
+Preferred sessions selected:
+  - 2026-06-03 13:00-14:00 Room A4
+  - 2026-06-04 10:30-11:30 Room A4
+  - 2026-06-08 11:45-12:45 Room A1
+  - 2026-06-08 11:45-12:45 Room A4
+  - 2026-06-12 10:30-11:30 Room A1
+  - 2026-06-12 13:00-14:00 Room A4
+  - 2026-06-16 13:00-14:00 Room A2
+  - 2026-06-17 10:30-11:30 Room A1
+  - 2026-06-24 14:15-15:15 Room A2
+  - 2026-06-29 13:00-14:00 Room A3
+Available (not preferred) sessions selected:
+  - 2026-06-12 11:45-12:45 Room A1
+  - 2026-06-15 09:15-10:15 Room A2
+  - 2026-06-15 10:30-11:30 Room A4
+  - 2026-06-16 11:45-12:45 Room A1
+  - 2026-06-17 08:00-09:00 Room A1
+  - 2026-06-19 10:30-11:30 Room A4
+Assigned presentation results:
+  - PFE-037 | encadreur | 2026-06-04 10:30-11:30 Room A4
+  - PFE-073 | encadreur | 2026-06-08 11:45-12:45 Room A1
+  - PFE-053 | rapporteur | 2026-06-12 11:45-12:45 Room A1
+  - PFE-068 | rapporteur | 2026-06-15 10:30-11:30 Room A4
+  - PFE-101 | president | 2026-06-17 08:00-09:00 Room A1
+  - PFE-107 | president | 2026-06-19 10:30-11:30 Room A4
+
+Unresolved subjects:
+  - none

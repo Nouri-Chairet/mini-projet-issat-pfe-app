@@ -233,7 +233,6 @@ def plan_pfe_assignments(
         subjects_query = subjects_query.filter(id__in=subject_ids)
 
     subjects = sorted(list(subjects_query), key=lambda item: str(item.id))
-    abc=0
     if not subjects:
         return {
             "campaign_id": str(campaign.id),
@@ -488,6 +487,7 @@ def persist_pfe_assignments(campaign: PFECampaigns, plan: dict[str, Any], assign
             start_time=slot_payload["start_time"],
             end_time=slot_payload["end_time"],
             room=slot_payload["room"],
+            campaign=campaign,
             created_by=assigned_by,
         )
         created_slots += 1

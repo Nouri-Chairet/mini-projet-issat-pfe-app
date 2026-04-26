@@ -130,6 +130,7 @@ class TeacherProfileResponseSerializer(serializers.Serializer):
     department = serializers.CharField()
     ncin = serializers.CharField()
     age = serializers.IntegerField()
+    is_department_head = serializers.BooleanField(required=False)
     created_at = serializers.DateTimeField(required=False, allow_null=True)
     updated_at = serializers.DateTimeField(required=False, allow_null=True)
 

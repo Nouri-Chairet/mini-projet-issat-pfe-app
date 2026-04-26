@@ -333,6 +333,7 @@ def get_teacher(request):
                 'department': teacher.department,
                 'ncin': teacher.ncin,
                 'age': teacher.age,
+                'is_department_head': hasattr(teacher, 'headed_department'),
                 'created_at': teacher.created_at,
                 'updated_at': teacher.updated_at
             },status=200)
