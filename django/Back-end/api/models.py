@@ -223,8 +223,8 @@ class Posts(models.Model):
 
 class Attendance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    student = models.ForeignKey(Students, models.CASCADE)
-    schedule = models.ForeignKey(Schedules, models.CASCADE)
+    student = models.ForeignKey(Students, models.CASCADE, blank=True, null=True)
+    schedule = models.ForeignKey(Schedules, models.CASCADE, blank=True, null=True)
     session_date = models.DateField()
     status = models.BooleanField(blank=True, null=True)
     marked_at = models.DateTimeField(auto_now_add=True)
