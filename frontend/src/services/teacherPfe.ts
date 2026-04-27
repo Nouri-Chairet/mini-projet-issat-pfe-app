@@ -14,6 +14,7 @@ export interface TeacherPfeCampaign {
   day_end_time: string;
   slot_duration_minutes: number;
   break_duration_minutes: number;
+  status: "draft" | "collecting_availability" | "needs_manual_assignment" | "generated";
   weekdays: string[];
   rooms: string[];
   daily_cap_per_teacher: number | null;
@@ -40,6 +41,7 @@ export interface TeacherPfeSessionState {
   campaign: TeacherPfeCampaign | null;
   can_start_collection: boolean;
   can_submit_availability: boolean;
+  has_submitted_availability?: boolean;
   my_supervised_pfe_count: number;
   my_entries: Array<{
     id: string;
@@ -55,14 +57,23 @@ export interface TeacherPfeScheduleResponse {
   schedule: Array<{
     subject_id: string;
     subject_title: string;
+    description?: string | null;
     student_id: string | null;
     student_name: string;
+    supervisor_name?: string;
     slot: {
       date: string;
       start_time: string;
       end_time: string;
       room: string;
     } | null;
+    jury?: Array<{
+      assignment_id: string;
+      teacher_id: string;
+      teacher_name: string;
+      role: string;
+      assigned_at: string;
+    }>;
   }>;
 }
 

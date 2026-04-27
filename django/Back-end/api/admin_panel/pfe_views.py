@@ -13,18 +13,32 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.admin_panel.permissions import IsAdmin
-from api.admin_panel.pfe_scheduler import _generate_candidate_slots, persist_pfe_assignments, plan_pfe_assignments
+from collections import defaultdict
+
+from api.admin_panel.pfe_scheduler import (
+    _build_date_exception_map,
+    _build_weekly_availability_map,
+    _generate_candidate_slots,
+    _is_teacher_free,
+    _resolve_teacher_level_for_slot,
+    _slot_key,
+    persist_pfe_assignments,
+    plan_pfe_assignments,
+)
 from api.models import (
     AvailabilityContext,
     AvailabilityLevel,
+    CampaignStatus,
     Departments,
     JuryRole,
     PFECampaignRooms,
     PFECampaigns,
+    PFECampaignTeacherSubmissions,
     PFEJuryAssignments,
     PFEPresentationSlots,
     PFESubjects,
     PFETeacherQuotaOverrides,
+    StudentNotifications,
     Students,
     TeacherAvailabilities,
     TeacherAvailabilityDateExceptions,
@@ -76,6 +90,7 @@ def _serialize_campaign(campaign: PFECampaigns) -> dict:
         "day_end_time": str(campaign.day_end_time),
         "slot_duration_minutes": int(campaign.slot_duration_minutes),
         "break_duration_minutes": int(campaign.break_duration_minutes),
+        "status": campaign.status,
         "weekdays": campaign.weekdays or [],
         "rooms": rooms,
         "daily_cap_per_teacher": campaign.daily_cap_per_teacher,
@@ -88,6 +103,306 @@ def _serialize_campaign(campaign: PFECampaigns) -> dict:
         "created_at": campaign.created_at.isoformat() if campaign.created_at else None,
         "updated_at": campaign.updated_at.isoformat() if campaign.updated_at else None,
     }
+
+
+def _campaign_teachers(campaign: PFECampaigns):
+    return Teachers.objects.select_related("user").filter(
+        department=campaign.department.name
+    ).order_by("user__username")
+
+
+def _campaign_subjects_query(campaign: PFECampaigns):
+    return PFESubjects.objects.select_related(
+        "supervisor",
+        "supervisor__user",
+        "student",
+        "student__user",
+    ).filter(supervisor__department=campaign.department.name)
+
+
+def _time_overlaps(start_a, end_a, start_b, end_b) -> bool:
+    return start_a < end_b and start_b < end_a
+
+
+def _emit_student_notification(subject: PFESubjects, campaign: PFECampaigns, slot: PFEPresentationSlots):
+    if not subject.student_id:
+        return None
+
+    return StudentNotifications.objects.update_or_create(
+        student=subject.student,
+        pfe_subject=subject,
+        campaign=campaign,
+        defaults={
+            "slot": slot,
+            "title": "PFE presentation scheduled",
+            "message": (
+                f"Your PFE '{subject.title}' is scheduled on "
+                f"{slot.presentation_date} from {slot.start_time} to {slot.end_time} in room {slot.room}."
+            ),
+            "is_read": False,
+            "read_at": None,
+        },
+    )
+
+
+def _serialize_assignment_rows(subjects, assignment_rows):
+    grouped = {}
+    for row in assignment_rows:
+        key = str(row.pfe_subject_id)
+        grouped.setdefault(key, []).append(row)
+
+    payload = []
+    scheduled_subject_ids = set()
+    for subject in subjects:
+        rows = grouped.get(str(subject.id), [])
+        rows = sorted(rows, key=lambda item: ROLE_ORDER.get(item.role, 99))
+        slot = next((item.slot for item in rows if item.slot_id), None)
+        if slot:
+            scheduled_subject_ids.add(str(subject.id))
+
+        payload.append(
+            {
+                "subject_id": str(subject.id),
+                "subject_title": subject.title,
+                "student_id": str(subject.student_id) if subject.student_id else None,
+                "student_name": subject.student.user.username if subject.student_id else subject.student_name,
+                "supervisor_id": str(subject.supervisor_id),
+                "supervisor_name": subject.supervisor.user.username,
+                "slot": (
+                    {
+                        "id": str(slot.id),
+                        "date": str(slot.presentation_date),
+                        "start_time": str(slot.start_time),
+                        "end_time": str(slot.end_time),
+                        "room": slot.room,
+                    }
+                    if slot
+                    else None
+                ),
+                "jury": [
+                    {
+                        "assignment_id": str(item.id),
+                        "teacher_id": str(item.teacher_id),
+                        "teacher_name": item.teacher.user.username,
+                        "role": item.role,
+                        "assigned_at": item.assigned_at.isoformat() if item.assigned_at else None,
+                    }
+                    for item in rows
+                ],
+            }
+        )
+
+    return payload, scheduled_subject_ids
+
+
+def _build_campaign_detail(campaign: PFECampaigns) -> dict:
+    teachers = list(_campaign_teachers(campaign))
+    submissions = {
+        str(row.teacher_id): row
+        for row in PFECampaignTeacherSubmissions.objects.filter(campaign=campaign)
+    }
+
+    teacher_progress = []
+    submitted_count = 0
+    for teacher in teachers:
+        submission = submissions.get(str(teacher.user_id))
+        if submission:
+            submitted_count += 1
+        teacher_progress.append(
+            {
+                "teacher_id": str(teacher.user_id),
+                "teacher_name": teacher.user.username,
+                "email": teacher.user.email,
+                "submitted": bool(submission),
+                "submitted_at": submission.submitted_at.isoformat() if submission else None,
+                "entries_count": int(submission.entries_count) if submission else 0,
+            }
+        )
+
+    subjects = list(_campaign_subjects_query(campaign).order_by("title"))
+    subject_ids = [item.id for item in subjects]
+    assignment_rows = list(
+        PFEJuryAssignments.objects.filter(pfe_subject_id__in=subject_ids, slot__campaign=campaign)
+        .select_related("teacher", "teacher__user", "slot")
+        .order_by("slot__presentation_date", "slot__start_time", "assigned_at")
+    )
+    assignments_payload, scheduled_subject_ids = _serialize_assignment_rows(subjects, assignment_rows)
+
+    unresolved = [
+        {
+            "subject_id": str(subject.id),
+            "subject_title": subject.title,
+            "student_name": subject.student.user.username if subject.student_id else subject.student_name,
+            "supervisor_id": str(subject.supervisor_id),
+            "supervisor_name": subject.supervisor.user.username,
+            "reason": "manual_assignment_required",
+        }
+        for subject in subjects
+        if str(subject.id) not in scheduled_subject_ids
+    ]
+
+    return {
+        "campaign": _serialize_campaign(campaign),
+        "progress": {
+            "submitted_count": submitted_count,
+            "total_count": len(teachers),
+            "percent": int((submitted_count / len(teachers)) * 100) if teachers else 100,
+        },
+        "teachers_submitted": [row for row in teacher_progress if row["submitted"]],
+        "teachers_pending": [row for row in teacher_progress if not row["submitted"]],
+        "assignments": assignments_payload,
+        "unresolved": unresolved,
+    }
+
+
+def _sync_campaign_status_after_assignment(campaign: PFECampaigns):
+    campaign.status = (
+        CampaignStatus.GENERATED
+        if len(_build_campaign_detail(campaign)["unresolved"]) == 0
+        else CampaignStatus.NEEDS_MANUAL_ASSIGNMENT
+    )
+    _sync_campaign_flags(campaign)
+    if campaign.generated_at is None:
+        campaign.generated_at = timezone.now()
+    campaign.save(
+        update_fields=[
+            "status",
+            "availability_open",
+            "schedule_generated",
+            "generated_at",
+            "updated_at",
+        ]
+    )
+
+
+def _campaign_assignment_state(campaign: PFECampaigns):
+    assignment_rows = list(
+        PFEJuryAssignments.objects.select_related("slot")
+        .filter(slot__campaign=campaign, slot_id__isnull=False)
+    )
+    teacher_load = defaultdict(int)
+    teacher_busy = defaultdict(list)
+    used_slots = set()
+
+    for assignment in assignment_rows:
+        slot = assignment.slot
+        teacher_id = str(assignment.teacher_id)
+        teacher_load[teacher_id] += 1
+        teacher_busy[teacher_id].append((slot.presentation_date, slot.start_time, slot.end_time))
+        used_slots.add((str(slot.presentation_date), str(slot.start_time), str(slot.end_time), slot.room))
+
+    return assignment_rows, teacher_load, teacher_busy, used_slots
+
+
+def _pick_auto_fit_assignment(
+    *,
+    subject,
+    slots,
+    teachers,
+    teacher_load,
+    teacher_daily_load,
+    teacher_busy,
+    weekly_map,
+    exception_map,
+    daily_cap,
+    require_available,
+    enforce_daily_cap,
+):
+    supervisor_id = str(subject.supervisor_id)
+    non_supervisors = [teacher for teacher in teachers if str(teacher.user_id) != supervisor_id]
+
+    best_choice = None
+    best_score = None
+
+    for slot_index, slot in enumerate(slots):
+        supervisor_level = _resolve_teacher_level_for_slot(
+            supervisor_id, slot, weekly_map, exception_map
+        )
+        if require_available and supervisor_level == AvailabilityLevel.UNAVAILABLE:
+            continue
+        if not _is_teacher_free(teacher_busy, supervisor_id, slot):
+            continue
+
+        day_key = str(slot.presentation_date)
+        if (
+            enforce_daily_cap
+            and daily_cap is not None
+            and teacher_daily_load[(supervisor_id, day_key)] >= daily_cap
+        ):
+            continue
+
+        eligible_others = []
+        for teacher in non_supervisors:
+            teacher_id = str(teacher.user_id)
+            teacher_level = _resolve_teacher_level_for_slot(
+                teacher_id, slot, weekly_map, exception_map
+            )
+            if require_available and teacher_level == AvailabilityLevel.UNAVAILABLE:
+                continue
+            if not _is_teacher_free(teacher_busy, teacher_id, slot):
+                continue
+            if (
+                enforce_daily_cap
+                and daily_cap is not None
+                and teacher_daily_load[(teacher_id, day_key)] >= daily_cap
+            ):
+                continue
+
+            availability_penalty = 0 if teacher_level != AvailabilityLevel.UNAVAILABLE else 100
+            eligible_others.append(
+                (
+                    teacher_daily_load[(teacher_id, day_key)],
+                    teacher_load[teacher_id],
+                    availability_penalty,
+                    teacher.user.username.lower(),
+                    teacher,
+                )
+            )
+
+        if len(eligible_others) < 2:
+            continue
+
+        eligible_others.sort(key=lambda item: (item[0], item[1], item[2], item[3]))
+        rapporteur = eligible_others[0][4]
+        president = next(
+            (item[4] for item in eligible_others[1:] if item[4].user_id != rapporteur.user_id),
+            None,
+        )
+        if president is None:
+            continue
+
+        rapporteur_id = str(rapporteur.user_id)
+        president_id = str(president.user_id)
+        rapporteur_level = _resolve_teacher_level_for_slot(
+            rapporteur_id, slot, weekly_map, exception_map
+        )
+        president_level = _resolve_teacher_level_for_slot(
+            president_id, slot, weekly_map, exception_map
+        )
+
+        availability_penalty = 0
+        if supervisor_level == AvailabilityLevel.UNAVAILABLE:
+            availability_penalty += 100
+        if rapporteur_level == AvailabilityLevel.UNAVAILABLE:
+            availability_penalty += 100
+        if president_level == AvailabilityLevel.UNAVAILABLE:
+            availability_penalty += 100
+
+        score = (
+            availability_penalty,
+            teacher_daily_load[(supervisor_id, day_key)]
+            + teacher_daily_load[(rapporteur_id, day_key)]
+            + teacher_daily_load[(president_id, day_key)],
+            teacher_load[supervisor_id]
+            + teacher_load[rapporteur_id]
+            + teacher_load[president_id],
+            slot_index,
+        )
+        if best_score is None or score < best_score:
+            best_score = score
+            best_choice = (slot, rapporteur, president)
+
+    return best_choice
 
 
 def _latest_campaign_for_department(department: Departments) -> PFECampaigns | None:
@@ -107,6 +422,11 @@ def _parse_time(value: str):
 
 def _parse_date(value: str):
     return datetime.strptime(str(value).strip(), "%Y-%m-%d").date()
+
+
+def _sync_campaign_flags(campaign: PFECampaigns):
+    campaign.availability_open = campaign.status == CampaignStatus.COLLECTING_AVAILABILITY
+    campaign.schedule_generated = campaign.status == CampaignStatus.GENERATED
 
 
 def _compute_availability_counts(target: int, total_slots: int, rng: random.Random) -> tuple[int, int]:
@@ -609,6 +929,7 @@ def upsert_pfe_campaign(request):
         "day_end_time": _parse_time(request.data.get("day_end_time", "16:00")),
         "slot_duration_minutes": int(request.data.get("slot_duration_minutes", 60)),
         "break_duration_minutes": int(request.data.get("break_duration_minutes", 15)),
+        "status": request.data.get("status") or CampaignStatus.DRAFT,
         "weekdays": weekdays,
         "daily_cap_per_teacher": request.data.get("daily_cap_per_teacher"),
         "head_can_start": _as_bool(request.data.get("head_can_start"), True),
@@ -621,10 +942,13 @@ def upsert_pfe_campaign(request):
 
     with transaction.atomic():
         if campaign is None:
-            campaign = PFECampaigns.objects.create(**payload)
+            campaign = PFECampaigns(**payload)
+            _sync_campaign_flags(campaign)
+            campaign.save()
         else:
             for key, value in payload.items():
                 setattr(campaign, key, value)
+            _sync_campaign_flags(campaign)
             campaign.save()
 
         PFECampaignRooms.objects.filter(campaign=campaign).delete()
@@ -662,6 +986,446 @@ def get_pfe_campaign(request):
         return Response({"error": "Campaign not found"}, status=404)
 
     return Response({"campaign": _serialize_campaign(campaign)}, status=200)
+
+
+@extend_schema(tags=["Admin Panel"], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated, IsAdmin])
+def manage_pfe_campaigns(request):
+    if request.method == "GET":
+        campaigns = list(
+            PFECampaigns.objects.select_related("department")
+            .order_by("-created_at", "-updated_at")
+        )
+        cards = []
+        for campaign in campaigns:
+            detail = _build_campaign_detail(campaign)
+            cards.append(
+                {
+                    **detail["campaign"],
+                    "progress": detail["progress"],
+                    "unresolved_count": len(detail["unresolved"]),
+                    "scheduled_count": sum(1 for row in detail["assignments"] if row["slot"]),
+                }
+            )
+        return Response({"campaigns": cards}, status=200)
+
+    department_id = request.data.get("department_id")
+    if not department_id:
+        return Response({"error": "department_id is required"}, status=400)
+
+    department = Departments.objects.filter(id=department_id).first()
+    if not department:
+        return Response({"error": "Department not found"}, status=404)
+
+    rooms = [str(room).strip() for room in (request.data.get("rooms") or []) if str(room).strip()]
+    if not rooms:
+        return Response({"error": "At least one room is required"}, status=400)
+
+    try:
+        start_date = _parse_date(request.data.get("start_date"))
+        end_date = _parse_date(request.data.get("end_date"))
+        day_start_time = _parse_time(request.data.get("day_start_time", "08:00"))
+        day_end_time = _parse_time(request.data.get("day_end_time", "16:00"))
+    except Exception:
+        return Response({"error": "Invalid date/time format"}, status=400)
+
+    if end_date < start_date:
+        return Response({"error": "end_date must be after or equal to start_date"}, status=400)
+    if day_end_time <= day_start_time:
+        return Response({"error": "day_end_time must be after day_start_time"}, status=400)
+
+    campaign = PFECampaigns(
+        department=department,
+        name=request.data.get("name") or f"PFE Campaign {department.name}",
+        start_date=start_date,
+        end_date=end_date,
+        day_start_time=day_start_time,
+        day_end_time=day_end_time,
+        slot_duration_minutes=int(request.data.get("slot_duration_minutes", 60)),
+        break_duration_minutes=int(request.data.get("break_duration_minutes", 15)),
+        weekdays=request.data.get("weekdays") or WEEKDAYS_DEFAULT,
+        daily_cap_per_teacher=request.data.get("daily_cap_per_teacher") or 3,
+        status=CampaignStatus.COLLECTING_AVAILABILITY,
+        head_can_start=False,
+        generated_at=None,
+        is_active=True,
+        created_by=request.user,
+    )
+    _sync_campaign_flags(campaign)
+
+    with transaction.atomic():
+        campaign.save()
+        PFECampaignRooms.objects.bulk_create(
+            [PFECampaignRooms(campaign=campaign, room_name=room) for room in sorted(set(rooms))]
+        )
+        PFECampaigns.objects.filter(department=department).exclude(id=campaign.id).update(is_active=False)
+
+    return Response(
+        {
+            "message": "Campaign created and availability collection opened",
+            "campaign": _serialize_campaign(campaign),
+        },
+        status=201,
+    )
+
+
+@extend_schema(tags=["Admin Panel"], responses=GENERIC_RESPONSES)
+@api_view(["GET"])
+@permission_classes([IsAuthenticated, IsAdmin])
+def get_manage_pfe_campaign_detail(request):
+    campaign_id = request.query_params.get("campaign_id")
+    if not campaign_id:
+        return Response({"error": "campaign_id is required"}, status=400)
+
+    campaign = PFECampaigns.objects.select_related("department").filter(id=campaign_id).first()
+    if not campaign:
+        return Response({"error": "Campaign not found"}, status=404)
+
+    return Response(_build_campaign_detail(campaign), status=200)
+
+
+@extend_schema(tags=["Admin Panel"], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(["POST"])
+@permission_classes([IsAuthenticated, IsAdmin])
+def generate_manage_pfe_campaign_schedule(request):
+    campaign_id = request.data.get("campaign_id")
+    campaign = PFECampaigns.objects.select_related("department").filter(id=campaign_id).first()
+    if not campaign:
+        return Response({"error": "Campaign not found"}, status=404)
+
+    teachers = list(_campaign_teachers(campaign))
+    submitted_teacher_ids = set(
+        PFECampaignTeacherSubmissions.objects.filter(campaign=campaign).values_list("teacher_id", flat=True)
+    )
+    pending = [teacher for teacher in teachers if teacher.user_id not in submitted_teacher_ids]
+    if pending:
+        return Response(
+            {
+                "error": "Not all concerned teachers have submitted availability",
+                "pending_teachers": [
+                    {"teacher_id": str(teacher.user_id), "teacher_name": teacher.user.username}
+                    for teacher in pending
+                ],
+            },
+            status=400,
+        )
+
+    plan = plan_pfe_assignments(campaign=campaign)
+    with transaction.atomic():
+        persist = persist_pfe_assignments(campaign=campaign, plan=plan, assigned_by=request.user)
+        slot_map = {
+            str(assignment.pfe_subject_id): assignment.slot
+            for assignment in PFEJuryAssignments.objects.select_related("slot").filter(
+                pfe_subject_id__in=[row["subject_id"] for row in plan.get("assigned", [])],
+                role=JuryRole.ENCADREUR,
+                slot__campaign=campaign,
+            )
+        }
+        for subject in _campaign_subjects_query(campaign).filter(id__in=list(slot_map.keys())):
+            slot = slot_map.get(str(subject.id))
+            if slot:
+                _emit_student_notification(subject, campaign, slot)
+
+        campaign.status = (
+            CampaignStatus.NEEDS_MANUAL_ASSIGNMENT
+            if plan.get("unresolved")
+            else CampaignStatus.GENERATED
+        )
+        campaign.generated_at = timezone.now()
+        _sync_campaign_flags(campaign)
+        campaign.save(
+            update_fields=[
+                "status",
+                "availability_open",
+                "schedule_generated",
+                "generated_at",
+                "updated_at",
+            ]
+        )
+
+    detail = _build_campaign_detail(campaign)
+    return Response(
+        {
+            "message": "Schedule generation completed",
+            "plan": plan,
+            "persist": persist,
+            **detail,
+        },
+        status=200,
+    )
+
+
+@extend_schema(tags=["Admin Panel"], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(["POST"])
+@permission_classes([IsAuthenticated, IsAdmin])
+def manual_assign_pfe_presentation(request):
+    campaign_id = request.data.get("campaign_id")
+    subject_id = request.data.get("subject_id")
+    rapporteur_id = request.data.get("rapporteur_id")
+    president_id = request.data.get("president_id")
+    encadreur_id = request.data.get("encadreur_id")
+    room = str(request.data.get("room") or "").strip()
+
+    if not all([campaign_id, subject_id, rapporteur_id, president_id, room]):
+        return Response(
+            {
+                "error": "campaign_id, subject_id, room, rapporteur_id and president_id are required"
+            },
+            status=400,
+        )
+
+    campaign = PFECampaigns.objects.select_related("department").filter(id=campaign_id).first()
+    if not campaign:
+        return Response({"error": "Campaign not found"}, status=404)
+
+    subject = _campaign_subjects_query(campaign).filter(id=subject_id).first()
+    if not subject:
+        return Response({"error": "PFE subject not found for this campaign"}, status=404)
+
+    try:
+        presentation_date = _parse_date(request.data.get("presentation_date"))
+        start_time = _parse_time(request.data.get("start_time"))
+        end_time = _parse_time(request.data.get("end_time"))
+    except Exception:
+        return Response({"error": "Invalid date/time format"}, status=400)
+
+    if end_time <= start_time:
+        return Response({"error": "end_time must be after start_time"}, status=400)
+    if presentation_date < campaign.start_date or presentation_date > campaign.end_date:
+        return Response({"error": "presentation_date must be inside campaign range"}, status=400)
+    if room not in set(PFECampaignRooms.objects.filter(campaign=campaign).values_list("room_name", flat=True)):
+        return Response({"error": "Room is not available for this campaign"}, status=400)
+
+    teacher_ids = [encadreur_id or str(subject.supervisor_id), rapporteur_id, president_id]
+    if len(set(teacher_ids)) != 3:
+        return Response(
+            {
+                "error": "Jury members must be three distinct teachers",
+                "details": {
+                    "encadreur_id": teacher_ids[0],
+                    "rapporteur_id": teacher_ids[1],
+                    "president_id": teacher_ids[2],
+                },
+            },
+            status=400,
+        )
+
+    teachers = {
+        str(teacher.user_id): teacher
+        for teacher in _campaign_teachers(campaign).filter(user_id__in=teacher_ids)
+    }
+    if len(teachers) != 3:
+        return Response({"error": "All jury members must belong to the campaign department"}, status=400)
+
+    conflicting_room_slots = PFEPresentationSlots.objects.filter(
+        presentation_date=presentation_date,
+        room=room,
+    ).exclude(
+        id__in=PFEJuryAssignments.objects.filter(pfe_subject=subject, slot_id__isnull=False).values_list("slot_id", flat=True)
+    )
+    for existing_slot in conflicting_room_slots:
+        if _time_overlaps(start_time, end_time, existing_slot.start_time, existing_slot.end_time):
+            return Response(
+                {
+                    "error": "Room conflict detected",
+                    "conflict": {
+                        "date": str(existing_slot.presentation_date),
+                        "start_time": str(existing_slot.start_time),
+                        "end_time": str(existing_slot.end_time),
+                        "room": existing_slot.room,
+                    },
+                },
+                status=400,
+            )
+
+    for teacher_id in teacher_ids:
+        existing_assignments = PFEJuryAssignments.objects.select_related("slot").filter(
+            teacher_id=teacher_id,
+            slot__presentation_date=presentation_date,
+            slot_id__isnull=False,
+        ).exclude(pfe_subject=subject)
+        for assignment in existing_assignments:
+            if _time_overlaps(start_time, end_time, assignment.slot.start_time, assignment.slot.end_time):
+                return Response(
+                    {
+                        "error": "Teacher overlap detected",
+                        "conflict": {
+                            "teacher_id": teacher_id,
+                            "teacher_name": teachers[teacher_id].user.username,
+                            "subject_id": str(assignment.pfe_subject_id),
+                        },
+                    },
+                    status=400,
+                )
+
+    current_slot_ids = list(
+        PFEJuryAssignments.objects.filter(pfe_subject=subject, slot_id__isnull=False).values_list("slot_id", flat=True)
+    )
+
+    with transaction.atomic():
+        slot = PFEPresentationSlots.objects.create(
+            presentation_date=presentation_date,
+            start_time=start_time,
+            end_time=end_time,
+            room=room,
+            campaign=campaign,
+            created_by=request.user,
+        )
+
+        for role, teacher_id in [
+            (JuryRole.ENCADREUR, encadreur_id or str(subject.supervisor_id)),
+            (JuryRole.RAPPORTEUR, rapporteur_id),
+            (JuryRole.PRESIDENT, president_id),
+        ]:
+            PFEJuryAssignments.objects.update_or_create(
+                pfe_subject=subject,
+                role=role,
+                defaults={
+                    "teacher": teachers[teacher_id],
+                    "slot": slot,
+                    "assigned_by": request.user,
+                },
+            )
+
+        for slot_id in current_slot_ids:
+            if slot_id and not PFEJuryAssignments.objects.filter(slot_id=slot_id).exists():
+                PFEPresentationSlots.objects.filter(id=slot_id).delete()
+
+        _emit_student_notification(subject, campaign, slot)
+
+        _sync_campaign_status_after_assignment(campaign)
+
+    return Response(
+        {
+            "message": "Presentation assigned successfully",
+            **_build_campaign_detail(campaign),
+        },
+        status=200,
+    )
+
+
+@extend_schema(tags=["Admin Panel"], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(["POST"])
+@permission_classes([IsAuthenticated, IsAdmin])
+def auto_fit_unresolved_presentations(request):
+    campaign_id = request.data.get("campaign_id")
+    campaign = PFECampaigns.objects.select_related("department").filter(id=campaign_id).first()
+    if not campaign:
+        return Response({"error": "Campaign not found"}, status=404)
+
+    detail = _build_campaign_detail(campaign)
+    unresolved_ids = [row["subject_id"] for row in detail["unresolved"]]
+    if not unresolved_ids:
+        return Response({"message": "No unresolved presentations left", **detail}, status=200)
+
+    unresolved_subjects = list(
+        _campaign_subjects_query(campaign).filter(id__in=unresolved_ids).order_by("title")
+    )
+    teachers = list(_campaign_teachers(campaign))
+    teachers_by_id = {str(teacher.user_id): teacher for teacher in teachers}
+    weekly_map = _build_weekly_availability_map(campaign, teachers)
+    exception_map = _build_date_exception_map(campaign, teachers)
+    _, teacher_load, teacher_busy, used_slots = _campaign_assignment_state(campaign)
+    teacher_daily_load = defaultdict(int)
+    for teacher_id, busy_rows in teacher_busy.items():
+        for busy_date, _busy_start, _busy_end in busy_rows:
+            teacher_daily_load[(teacher_id, str(busy_date))] += 1
+
+    candidates = _generate_candidate_slots(campaign)
+    remaining_slots = [slot for slot in candidates if _slot_key(slot) not in used_slots]
+    if not remaining_slots:
+        return Response({"error": "No free slots remain for unresolved presentations"}, status=400)
+
+    created_subject_ids = []
+    daily_cap = campaign.daily_cap_per_teacher if campaign.daily_cap_per_teacher else None
+
+    with transaction.atomic():
+        for subject in unresolved_subjects:
+            selected = None
+
+            for require_available, enforce_daily_cap in [
+                (True, True),
+                (True, False),
+                (False, True),
+                (False, False),
+            ]:
+                candidate = _pick_auto_fit_assignment(
+                    subject=subject,
+                    slots=remaining_slots,
+                    teachers=teachers,
+                    teacher_load=teacher_load,
+                    teacher_daily_load=teacher_daily_load,
+                    teacher_busy=teacher_busy,
+                    weekly_map=weekly_map,
+                    exception_map=exception_map,
+                    daily_cap=daily_cap,
+                    require_available=require_available,
+                    enforce_daily_cap=enforce_daily_cap,
+                )
+                if candidate is not None:
+                    slot, rapporteur, president = candidate
+                    selected = (
+                        slot,
+                        teachers_by_id[str(subject.supervisor_id)],
+                        rapporteur,
+                        president,
+                    )
+                    break
+
+            if selected is None:
+                continue
+
+            slot, supervisor, rapporteur, president = selected
+            slot_row = PFEPresentationSlots.objects.create(
+                presentation_date=slot.presentation_date,
+                start_time=slot.start_time,
+                end_time=slot.end_time,
+                room=slot.room,
+                campaign=campaign,
+                created_by=request.user,
+            )
+
+            for role, teacher in [
+                (JuryRole.ENCADREUR, supervisor),
+                (JuryRole.RAPPORTEUR, rapporteur),
+                (JuryRole.PRESIDENT, president),
+            ]:
+                PFEJuryAssignments.objects.update_or_create(
+                    pfe_subject=subject,
+                    role=role,
+                    defaults={
+                        "teacher": teacher,
+                        "slot": slot_row,
+                        "assigned_by": request.user,
+                    },
+                )
+                teacher_load[str(teacher.user_id)] += 1
+                teacher_daily_load[(str(teacher.user_id), str(slot.presentation_date))] += 1
+                teacher_busy[str(teacher.user_id)].append(
+                    (slot.presentation_date, slot.start_time, slot.end_time)
+                )
+
+            used_slots.add(_slot_key(slot))
+            remaining_slots = [candidate for candidate in remaining_slots if _slot_key(candidate) != _slot_key(slot)]
+            _emit_student_notification(subject, campaign, slot_row)
+            created_subject_ids.append(str(subject.id))
+
+        _sync_campaign_status_after_assignment(campaign)
+
+    refreshed_detail = _build_campaign_detail(campaign)
+    unresolved_after = len(refreshed_detail["unresolved"])
+    return Response(
+        {
+            "message": (
+                f"Auto-fit assigned {len(created_subject_ids)} leftover presentation(s). "
+                f"{unresolved_after} still unresolved."
+            ),
+            "assigned_subject_ids": created_subject_ids,
+            **refreshed_detail,
+        },
+        status=200,
+    )
 
 
 @extend_schema(tags=["Admin Panel"], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)

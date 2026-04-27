@@ -77,6 +77,7 @@ async function hydrateUser(tokens: TokenPair, email: string): Promise<AppUser> {
   const appRole = mapBackendRoleToAppRole(backendRole);
   let name = makeDisplayName(email);
   let department: string | undefined;
+  let isDepartmentHead = false;
 
   if (backendRole === "teacher") {
     try {
@@ -87,6 +88,7 @@ async function hydrateUser(tokens: TokenPair, email: string): Promise<AppUser> {
       });
       name = response.data?.user?.username ?? name;
       department = response.data?.department;
+      isDepartmentHead = Boolean(response.data?.is_department_head);
     } catch {
       name = makeDisplayName(email);
     }
@@ -117,6 +119,7 @@ async function hydrateUser(tokens: TokenPair, email: string): Promise<AppUser> {
     password: "",
     department,
     schemaUserId,
+    is_department_head: isDepartmentHead,
   };
 }
 

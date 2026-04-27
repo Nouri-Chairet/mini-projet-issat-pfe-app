@@ -334,8 +334,8 @@ def get_teacher(request):
                 'ncin': teacher.ncin,
                 'age': teacher.age,
                 'is_department_head': hasattr(teacher, 'headed_department'),
-                'created_at': teacher.created_at,
-                'updated_at': teacher.updated_at
+                'created_at': user.created_at,
+                'updated_at': user.last_login
             },status=200)
         except Teachers.DoesNotExist:
             return Response({'detail': 'Teacher not found'}, status=404)
@@ -365,8 +365,12 @@ def get_student(request):
                     'username': student.user.username,
                     'role': student.user.role
                 },
-                'class_id': student.class_id.id,
-                'class_name': student.class_id.niveau + ' ' + student.class_id.classe_section + ' ' + str(student.class_id.classe_num),
+                'class_id': student.class_id.id if student.class_id else None,
+                'class_name': (
+                    student.class_id.niveau + ' ' + student.class_id.classe_section + ' ' + str(student.class_id.classe_num)
+                    if student.class_id
+                    else None
+                ),
                 'parent_contact': student.parent_contact,
                 'created_at': student.user.created_at,
             },status=200)
@@ -399,5 +403,4 @@ def reset_password_confirm(request):
         return Response({'detail': 'Password has been reset.'})
     else:
         return Response({'detail': 'Invalid or expired token.'}, status=status.HTTP_400_BAD_REQUEST)
-
 

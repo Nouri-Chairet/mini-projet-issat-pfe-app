@@ -61,10 +61,9 @@ export default function EnseignantPlanning({ user }: EnseignantPlanningProps) {
         >
           PFE Schedule
         </div>
-        <h1 style={{ margin: 0, fontSize: 30 }}>PFE Schedule</h1>
+        <h1 style={{ margin: 0, fontSize: 30 }}>Mes soutenances PFE</h1>
         <p style={{ color: "var(--text2)", marginTop: 8 }}>
-          {user.name} · Only your supervised PFE defense dates are shown after
-          generation.
+          {user.name} · This page shows the PFE presentations where you are supervisor or jury member.
         </p>
       </div>
 
@@ -120,6 +119,7 @@ export default function EnseignantPlanning({ user }: EnseignantPlanningProps) {
                     }}
                   >
                     Student: {item.student_name}
+                    {item.supervisor_name ? ` · Supervisor: ${item.supervisor_name}` : ""}
                   </div>
                 </div>
                 <Tag color={ACCENT} bg="var(--ens-dim)">

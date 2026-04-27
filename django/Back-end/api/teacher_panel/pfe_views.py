@@ -3,21 +3,20 @@ from __future__ import annotations
 from datetime import datetime
 
 from django.db import transaction
-from django.utils import timezone
 from drf_spectacular.utils import OpenApiTypes, extend_schema
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.admin_panel.permissions import IsTeacher
-from api.admin_panel.pfe_scheduler import persist_pfe_assignments, plan_pfe_assignments
 from api.models import (
     AvailabilityContext,
     AvailabilityLevel,
+    CampaignStatus,
     Departments,
-    JuryRole,
     PFECampaignRooms,
     PFECampaigns,
+    PFECampaignTeacherSubmissions,
     PFEJuryAssignments,
     PFESubjects,
     TeacherAvailabilityDateExceptions,
@@ -76,6 +75,7 @@ def _serialize_campaign(campaign: PFECampaigns) -> dict:
         "day_end_time": str(campaign.day_end_time),
         "slot_duration_minutes": int(campaign.slot_duration_minutes),
         "break_duration_minutes": int(campaign.break_duration_minutes),
+        "status": campaign.status,
         "weekdays": campaign.weekdays or [],
         "rooms": rooms,
         "daily_cap_per_teacher": campaign.daily_cap_per_teacher,
@@ -135,14 +135,19 @@ def get_teacher_pfe_session_state(request):
                 else None
             ),
             "campaign": _serialize_campaign(campaign) if campaign else None,
-            "can_start_collection": bool(
+            "can_start_collection": False,
+            "can_submit_availability": bool(
                 campaign
-                and is_department_head
-                and campaign.head_can_start
-                and not campaign.availability_open
-                and not campaign.schedule_generated
+                and campaign.is_active
+                and campaign.status == CampaignStatus.COLLECTING_AVAILABILITY
             ),
-            "can_submit_availability": bool(campaign and campaign.availability_open and not campaign.schedule_generated),
+            "has_submitted_availability": bool(
+                campaign
+                and PFECampaignTeacherSubmissions.objects.filter(
+                    campaign=campaign,
+                    teacher=teacher,
+                ).exists()
+            ),
             "my_supervised_pfe_count": PFESubjects.objects.filter(supervisor=teacher).count(),
             "my_entries": entries,
         },
@@ -154,74 +159,9 @@ def get_teacher_pfe_session_state(request):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated, IsTeacher])
 def head_start_pfe_date_collection(request):
-    teacher = _teacher_from_request(request)
-    if not teacher:
-        return Response({"error": "Teacher profile not found"}, status=404)
-
-    department = Departments.objects.select_related("head").filter(name=teacher.department).first()
-    if not department:
-        return Response({"error": "Department not found"}, status=404)
-    if department.head_id != teacher.user_id:
-        return Response({"error": "Only the department head can start this session"}, status=403)
-
-    campaign = _latest_campaign_for_department(department)
-    if campaign and not campaign.head_can_start:
-        return Response({"error": "Session is not unlocked by admin yet"}, status=403)
-
-    rooms = [str(item).strip() for item in (request.data.get("rooms") or []) if str(item).strip()]
-    if not rooms:
-        return Response({"error": "At least one room is required"}, status=400)
-
-    try:
-        start_date = _parse_date(request.data.get("start_date"))
-        end_date = _parse_date(request.data.get("end_date"))
-        day_start_time = _parse_time(request.data.get("day_start_time", "08:00"))
-        day_end_time = _parse_time(request.data.get("day_end_time", "16:00"))
-    except Exception:
-        return Response({"error": "Invalid date/time format"}, status=400)
-
-    if end_date < start_date:
-        return Response({"error": "end_date must be after or equal to start_date"}, status=400)
-
-    payload = {
-        "department": department,
-        "name": request.data.get("name") or f"PFE Session {department.name}",
-        "start_date": start_date,
-        "end_date": end_date,
-        "day_start_time": day_start_time,
-        "day_end_time": day_end_time,
-        "slot_duration_minutes": int(request.data.get("slot_duration_minutes", 60)),
-        "break_duration_minutes": int(request.data.get("break_duration_minutes", 0)),
-        "weekdays": request.data.get("weekdays") or WEEKDAYS_DEFAULT,
-        "daily_cap_per_teacher": request.data.get("daily_cap_per_teacher") or 3,
-        "head_can_start": True,
-        "availability_open": True,
-        "schedule_generated": False,
-        "generated_at": None,
-        "is_active": True,
-        "created_by": request.user,
-    }
-
-    with transaction.atomic():
-        if campaign is None:
-            campaign = PFECampaigns.objects.create(**payload)
-        else:
-            for key, value in payload.items():
-                setattr(campaign, key, value)
-            campaign.save()
-
-        PFECampaignRooms.objects.filter(campaign=campaign).delete()
-        PFECampaignRooms.objects.bulk_create(
-            [PFECampaignRooms(campaign=campaign, room_name=room) for room in sorted(set(rooms))]
-        )
-        PFECampaigns.objects.filter(department=department).exclude(id=campaign.id).update(is_active=False)
-
     return Response(
-        {
-            "message": "Date collection unlocked for teachers",
-            "campaign": _serialize_campaign(campaign),
-        },
-        status=200,
+        {"error": "Campaign creation is managed by admin in the current workflow"},
+        status=403,
     )
 
 
@@ -249,7 +189,7 @@ def submit_teacher_pfe_availability(request):
         )
     if not campaign:
         return Response({"error": "Campaign not found"}, status=404)
-    if not campaign.availability_open or campaign.schedule_generated:
+    if campaign.status != CampaignStatus.COLLECTING_AVAILABILITY:
         return Response({"error": "Availability submission is currently locked"}, status=403)
 
     rows = []
@@ -279,6 +219,11 @@ def submit_teacher_pfe_availability(request):
             campaign=campaign,
         ).delete()
         TeacherAvailabilityDateExceptions.objects.bulk_create(rows)
+        PFECampaignTeacherSubmissions.objects.update_or_create(
+            campaign=campaign,
+            teacher=teacher,
+            defaults={"entries_count": len(rows)},
+        )
 
     return Response(
         {
@@ -294,43 +239,9 @@ def submit_teacher_pfe_availability(request):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated, IsTeacher])
 def head_generate_pfe_schedule(request):
-    teacher = _teacher_from_request(request)
-    if not teacher:
-        return Response({"error": "Teacher profile not found"}, status=404)
-
-    department = Departments.objects.select_related("head").filter(name=teacher.department).first()
-    if not department:
-        return Response({"error": "Department not found"}, status=404)
-    if department.head_id != teacher.user_id:
-        return Response({"error": "Only the department head can generate the schedule"}, status=403)
-
-    campaign_id = request.data.get("campaign_id")
-    if campaign_id:
-        campaign = PFECampaigns.objects.select_related("department").filter(id=campaign_id, department=department).first()
-    else:
-        campaign = _latest_campaign_for_department(department)
-    if not campaign:
-        return Response({"error": "Campaign not found"}, status=404)
-    if campaign.schedule_generated:
-        return Response({"error": "Schedule already generated for this campaign"}, status=400)
-
-    plan = plan_pfe_assignments(campaign=campaign)
-
-    with transaction.atomic():
-        persist = persist_pfe_assignments(campaign=campaign, plan=plan, assigned_by=request.user)
-        campaign.availability_open = False
-        campaign.schedule_generated = True
-        campaign.generated_at = timezone.now()
-        campaign.save(update_fields=["availability_open", "schedule_generated", "generated_at", "updated_at"])
-
     return Response(
-        {
-            "message": "PFE schedule generated",
-            "campaign": _serialize_campaign(campaign),
-            "plan": plan,
-            "persist": persist,
-        },
-        status=200,
+        {"error": "Schedule generation is managed by admin in the current workflow"},
+        status=403,
     )
 
 
@@ -368,26 +279,39 @@ def get_my_pfe_schedule(request):
             "pfe_subject",
             "pfe_subject__student",
             "pfe_subject__student__user",
+            "pfe_subject__supervisor__user",
             "slot",
         )
-        .filter(
-            teacher=teacher,
-            role=JuryRole.ENCADREUR,
-            slot__campaign=campaign,
-        )
+        .prefetch_related("pfe_subject__jury_assignments__teacher__user")
+        .filter(slot__campaign=campaign)
+        .filter(teacher=teacher)
         .order_by("slot__presentation_date", "slot__start_time")
     )
 
+    supervised_subjects = PFESubjects.objects.select_related(
+        "student",
+        "student__user",
+        "supervisor__user",
+    ).prefetch_related("jury_assignments__teacher__user").filter(
+        supervisor=teacher,
+        jury_assignments__slot__campaign=campaign,
+    ).distinct()
+    supervised_map = {str(subject.id): subject for subject in supervised_subjects}
+
     payload = []
+    seen_subject_ids = set()
     for row in rows:
         subject = row.pfe_subject
+        seen_subject_ids.add(str(subject.id))
         student_name = subject.student.user.username if subject.student_id else subject.student_name
         payload.append(
             {
                 "subject_id": str(subject.id),
                 "subject_title": subject.title,
+                "description": subject.description,
                 "student_id": str(subject.student_id) if subject.student_id else None,
                 "student_name": student_name,
+                "supervisor_name": subject.supervisor.user.username,
                 "slot": (
                     {
                         "date": str(row.slot.presentation_date),
@@ -398,6 +322,54 @@ def get_my_pfe_schedule(request):
                     if row.slot_id
                     else None
                 ),
+                "jury": [
+                    {
+                        "assignment_id": str(jury_assignment.id),
+                        "teacher_id": str(jury_assignment.teacher_id),
+                        "teacher_name": jury_assignment.teacher.user.username,
+                        "role": jury_assignment.role,
+                        "assigned_at": jury_assignment.assigned_at.isoformat(),
+                    }
+                    for jury_assignment in subject.jury_assignments.all()
+                ],
+            }
+        )
+
+    for subject_id, subject in supervised_map.items():
+        if subject_id in seen_subject_ids:
+            continue
+        jury_rows = list(subject.jury_assignments.all())
+        slot = next((item.slot for item in jury_rows if item.slot_id and item.slot and item.slot.campaign_id == campaign.id), None)
+        student_name = subject.student.user.username if subject.student_id else subject.student_name
+        payload.append(
+            {
+                "subject_id": subject_id,
+                "subject_title": subject.title,
+                "description": subject.description,
+                "student_id": str(subject.student_id) if subject.student_id else None,
+                "student_name": student_name,
+                "supervisor_name": subject.supervisor.user.username,
+                "slot": (
+                    {
+                        "date": str(slot.presentation_date),
+                        "start_time": str(slot.start_time),
+                        "end_time": str(slot.end_time),
+                        "room": slot.room,
+                    }
+                    if slot
+                    else None
+                ),
+                "jury": [
+                    {
+                        "assignment_id": str(jury_assignment.id),
+                        "teacher_id": str(jury_assignment.teacher_id),
+                        "teacher_name": jury_assignment.teacher.user.username,
+                        "role": jury_assignment.role,
+                        "assigned_at": jury_assignment.assigned_at.isoformat(),
+                    }
+                    for jury_assignment in jury_rows
+                    if not jury_assignment.slot_id or jury_assignment.slot.campaign_id == campaign.id
+                ],
             }
         )
 

@@ -38,6 +38,13 @@ class JuryRole(models.TextChoices):
     PRESIDENT = "president"
 
 
+class CampaignStatus(models.TextChoices):
+    DRAFT = "draft"
+    COLLECTING_AVAILABILITY = "collecting_availability"
+    NEEDS_MANUAL_ASSIGNMENT = "needs_manual_assignment"
+    GENERATED = "generated"
+
+
 class PostType(models.TextChoices):
     LESSON = "lesson"
     ANNOUNCEMENT = "announcement"
@@ -288,6 +295,11 @@ class PFECampaigns(models.Model):
     break_duration_minutes = models.PositiveIntegerField(default=15)
     weekdays = models.JSONField(default=list, blank=True)
     daily_cap_per_teacher = models.PositiveIntegerField(null=True, blank=True)
+    status = models.CharField(
+        max_length=40,
+        choices=CampaignStatus.choices,
+        default=CampaignStatus.DRAFT,
+    )
     head_can_start = models.BooleanField(default=False)
     availability_open = models.BooleanField(default=False)
     schedule_generated = models.BooleanField(default=False)
@@ -322,6 +334,19 @@ class PFETeacherQuotaOverrides(models.Model):
 
     class Meta:
         db_table = 'pfe_teacher_quota_overrides'
+        unique_together = (('campaign', 'teacher'),)
+
+
+class PFECampaignTeacherSubmissions(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    campaign = models.ForeignKey(PFECampaigns, models.CASCADE, related_name='teacher_submissions')
+    teacher = models.ForeignKey('Teachers', models.CASCADE, db_column='teacher_id', related_name='pfe_campaign_submissions')
+    entries_count = models.PositiveIntegerField(default=0)
+    submitted_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'pfe_campaign_teacher_submissions'
         unique_together = (('campaign', 'teacher'),)
 
 
@@ -440,6 +465,23 @@ class PFEJuryAssignments(models.Model):
     class Meta:
         db_table = 'pfe_jury_assignments'
         unique_together = (('pfe_subject', 'teacher', 'role'),)
+
+
+class StudentNotifications(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    student = models.ForeignKey(Students, models.CASCADE, related_name='notifications')
+    campaign = models.ForeignKey(PFECampaigns, models.SET_NULL, null=True, blank=True, related_name='student_notifications')
+    pfe_subject = models.ForeignKey(PFESubjects, models.CASCADE, related_name='student_notifications')
+    slot = models.ForeignKey(PFEPresentationSlots, models.SET_NULL, null=True, blank=True, related_name='student_notifications')
+    title = models.CharField(max_length=255)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    read_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'student_notifications'
 
 
 def _teacher_weekly_teaching_hours(teacher):

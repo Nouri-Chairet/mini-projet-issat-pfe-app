@@ -48,8 +48,7 @@ const getNavConfig = (user: AppUser): Record<AppUser["role"], NavItem[]> => ({
   chef: [
     { id: "dashboard", label: "Admin Dashboard", icon: "▦" },
     { id: "timetable", label: "Emploi du temps", icon: "▧" },
-    { id: "pfe-sessions", label: "Start PFE Sessions", icon: "◉" },
-    { id: "pfe-scheduler", label: "PFE Scheduler", icon: "◌" },
+    { id: "pfe-sessions", label: "Manage Campaigns", icon: "◉" },
     { id: "accounts", label: "Comptes", icon: "◎" },
     { id: "classes", label: "Classes", icon: "▤" },
     { id: "departments", label: "Départements", icon: "◆" },
@@ -58,22 +57,8 @@ const getNavConfig = (user: AppUser): Record<AppUser["role"], NavItem[]> => ({
   enseignant: [
     { id: "dashboard", label: "Mon espace", icon: "▦" },
     { id: "emploi", label: "Emploi du temps", icon: "▧" },
-    { id: "planning", label: "PFE Schedule", icon: "▤" },
-    { id: "disponibilites", label: "Select Available Dates", icon: "◌" },
-    ...(user.is_department_head
-      ? [
-          {
-            id: "pfe-campaign-management" as PageId,
-            label: "Gestion PFE (Chef)",
-            icon: "◈",
-          },
-          {
-            id: "pfe-results" as PageId,
-            label: "Résultats Jury (Chef)",
-            icon: "🎯",
-          },
-        ]
-      : []),
+    { id: "planning", label: "Mes soutenances PFE", icon: "▤" },
+    { id: "disponibilites", label: "Disponibilités PFE", icon: "◌" },
     { id: "forum", label: "Forum PFE", icon: "◎", badge: 1 },
   ],
   etudiant: [
@@ -109,16 +94,6 @@ function renderPage(
       planning: <EnseignantPlanning {...props} />,
       disponibilites: <EnseignantDisponibilites {...props} />,
       forum: <Forum {...props} />,
-      "pfe-campaign-management": user.is_department_head ? (
-        <AdminPfeScheduler />
-      ) : (
-        <Navigate to="/teacher/dashboard" replace />
-      ),
-      "pfe-results": user.is_department_head ? (
-        <AdminPfeSessions />
-      ) : (
-        <Navigate to="/teacher/dashboard" replace />
-      ),
     },
     etudiant: {
       dashboard: <EtudiantDashboard {...props} />,

@@ -7,10 +7,8 @@ import {
   getPfeSubjects,
   listPfeStudents,
   listPfeAssignments,
-  pfeAutoAssignCommit,
   upsertPfeCampaign,
   type AdminDepartment,
-  type AutoAssignPlan,
   type PfeAssignmentListItem,
   type PfeCampaign,
   type PfeStudentCandidate,
@@ -40,7 +38,6 @@ export default function AdminPfeScheduler() {
   const [subjects, setSubjects] = useState<PfeSubjectItem[]>([]);
   const [students, setStudents] = useState<PfeStudentCandidate[]>([]);
   const [assignments, setAssignments] = useState<PfeAssignmentListItem[]>([]);
-  const [plan, setPlan] = useState<AutoAssignPlan | null>(null);
 
   const [studentSubjectId, setStudentSubjectId] = useState("");
   const [studentId, setStudentId] = useState("");
@@ -194,30 +191,6 @@ export default function AdminPfeScheduler() {
       setCampaign(next);
       setFeedback("Campaign saved.");
       await loadCampaignData(selectedDepartmentId);
-    } catch (error) {
-      setFeedback(parseError(error));
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const commitPlan = async () => {
-    if (!campaign) {
-      setFeedback("Save or load a campaign first.");
-      return;
-    }
-
-    setBusy(true);
-    setFeedback("");
-    try {
-      const result = await pfeAutoAssignCommit({
-        campaign_id: campaign.id,
-        replace_existing: true,
-        block_on_unresolved: false,
-      });
-      setPlan(result);
-      setAssignments(await listPfeAssignments(campaign.id));
-      setFeedback("Auto-assignment committed.");
     } catch (error) {
       setFeedback(parseError(error));
     } finally {
@@ -397,21 +370,6 @@ export default function AdminPfeScheduler() {
             and available-not-preferred at least 6.
           </p>
 
-          {plan ? (
-            <div
-              style={{
-                display: "flex",
-                gap: 8,
-                flexWrap: "wrap",
-                marginTop: 10,
-              }}
-            >
-              <Tag>Total: {plan.stats.subjects_total}</Tag>
-              <Tag>Assigned: {plan.stats.assigned_count}</Tag>
-              <Tag>Unresolved: {plan.stats.unresolved_count}</Tag>
-              <Tag>Generated slots: {plan.stats.slots_generated}</Tag>
-            </div>
-          ) : null}
         </Card>
       </div>
 

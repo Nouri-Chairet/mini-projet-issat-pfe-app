@@ -58,6 +58,8 @@ export type AvailabilityLevel = "preferred" | "available" | "unavailable";
 export interface PfeSubjectItem {
   id: string;
   title: string;
+  description?: string | null;
+  department?: string | null;
   student_id: string | null;
   student_name: string;
   student_email?: string | null;
@@ -86,6 +88,7 @@ export interface PfeCampaign {
   day_end_time: string;
   slot_duration_minutes: number;
   break_duration_minutes: number;
+  status: "draft" | "collecting_availability" | "needs_manual_assignment" | "generated";
   weekdays: string[];
   rooms: string[];
   daily_cap_per_teacher: number | null;
@@ -97,6 +100,50 @@ export interface PfeCampaign {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface ManagedPfeCampaignCard extends PfeCampaign {
+  progress: {
+    submitted_count: number;
+    total_count: number;
+    percent: number;
+  };
+  unresolved_count: number;
+  scheduled_count: number;
+}
+
+export interface ManagedPfeCampaignDetail {
+  campaign: PfeCampaign;
+  progress: {
+    submitted_count: number;
+    total_count: number;
+    percent: number;
+  };
+  teachers_submitted: Array<{
+    teacher_id: string;
+    teacher_name: string;
+    email: string;
+    submitted: boolean;
+    submitted_at: string | null;
+    entries_count: number;
+  }>;
+  teachers_pending: Array<{
+    teacher_id: string;
+    teacher_name: string;
+    email: string;
+    submitted: boolean;
+    submitted_at: string | null;
+    entries_count: number;
+  }>;
+  assignments: PfeAssignmentListItem[];
+  unresolved: Array<{
+    subject_id: string;
+    subject_title: string;
+    student_name: string;
+    supervisor_id: string;
+    supervisor_name: string;
+    reason: string;
+  }>;
 }
 
 export interface CampaignQuotaInput {
@@ -509,6 +556,107 @@ export async function getPfeCampaign(filters?: {
     },
   );
   return response.data.campaign;
+}
+
+export async function listManagedPfeCampaigns(): Promise<ManagedPfeCampaignCard[]> {
+  const response = await axios.get<{ campaigns: ManagedPfeCampaignCard[] }>(
+    `${API_BASE_URL}/api/admin/pfe/campaigns/`,
+    { headers: authHeaders() },
+  );
+  return response.data?.campaigns ?? [];
+}
+
+export async function createManagedPfeCampaign(payload: {
+  department_id: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  day_start_time: string;
+  day_end_time: string;
+  slot_duration_minutes: number;
+  break_duration_minutes: number;
+  weekdays?: string[];
+  rooms: string[];
+  daily_cap_per_teacher?: number | null;
+}): Promise<{ message: string; campaign: PfeCampaign }> {
+  const response = await axios.post<{ message: string; campaign: PfeCampaign }>(
+    `${API_BASE_URL}/api/admin/pfe/campaigns/`,
+    payload,
+    { headers: authHeaders() },
+  );
+  return response.data;
+}
+
+export async function getManagedPfeCampaignDetail(
+  campaignId: string,
+): Promise<ManagedPfeCampaignDetail> {
+  const response = await axios.get<ManagedPfeCampaignDetail>(
+    `${API_BASE_URL}/api/admin/pfe/campaigns/detail/`,
+    {
+      params: { campaign_id: campaignId },
+      headers: authHeaders(),
+    },
+  );
+  return response.data;
+}
+
+export async function generateManagedPfeCampaignSchedule(payload: {
+  campaign_id: string;
+}): Promise<
+  ManagedPfeCampaignDetail & {
+    message: string;
+    plan: AutoAssignPlan;
+    persist: {
+      created_slots: number;
+      created_assignments: number;
+      updated_assignments: number;
+    };
+  }
+> {
+  const response = await axios.post<
+    ManagedPfeCampaignDetail & {
+      message: string;
+      plan: AutoAssignPlan;
+      persist: {
+        created_slots: number;
+        created_assignments: number;
+        updated_assignments: number;
+      };
+    }
+  >(`${API_BASE_URL}/api/admin/pfe/campaigns/generate/`, payload, {
+    headers: authHeaders(),
+  });
+  return response.data;
+}
+
+export async function manualAssignManagedPfePresentation(payload: {
+  campaign_id: string;
+  subject_id: string;
+  presentation_date: string;
+  start_time: string;
+  end_time: string;
+  room: string;
+  rapporteur_id: string;
+  president_id: string;
+  encadreur_id?: string;
+}): Promise<{ message: string } & ManagedPfeCampaignDetail> {
+  const response = await axios.post<{ message: string } & ManagedPfeCampaignDetail>(
+    `${API_BASE_URL}/api/admin/pfe/campaigns/manual-assign/`,
+    payload,
+    { headers: authHeaders() },
+  );
+  return response.data;
+}
+
+export async function autoFitManagedPfeLeftovers(payload: {
+  campaign_id: string;
+}): Promise<{ message: string; assigned_subject_ids: string[] } & ManagedPfeCampaignDetail> {
+  const response = await axios.post<
+    { message: string; assigned_subject_ids: string[] } & ManagedPfeCampaignDetail
+  >(`${API_BASE_URL}/api/admin/pfe/campaigns/auto-fit-leftovers/`, payload, {
+    headers: authHeaders(),
+  });
+  return response.data;
 }
 
 export async function setPfeCampaignQuotaOverrides(payload: {

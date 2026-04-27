@@ -3,8 +3,6 @@ import { Btn, Card, Input, Select, Tag } from "../../components/UI";
 import type { AppUser } from "../../types/app";
 import {
   getTeacherPfeSessionState,
-  headGeneratePfeSchedule,
-  headStartPfeDateCollection,
   submitTeacherPfeAvailability,
   type TeacherAvailabilityLevel,
   type TeacherPfeSessionState,
@@ -82,30 +80,11 @@ export default function EnseignantDisponibilites({
     Record<string, TeacherAvailabilityLevel>
   >({});
 
-  const [headName, setHeadName] = useState("PFE Session");
-  const [headStartDate, setHeadStartDate] = useState("");
-  const [headEndDate, setHeadEndDate] = useState("");
-  const [headDayStart, setHeadDayStart] = useState("08:00");
-  const [headDayEnd, setHeadDayEnd] = useState("16:00");
-  const [headSlotDuration, setHeadSlotDuration] = useState(60);
-  const [headBreakDuration, setHeadBreakDuration] = useState(0);
-  const [headDailyCap, setHeadDailyCap] = useState(3);
-  const [headRooms, setHeadRooms] = useState("A1,A2");
-
   const reload = useCallback(async () => {
     const response = await getTeacherPfeSessionState();
     setState(response);
 
     if (response.campaign) {
-      setHeadName(response.campaign.name);
-      setHeadStartDate(response.campaign.start_date);
-      setHeadEndDate(response.campaign.end_date);
-      setHeadDayStart(response.campaign.day_start_time.slice(0, 5));
-      setHeadDayEnd(response.campaign.day_end_time.slice(0, 5));
-      setHeadSlotDuration(response.campaign.slot_duration_minutes);
-      setHeadBreakDuration(response.campaign.break_duration_minutes);
-      setHeadDailyCap(response.campaign.daily_cap_per_teacher ?? 3);
-      setHeadRooms(response.campaign.rooms.join(","));
       if (!selectedDate) {
         setSelectedDate(response.campaign.start_date);
       }
@@ -126,15 +105,6 @@ export default function EnseignantDisponibilites({
       .then((response) => {
         setState(response);
         if (response.campaign) {
-          setHeadName(response.campaign.name);
-          setHeadStartDate(response.campaign.start_date);
-          setHeadEndDate(response.campaign.end_date);
-          setHeadDayStart(response.campaign.day_start_time.slice(0, 5));
-          setHeadDayEnd(response.campaign.day_end_time.slice(0, 5));
-          setHeadSlotDuration(response.campaign.slot_duration_minutes);
-          setHeadBreakDuration(response.campaign.break_duration_minutes);
-          setHeadDailyCap(response.campaign.daily_cap_per_teacher ?? 3);
-          setHeadRooms(response.campaign.rooms.join(","));
           setSelectedDate(response.campaign.start_date);
         }
 
@@ -179,40 +149,6 @@ export default function EnseignantDisponibilites({
     });
   }, [selectedDate, slots, slotLevels]);
 
-  const saveHeadStart = async () => {
-    const roomList = headRooms
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean);
-    if (roomList.length === 0) {
-      setFeedback("At least one room is required.");
-      return;
-    }
-
-    setBusy(true);
-    setFeedback("");
-    try {
-      const response = await headStartPfeDateCollection({
-        name: headName,
-        start_date: headStartDate,
-        end_date: headEndDate,
-        day_start_time: headDayStart,
-        day_end_time: headDayEnd,
-        slot_duration_minutes: headSlotDuration,
-        break_duration_minutes: headBreakDuration,
-        daily_cap_per_teacher: headDailyCap,
-        weekdays: ["Lundi", "Mardi", "Mercredi", "jeudi", "Vendredi"],
-        rooms: roomList,
-      });
-      setFeedback(response.message);
-      await reload();
-    } catch (error) {
-      setFeedback(parseError(error));
-    } finally {
-      setBusy(false);
-    }
-  };
-
   const submitAvailability = async () => {
     if (!campaign) {
       setFeedback("No active campaign.");
@@ -250,27 +186,6 @@ export default function EnseignantDisponibilites({
     }
   };
 
-  const generateSchedule = async () => {
-    if (!campaign) {
-      return;
-    }
-    setBusy(true);
-    setFeedback("");
-    try {
-      const response = await headGeneratePfeSchedule({
-        campaign_id: campaign.id,
-      });
-      setFeedback(
-        `${response.message} - Assigned ${response.plan.stats.assigned_count}/${response.plan.stats.subjects_total}`,
-      );
-      await reload();
-    } catch (error) {
-      setFeedback(parseError(error));
-    } finally {
-      setBusy(false);
-    }
-  };
-
   const campaignLocked = !state?.can_submit_availability;
 
   return (
@@ -288,10 +203,9 @@ export default function EnseignantDisponibilites({
         >
           PFE Availability
         </div>
-        <h1 style={{ margin: 0, fontSize: 30 }}>Select Available Dates</h1>
+        <h1 style={{ margin: 0, fontSize: 30 }}>Disponibilités PFE</h1>
         <p style={{ color: "var(--text2)", marginTop: 8 }}>
-          {user.name} · Choose each hour state: available, not available, or not
-          preferred but available.
+          {user.name} · Mark each proposed slot as preferred, available, or unavailable.
         </p>
       </div>
 
@@ -310,9 +224,9 @@ export default function EnseignantDisponibilites({
         {state ? (
           <Tag>My supervised PFEs: {state.my_supervised_pfe_count}</Tag>
         ) : null}
-        {state?.teacher.is_department_head ? (
+        {state?.has_submitted_availability ? (
           <Tag color={ACCENT} bg="var(--ens-dim)">
-            Department head
+            Submitted
           </Tag>
         ) : null}
       </div>
@@ -320,111 +234,6 @@ export default function EnseignantDisponibilites({
       {feedback ? (
         <Card style={{ padding: 12, marginBottom: 12 }}>
           <div style={{ color: "var(--text2)", fontSize: 14 }}>{feedback}</div>
-        </Card>
-      ) : null}
-
-      {state?.teacher.is_department_head && state.can_start_collection ? (
-        <Card style={{ padding: 14, marginBottom: 12 }}>
-          <div style={{ fontWeight: 700, marginBottom: 10 }}>
-            Head action: start collecting dates
-          </div>
-          <div
-            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}
-          >
-            <Input
-              label="Session name"
-              value={headName}
-              onChange={(event) => setHeadName(event.target.value)}
-            />
-            <Input
-              label="Rooms (comma separated)"
-              value={headRooms}
-              onChange={(event) => setHeadRooms(event.target.value)}
-            />
-            <Input
-              label="Start date"
-              type="date"
-              value={headStartDate}
-              onChange={(event) => setHeadStartDate(event.target.value)}
-            />
-            <Input
-              label="End date"
-              type="date"
-              value={headEndDate}
-              onChange={(event) => setHeadEndDate(event.target.value)}
-            />
-            <Input
-              label="Day start"
-              type="time"
-              value={headDayStart}
-              onChange={(event) => setHeadDayStart(event.target.value)}
-            />
-            <Input
-              label="Day end"
-              type="time"
-              value={headDayEnd}
-              onChange={(event) => setHeadDayEnd(event.target.value)}
-            />
-            <Input
-              label="Slot duration (minutes)"
-              type="number"
-              value={headSlotDuration}
-              onChange={(event) =>
-                setHeadSlotDuration(Number(event.target.value || 60))
-              }
-            />
-            <Input
-              label="Break duration (minutes)"
-              type="number"
-              value={headBreakDuration}
-              onChange={(event) =>
-                setHeadBreakDuration(Number(event.target.value || 0))
-              }
-            />
-            <Input
-              label="Daily cap per teacher"
-              type="number"
-              value={headDailyCap}
-              onChange={(event) =>
-                setHeadDailyCap(Number(event.target.value || 3))
-              }
-            />
-          </div>
-          <div style={{ marginTop: 12 }}>
-            <Btn accent={ACCENT} onClick={saveHeadStart}>
-              Start selecting dates process
-            </Btn>
-          </div>
-        </Card>
-      ) : null}
-
-      {campaign &&
-      state?.teacher.is_department_head &&
-      campaign.availability_open ? (
-        <Card style={{ padding: 14, marginBottom: 12 }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: 10,
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <div style={{ fontWeight: 700 }}>
-                Head action: end selection and generate schedule
-              </div>
-              <div
-                style={{ color: "var(--text3)", fontSize: 13, marginTop: 4 }}
-              >
-                After generation, the PFE schedule page becomes visible for
-                teachers.
-              </div>
-            </div>
-            <Btn accent={ACCENT} onClick={generateSchedule}>
-              End selection and generate
-            </Btn>
-          </div>
         </Card>
       ) : null}
 
@@ -453,16 +262,8 @@ export default function EnseignantDisponibilites({
                 Campaign status
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                <Tag>
-                  {campaign.availability_open
-                    ? "Availability open"
-                    : "Availability locked"}
-                </Tag>
-                <Tag>
-                  {campaign.schedule_generated
-                    ? "Schedule generated"
-                    : "Schedule pending"}
-                </Tag>
+                <Tag>{campaign.status.replaceAll("_", " ")}</Tag>
+                <Tag>{campaign.rooms.length} room(s)</Tag>
               </div>
             </div>
           </div>
@@ -477,8 +278,7 @@ export default function EnseignantDisponibilites({
                 marginBottom: 12,
               }}
             >
-              Availability submission is locked. Wait for your department head
-              to start the session.
+              Availability submission is locked right now. Admin opens this page automatically when your department campaign starts.
             </div>
           ) : null}
 
@@ -521,7 +321,7 @@ export default function EnseignantDisponibilites({
 
           <div style={{ marginTop: 12 }}>
             <Btn accent={ACCENT} onClick={submitAvailability}>
-              Submit availability
+              {state?.has_submitted_availability ? "Update availability" : "Submit availability"}
             </Btn>
           </div>
         </Card>
