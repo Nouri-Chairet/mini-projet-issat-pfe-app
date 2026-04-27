@@ -894,3 +894,43 @@ export async function importBookedPfeExcelCommit(payload: {
   );
   return response.data;
 }
+
+// ---------------------------------------------------------------------------
+// Department announcements
+// ---------------------------------------------------------------------------
+
+export interface DepartmentAnnouncement {
+  id: string;
+  title: string;
+  content: string;
+  department_id: string;
+  department_name: string;
+  author: string;
+  created_at: string;
+}
+
+export async function createDepartmentAnnouncement(payload: {
+  department_id: string;
+  title: string;
+  content: string;
+}): Promise<DepartmentAnnouncement> {
+  const response = await axios.post<{ post: DepartmentAnnouncement }>(
+    `${API_BASE_URL}/api/admin/announcements/create/`,
+    payload,
+    { headers: authHeaders() },
+  );
+  return response.data.post;
+}
+
+export async function listDepartmentAnnouncements(
+  departmentId?: string,
+): Promise<DepartmentAnnouncement[]> {
+  const response = await axios.get<{ announcements: DepartmentAnnouncement[] }>(
+    `${API_BASE_URL}/api/admin/announcements/`,
+    {
+      params: departmentId ? { department_id: departmentId } : {},
+      headers: authHeaders(),
+    },
+  );
+  return response.data?.announcements ?? [];
+}

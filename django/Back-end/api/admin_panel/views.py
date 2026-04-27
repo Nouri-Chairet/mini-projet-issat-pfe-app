@@ -67,11 +67,26 @@ def _class_label(classe):
 
 
 def _parse_class_token(token):
-    chunks = str(token).split("-", 2)
-    if len(chunks) != 3:
+    # Format: "{niveau}-{section}-{num}"
+    # niveau and num are plain integers; section may itself contain dashes (e.g. "L-LSI").
+    # Strategy: take the first segment as niveau, last segment as num, everything in between is section.
+    parts = str(token).strip().split("-")
+    if len(parts) < 3:
         return None
-    niveau, section, classe_num = chunks
-    return niveau.strip(), section.strip(), classe_num.strip()
+    try:
+        niveau = parts[0].strip()
+        int(niveau)
+    except ValueError:
+        return None
+    try:
+        classe_num = parts[-1].strip()
+        int(classe_num)
+    except ValueError:
+        return None
+    section = "-".join(parts[1:-1]).strip()
+    if not section:
+        return None
+    return niveau, section, classe_num
 
 
 def _normalize_schedule_day(value):
@@ -80,7 +95,7 @@ def _normalize_schedule_day(value):
         "lundi": "Lundi",
         "mardi": "Mardi",
         "mercredi": "Mercredi",
-        "jeudi": "Jeudi",
+        "jeudi": "jeudi",
         "vendredi": "Vendredi",
         "samedi": "Samedi",
     }
@@ -501,8 +516,8 @@ def list_timetable_slots(request):
         schedules = sorted(
             list(query),
             key=lambda s: (
-                ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"].index(s.day_of_week)
-                if s.day_of_week in ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"]
+                ["Lundi", "Mardi", "Mercredi", "jeudi", "Vendredi", "Samedi"].index(s.day_of_week)
+                if s.day_of_week in ["Lundi", "Mardi", "Mercredi", "jeudi", "Vendredi", "Samedi"]
                 else 99,
                 s.start_time,
             ),
@@ -677,24 +692,27 @@ def get_timetable_readiness(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def log_timetable_telemetry(request):
-    try:
-        event_name = str(request.data.get('event_name', '')).strip()
-        route = str(request.data.get('route', '')).strip()
-        payload = request.data.get('payload', None)
-        if not event_name:
-            return Response({"error": "event_name is required"}, status=400)
+    event_name = str(request.data.get('event_name', '')).strip()
+    route = str(request.data.get('route', '')).strip()
+    payload = request.data.get('payload', None)
+    if not event_name:
+        return Response({"error": "event_name is required"}, status=400)
 
-        item = TimetableTelemetry.objects.create(
+    try:
+        if payload is not None and not isinstance(payload, (dict, list, str, int, float, bool)):
+            payload = str(payload)
+
+        TimetableTelemetry.objects.create(
             user=request.user,
             role=request.user.role,
             event_name=event_name,
             route=route,
             payload=payload,
         )
-        item.save()
         return Response({"message": "Telemetry logged"}, status=201)
-    except Exception as e:
-        return Response({"error": str(e)}, status=500)
+    except Exception:
+        # Telemetry is non-critical; avoid failing user flows if persistence fails.
+        return Response({"message": "Telemetry accepted but not persisted"}, status=202)
 #request under this form :  
 # {
 #     "level": "1A",
@@ -789,18 +807,27 @@ def create_schedule (request):
         if not set(expected_columns).issubset(df.columns):
             return Response({"error": "Invalid file format"}, status=401)
         for index, row in df.iterrows():
-            professeur = row['professeur']
-            classe = row['classe']
-            professeur_user = Users.objects.filter(username=professeur,role="teacher").first()
+            professeur_name = str(row['professeur']).strip()
+            classe_str = str(row['classe']).strip()
+            
+            professeur_user = Users.objects.filter(username__icontains=professeur_name, role="teacher").first()
             professeur = Teachers.objects.filter(user=professeur_user).first()
             if not professeur:
-                return Response({"error": f"Teacher {professeur} not found at row number {index}"}, status=404)
-            niveau = str(classe.split("-")[0])
-            section = str(classe.split("-")[1])
-            classe_num = str(classe.split("-")[2])
-            classe= Classes.objects.filter(niveau=niveau, classe_section=section, classe_num=classe_num).first()
+                return Response({"error": f"Teacher '{professeur_name}' not found at row number {index}"}, status=404)
+            
+            try:
+                niveau = str(classe_str.split("-")[0])
+                section = str(classe_str.split("-")[1])
+                classe_num = str(classe_str.split("-")[2])
+            except IndexError:
+                return Response({"error": f"Invalid class format '{classe_str}' at row {index}. Use format '1-MPI-1'"}, status=400)
+                
+            classe = Classes.objects.filter(niveau=niveau, section=section, num=classe_num).first() 
             if not classe:
-                return Response({"error": f"Class {classe} not found at row number {index}"}, status=404)
+                # also try classe_section if the model uses that
+                classe = Classes.objects.filter(niveau=niveau, classe_section=section, classe_num=classe_num).first()
+            if not classe:
+                return Response({"error": f"Class '{classe_str}' not found at row number {index}"}, status=404)
             jour = row['jour']
             heure_debut = row['heure-debut']
             heure_fin = row['heure-fin']
@@ -844,11 +871,14 @@ def get_classes_schedule (request):
             classe = Classes.objects.filter(niveau=niveau, classe_section=section, classe_num=classe_num).first()
         if not classe:
             return Response({"error": "Class not found"}, status=404)
-        schedules = Schedules.objects.filter(class_id=classe).order_by('day_of_week','start_time')
+        schedules = Schedules.objects.filter(class_id=classe).select_related('teacher', 'teacher__user', 'class_id').order_by('day_of_week','start_time')
         schedule_data = []
         for schedule in schedules:
             schedule_data.append({
+                "id": str(schedule.id),
+                "teacher_id": str(schedule.teacher.user_id),
                 "teacher": schedule.teacher.user.username,
+                "class": _class_label(schedule.class_id),
                 "day_of_week": schedule.day_of_week,
                 "start_time": str(schedule.start_time),
                 "end_time": str(schedule.end_time),
@@ -1647,3 +1677,183 @@ def resolve_absence(request):
     student.access_status=True
     student.save()
     return Response({"message":"student access status updated successfully"},status=200)
+
+
+# ---------------------------------------------------------------------------
+# Forum — detail (question + answers) and moderation endpoints
+# ---------------------------------------------------------------------------
+
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_forum_question_detail(request, question_id):
+    """Return a single forum question with all its answers."""
+    try:
+        question = (
+            ForumQuestions.objects
+            .select_related('author')
+            .prefetch_related('answers__author')
+            .filter(id=question_id)
+            .first()
+        )
+        if not question:
+            return Response({"error": "Question not found"}, status=404)
+
+        return Response(
+            {
+                "id": str(question.id),
+                "title": question.title,
+                "content": question.content,
+                "author": question.author.username,
+                "author_id": str(question.author_id),
+                "author_role": question.author.role,
+                "class_id": str(question.class_id_id) if question.class_id_id else None,
+                "is_resolved": question.is_resolved,
+                "created_at": str(question.created_at),
+                "answers": [
+                    {
+                        "id": str(a.id),
+                        "content": a.content,
+                        "author": a.author.username,
+                        "author_id": str(a.author_id),
+                        "author_role": a.author.role,
+                        "created_at": str(a.created_at),
+                    }
+                    for a in question.answers.order_by('created_at')
+                ],
+            },
+            status=200,
+        )
+    except Exception as exc:
+        return Response({"error": str(exc)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_forum_answer(request, answer_id):
+    """Delete an answer — owner or admin/teacher."""
+    try:
+        answer = ForumAnswers.objects.select_related('author').filter(id=answer_id).first()
+        if not answer:
+            return Response({"error": "Answer not found"}, status=404)
+
+        is_owner = str(answer.author_id) == str(request.user.id)
+        is_mod = request.user.role in (UserRole.ADMIN.value, UserRole.TEACHER.value)
+
+        if not (is_owner or is_mod):
+            return Response({"error": "Not allowed"}, status=403)
+
+        answer.delete()
+        return Response({"message": "Answer deleted"}, status=200)
+    except Exception as exc:
+        return Response({"error": str(exc)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_forum_question(request, question_id):
+    """Delete a forum question — owner or admin/teacher."""
+    try:
+        question = ForumQuestions.objects.select_related('author').filter(id=question_id).first()
+        if not question:
+            return Response({"error": "Question not found"}, status=404)
+
+        is_owner = str(question.author_id) == str(request.user.id)
+        is_mod = request.user.role in (UserRole.ADMIN.value, UserRole.TEACHER.value)
+
+        if not (is_owner or is_mod):
+            return Response({"error": "Not allowed"}, status=403)
+
+        question.delete()
+        return Response({"message": "Question deleted"}, status=200)
+    except Exception as exc:
+        return Response({"error": str(exc)}, status=500)
+
+
+# ---------------------------------------------------------------------------
+# Department announcements — admin creates, teachers + students in dept see them
+# ---------------------------------------------------------------------------
+
+@extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def create_department_announcement(request):
+    """Create a post broadcast to all teachers and students in a department."""
+    try:
+        department_id = request.data.get('department_id')
+        title = str(request.data.get('title', '')).strip()
+        content = str(request.data.get('content', '')).strip()
+
+        if not department_id:
+            return Response({"error": "department_id is required"}, status=400)
+        if not title:
+            return Response({"error": "title is required"}, status=400)
+        if not content:
+            return Response({"error": "content is required"}, status=400)
+
+        department = Departments.objects.filter(id=department_id).first()
+        if not department:
+            return Response({"error": "Department not found"}, status=404)
+
+        post = Posts.objects.create(
+            author=request.user,
+            department=department,
+            title=title,
+            content=content,
+            url='',
+            type=PostType.ANNOUNCEMENT,
+        )
+
+        return Response(
+            {
+                "message": "Announcement created",
+                "post": {
+                    "id": str(post.id),
+                    "title": post.title,
+                    "content": post.content,
+                    "department_id": str(department.id),
+                    "department_name": department.name,
+                    "created_at": str(post.created_at),
+                },
+            },
+            status=201,
+        )
+    except Exception as exc:
+        return Response({"error": str(exc)}, status=500)
+
+
+@extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsAdmin])
+def list_department_announcements(request):
+    """List all department announcements, optionally filtered by department."""
+    try:
+        department_id = request.query_params.get('department_id')
+        qs = Posts.objects.filter(
+            department__isnull=False,
+        ).select_related('author', 'department').order_by('-created_at')
+
+        if department_id:
+            qs = qs.filter(department_id=department_id)
+
+        return Response(
+            {
+                "announcements": [
+                    {
+                        "id": str(p.id),
+                        "title": p.title,
+                        "content": p.content,
+                        "department_id": str(p.department_id),
+                        "department_name": p.department.name,
+                        "author": p.author.username,
+                        "created_at": str(p.created_at),
+                    }
+                    for p in qs
+                ]
+            },
+            status=200,
+        )
+    except Exception as exc:
+        return Response({"error": str(exc)}, status=500)

@@ -114,6 +114,7 @@ interface BtnProps {
   accent?: string;
   variant?: "fill" | "ghost" | "muted";
   style?: CSSProperties;
+  disabled?: boolean;
 }
 
 export const Btn = ({
@@ -122,13 +123,15 @@ export const Btn = ({
   accent = "#00e5a0",
   variant = "fill",
   style = {},
+  disabled = false,
 }: BtnProps) => {
   const base: CSSProperties = {
     padding: "10px 20px",
     borderRadius: "var(--r-md)",
     fontWeight: 700,
     fontSize: 13,
-    cursor: "pointer",
+    cursor: disabled ? "not-allowed" : "pointer",
+    opacity: disabled ? 0.5 : 1,
     transition: "all 0.15s",
     display: "inline-flex",
     alignItems: "center",
@@ -142,13 +145,14 @@ export const Btn = ({
   if (variant === "fill") {
     return (
       <button
-        onClick={onClick}
+        onClick={disabled ? undefined : onClick}
+        disabled={disabled}
         style={{ ...base, background: accent, color: "#000" }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.opacity = "0.88";
+          if (!disabled) e.currentTarget.style.opacity = "0.88";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.opacity = "1";
+          if (!disabled) e.currentTarget.style.opacity = "1";
         }}
       >
         {children}
@@ -159,7 +163,8 @@ export const Btn = ({
   if (variant === "ghost") {
     return (
       <button
-        onClick={onClick}
+        onClick={disabled ? undefined : onClick}
+        disabled={disabled}
         style={{
           ...base,
           background: "transparent",
@@ -167,10 +172,10 @@ export const Btn = ({
           border: `1px solid ${accent}40`,
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = `${accent}12`;
+          if (!disabled) e.currentTarget.style.background = `${accent}12`;
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.background = "transparent";
+          if (!disabled) e.currentTarget.style.background = "transparent";
         }}
       >
         {children}
@@ -180,7 +185,8 @@ export const Btn = ({
 
   return (
     <button
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
       style={{
         ...base,
         background: "var(--surface2)",

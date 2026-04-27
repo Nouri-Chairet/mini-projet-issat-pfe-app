@@ -93,6 +93,7 @@ export type PageId =
   | 'timetable'
   | 'emploi'
   | 'accounts'
+  | 'import'
   | 'classes'
   | 'departments'
   | 'heads'
@@ -105,4 +106,5 @@ export type PageId =
   | 'export'
   | 'pfe-results'
   | 'pfe-campaign-management'
+  | 'announcements'
   | 'disponibilites';

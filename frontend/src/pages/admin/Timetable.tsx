@@ -304,9 +304,16 @@ export default function AdminTimetable() {
             setManualForm((prev) => ({ ...prev, day_of_week: event.target.value }))
           }
         >
-          {["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"].map((day) => (
-            <option key={day} value={day}>
-              {day}
+          {[
+            { value: "Lundi", label: "Lundi" },
+            { value: "Mardi", label: "Mardi" },
+            { value: "Mercredi", label: "Mercredi" },
+            { value: "jeudi", label: "Jeudi" },
+            { value: "Vendredi", label: "Vendredi" },
+            { value: "Samedi", label: "Samedi" },
+          ].map((d) => (
+            <option key={d.value} value={d.value}>
+              {d.label}
             </option>
           ))}
         </Select>

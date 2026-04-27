@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Btn, Card, Tag } from "../../components/UI";
 import { getStudentNotifications, getStudentPfeOverview, markStudentNotificationRead, type StudentNotificationItem, type StudentPfeOverview } from "../../services/studentPfe";
+import { getStudentClassmates, type ClassmatesResponse } from "../../services/studentPanel";
 import type { AppUser, PageId } from "../../types/app";
 
 const A = "var(--etu-accent)";
@@ -23,6 +24,7 @@ export default function EtudiantDashboard({ user }: EtudiantDashboardProps) {
   const [overview, setOverview] = useState<StudentPfeOverview["subject"] | null>(null);
   const [notifications, setNotifications] = useState<StudentNotificationItem[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [classmates, setClassmates] = useState<ClassmatesResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState("");
 
@@ -30,13 +32,15 @@ export default function EtudiantDashboard({ user }: EtudiantDashboardProps) {
     setBusy(true);
     setFeedback("");
     try {
-      const [overviewResponse, notificationsResponse] = await Promise.all([
+      const [overviewResponse, notificationsResponse, classmatesResponse] = await Promise.all([
         getStudentPfeOverview(),
         getStudentNotifications(),
+        getStudentClassmates(),
       ]);
       setOverview(overviewResponse.subject);
       setNotifications(notificationsResponse.notifications);
       setUnreadCount(notificationsResponse.unread_count);
+      setClassmates(classmatesResponse);
     } catch (error) {
       setFeedback(parseError(error));
     } finally {
@@ -152,6 +156,43 @@ export default function EtudiantDashboard({ user }: EtudiantDashboardProps) {
                       <Tag>Read</Tag>
                     )}
                   </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+
+        <Card style={{ padding: 20 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <div style={{ fontWeight: 700 }}>Camarades de classe</div>
+            {classmates?.class && (
+              <Tag color={A} bg="var(--etu-dim)">{classmates.class}</Tag>
+            )}
+          </div>
+          {!classmates || classmates.count === 0 ? (
+            <div style={{ color: "var(--text2)" }}>
+              {classmates ? "Aucun camarade trouvé pour votre classe." : "Classe non assignée."}
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                gap: 8,
+              }}
+            >
+              {classmates.classmates.map((c) => (
+                <div
+                  key={c.id}
+                  style={{
+                    border: "1px solid var(--border)",
+                    borderRadius: "var(--r-md)",
+                    padding: "10px 12px",
+                    fontSize: 13,
+                  }}
+                >
+                  <div style={{ fontWeight: 600 }}>{c.username}</div>
+                  <div style={{ color: "var(--text3)", fontSize: 12, marginTop: 2 }}>{c.email}</div>
                 </div>
               ))}
             </div>

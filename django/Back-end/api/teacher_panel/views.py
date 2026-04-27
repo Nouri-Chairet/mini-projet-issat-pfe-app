@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from api.admin_panel.permissions import IsTeacher
-from api.models import Classes, Students, Attendance, Schedules, Teachers, TimetablePublications
+from api.models import Classes, Students, Attendance, Schedules, Teachers, TimetablePublications, Posts, ForumQuestions, ForumAnswers
 from drf_spectacular.utils import OpenApiTypes, extend_schema
 from datetime import datetime
 from api.utils.convert_to_french import convert_to_french
@@ -93,33 +93,42 @@ def get_current_session(request):
     try:
         publication = TimetablePublications.objects.order_by('-updated_at').first()
         if publication and not publication.is_published:
-            return Response({"error": "Timetable not published yet"}, status=403)
+            return Response(None, status=200)
 
-        current_date = datetime.now()
-        today = current_date.strftime("%A")
-        today = convert_to_french(today.lower())
-        
-        time= datetime.now().time()
-        teacher =Teachers.objects.get(user=request.user)
-        schedules = Schedules.objects.filter(teacher=teacher)
-        if not schedules:
-            return Response({"error": "No schedules found for the teacher"}, status=404)
-        for schedule in schedules:
-          
+        today = convert_to_french(datetime.now().strftime("%A").lower())
+        current_time = datetime.now().time()
 
-            if schedule.day_of_week.lower() == today and schedule.start_time <= time <= schedule.end_time:
-                return Response({
-                    "day_of_week": today,
-                    "start_time": schedule.start_time,
-                    "end_time": schedule.end_time,
-                    "class_id":schedule.class_id.id,
-                    "room": schedule.room,
-                    "subject": schedule.subject,
-                    "teacher_name":schedule.teacher.user.username
-                })
-        return Response({"message": "No classes found for today"}, status=404) 
+        teacher = Teachers.objects.filter(user=request.user).first()
+        if not teacher:
+            return Response(None, status=200)
+
+        schedule = (
+            Schedules.objects
+            .select_related('teacher', 'teacher__user', 'class_id')
+            .filter(
+                teacher=teacher,
+                day_of_week__iexact=today,
+                start_time__lte=current_time,
+                end_time__gte=current_time,
+            )
+            .order_by('start_time')
+            .first()
+        )
+
+        if not schedule:
+            return Response(None, status=200)
+
+        return Response({
+            "day_of_week": schedule.day_of_week,
+            "start_time": schedule.start_time,
+            "end_time": schedule.end_time,
+            "class_id": schedule.class_id.id,
+            "room": schedule.room,
+            "subject": schedule.subject,
+            "teacher_name": schedule.teacher.user.username,
+        }, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=400)
+        return Response({"error": str(e)}, status=500)
 @extend_schema(tags=['Teacher Panel'], responses=TEACHER_GENERIC_RESPONSES)
 @api_view(['GET'])
 @permission_classes([IsAuthenticated, IsTeacher])
@@ -147,10 +156,95 @@ def get_classes(request):
             if data not in response_data:
                 response_data.append(data)
         response_data = sorted(response_data, key=lambda x: (x['niveau'], x['classe_section'], x['classe_num']))
-        print(response_data)
         return Response({"classes": response_data}, status=200)
     except Exception as e:
         return Response({"error": str(e)}, status=400)
+
+
+@extend_schema(tags=['Teacher Panel'], responses=TEACHER_GENERIC_RESPONSES)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsTeacher])
+def get_teacher_posts(request):
+    """Return department announcements for the teacher's department, plus global posts."""
+    try:
+        teacher = Teachers.objects.select_related('user').filter(user=request.user).first()
+        if not teacher:
+            return Response({"error": "Teacher not found"}, status=404)
+
+        from django.db.models import Q
+        qs = Posts.objects.filter(
+            Q(department__isnull=True, class_id__isnull=True) |
+            Q(department__name=teacher.department)
+        ).select_related('author', 'department').order_by('-created_at')
+
+        return Response(
+            {
+                "posts": [
+                    {
+                        "id": str(p.id),
+                        "title": p.title,
+                        "content": p.content,
+                        "type": p.type,
+                        "department": p.department.name if p.department else None,
+                        "author": p.author.username,
+                        "created_at": str(p.created_at),
+                    }
+                    for p in qs
+                ]
+            },
+            status=200,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
+
+
+@extend_schema(tags=['Teacher Panel'], request=OpenApiTypes.OBJECT, responses=TEACHER_GENERIC_RESPONSES)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated, IsTeacher])
+def create_teacher_forum_question(request):
+    """Teacher creates a forum question (optionally scoped to a class they teach)."""
+    try:
+        title = str(request.data.get('title', '')).strip()
+        content = str(request.data.get('content', '')).strip()
+        class_id = request.data.get('class_id')
+
+        if not title:
+            return Response({"error": "title is required"}, status=400)
+        if not content:
+            return Response({"error": "content is required"}, status=400)
+
+        class_obj = None
+        if class_id:
+            teacher = Teachers.objects.filter(user=request.user).first()
+            class_obj = Classes.objects.filter(id=class_id).first()
+            if not class_obj:
+                return Response({"error": "Class not found"}, status=404)
+            teaches = Schedules.objects.filter(teacher=teacher, class_id=class_obj).exists()
+            if not teaches:
+                return Response({"error": "You do not teach this class"}, status=403)
+
+        question = ForumQuestions.objects.create(
+            author=request.user,
+            title=title,
+            content=content,
+            class_id=class_obj,
+        )
+
+        return Response(
+            {
+                "message": "Question created",
+                "question": {
+                    "id": str(question.id),
+                    "title": question.title,
+                    "content": question.content,
+                    "class_id": str(question.class_id_id) if question.class_id_id else None,
+                    "created_at": str(question.created_at),
+                },
+            },
+            status=201,
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=500)
 
 
 

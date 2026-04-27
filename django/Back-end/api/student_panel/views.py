@@ -2,9 +2,16 @@ from drf_spectacular.utils import OpenApiTypes, extend_schema
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.db.models import Q
 from django.utils import timezone
 
-from api.models import PFEJuryAssignments, Students, StudentNotifications, UserRole
+from api.models import (
+    PFEJuryAssignments,
+    Posts,
+    Students,
+    StudentNotifications,
+    UserRole,
+)
 
 
 GENERIC_RESPONSES = {
@@ -90,6 +97,90 @@ def mark_student_notification_read(request):
     notification.read_at = timezone.now()
     notification.save(update_fields=["is_read", "read_at", "updated_at"])
     return Response({"message": "Notification marked as read"}, status=200)
+
+
+@extend_schema(tags=["Student Panel"], responses=GENERIC_RESPONSES)
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_student_classmates(request):
+    """Return the list of classmates (same class, excluding self)."""
+    student = _student_from_request(request)
+    if not student:
+        return Response({"error": "Student profile not found"}, status=404)
+
+    if not student.class_id_id:
+        return Response({"class": None, "class_id": None, "classmates": [], "count": 0}, status=200)
+
+    classmates_qs = (
+        Students.objects
+        .select_related('user')
+        .filter(class_id=student.class_id)
+        .exclude(user=request.user)
+    )
+
+    classe = student.class_id
+    class_label = f"{classe.niveau}-{classe.classe_section}-{classe.classe_num}"
+
+    return Response(
+        {
+            "class": class_label,
+            "class_id": str(classe.id),
+            "classmates": [
+                {
+                    "id": str(c.user_id),
+                    "username": c.user.username,
+                    "email": c.user.email,
+                    "ncin": c.ncin,
+                }
+                for c in classmates_qs
+            ],
+            "count": classmates_qs.count(),
+        },
+        status=200,
+    )
+
+
+@extend_schema(tags=["Student Panel"], responses=GENERIC_RESPONSES)
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_student_posts(request):
+    """Return announcements and class-specific posts visible to the student."""
+    student = _student_from_request(request)
+    if not student:
+        return Response({"error": "Student profile not found"}, status=404)
+
+    # global posts + class-specific posts + department announcements for the student's class section
+    posts_qs = (
+        Posts.objects
+        .select_related('author', 'department')
+        .filter(
+            Q(class_id__isnull=True, department__isnull=True) |
+            Q(class_id=student.class_id) |
+            Q(department__isnull=False, class_id__isnull=True)
+        )
+        .order_by('-created_at')[:50]
+    )
+
+    return Response(
+        {
+            "posts": [
+                {
+                    "id": str(p.id),
+                    "title": p.title,
+                    "content": p.content,
+                    "type": p.type,
+                    "author": p.author.username,
+                    "author_role": p.author.role,
+                    "class_id": str(p.class_id_id) if p.class_id_id else None,
+                    "department": p.department.name if p.department else None,
+                    "url": p.url,
+                    "created_at": str(p.created_at),
+                }
+                for p in posts_qs
+            ]
+        },
+        status=200,
+    )
 
 
 @extend_schema(tags=["Student Panel"], responses=GENERIC_RESPONSES)

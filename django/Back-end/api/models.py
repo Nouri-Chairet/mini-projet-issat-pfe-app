@@ -166,6 +166,13 @@ class Students(models.Model):
     class_id = models.ForeignKey(Classes, models.CASCADE, db_column='class_id', blank=True, null=True)
     parent_contact = models.CharField(max_length=8, blank=True, null=True)
     access_status = models.BooleanField(default=True)
+    ncin = models.CharField(
+        max_length=8,
+        blank=True,
+        null=True,
+        unique=True,
+        validators=[RegexValidator(regex=r'^\d{8}$', message='NCIN must be exactly 8 numerical digits')],
+    )
 
     class Meta:
         
@@ -223,6 +230,7 @@ class Posts(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     author = models.ForeignKey(Users, models.CASCADE)
     class_id = models.ForeignKey(Classes, models.CASCADE, db_column='class_id', blank=True, null=True)
+    department = models.ForeignKey('Departments', models.SET_NULL, null=True, blank=True, related_name='announcements')
     title = models.TextField()
     url=models.TextField()
     content = models.TextField()

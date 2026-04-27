@@ -1,8 +1,19 @@
 from django.urls import path
 from . import views
 from . import pfe_views
+from . import import_views
 
 urlpatterns = [
+    # --- Excel account import ---
+    path('import/students/', import_views.import_students, name='import_students'),
+    path('import/teachers/', import_views.import_teachers, name='import_teachers'),
+    # --- Department announcements ---
+    path('announcements/create/', views.create_department_announcement, name='create_department_announcement'),
+    path('announcements/', views.list_department_announcements, name='list_department_announcements'),
+    # --- Forum detail & moderation ---
+    path('forum/questions/<uuid:question_id>/', views.get_forum_question_detail, name='get_forum_question_detail'),
+    path('forum/questions/<uuid:question_id>/delete/', views.delete_forum_question, name='delete_forum_question'),
+    path('forum/answers/<uuid:answer_id>/delete/', views.delete_forum_answer, name='delete_forum_answer'),
     path('dashboard/stats/', views.get_admin_dashboard_stats, name='get_admin_dashboard_stats'),
     path('timetable/import/dry-run/', views.timetable_import_dry_run, name='timetable_import_dry_run'),
     path('timetable/import/commit/', views.timetable_import_commit, name='timetable_import_commit'),

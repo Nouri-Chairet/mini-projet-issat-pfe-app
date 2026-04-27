@@ -11,9 +11,18 @@ const weekOrder: Record<string, number> = {
   Lundi: 1,
   Mardi: 2,
   Mercredi: 3,
-  Jeudi: 4,
+  jeudi: 4,
   Vendredi: 5,
   Samedi: 6,
+};
+
+const DAY_DISPLAY: Record<string, string> = {
+  Lundi: "Lundi",
+  Mardi: "Mardi",
+  Mercredi: "Mercredi",
+  jeudi: "Jeudi",
+  Vendredi: "Vendredi",
+  Samedi: "Samedi",
 };
 
 export default function EtudiantEmploi() {
@@ -111,10 +120,10 @@ export default function EtudiantEmploi() {
             value={selectedDay}
             onChange={(event) => setSelectedDay(event.target.value)}
           >
-            {["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"].map(
+            {["Lundi", "Mardi", "Mercredi", "jeudi", "Vendredi", "Samedi"].map(
               (day) => (
                 <option key={day} value={day}>
-                  {day}
+                  {DAY_DISPLAY[day] ?? day}
                 </option>
               ),
             )}
@@ -154,7 +163,7 @@ export default function EtudiantEmploi() {
             }}
           >
             <strong>
-              {item.day_of_week} • {item.start_time} - {item.end_time}
+              {DAY_DISPLAY[item.day_of_week] ?? item.day_of_week} • {item.start_time} - {item.end_time}
             </strong>
             <div style={{ color: "var(--text2)", marginTop: 4 }}>
               {item.subject} • {item.room}

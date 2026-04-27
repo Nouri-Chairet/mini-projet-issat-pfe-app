@@ -1,3 +1,5 @@
+import AdminAnnouncements from "./pages/admin/Announcements";
+import Announcements from "./pages/shared/Announcements";
 import React, { useMemo, useState } from "react";
 import {
   Navigate,
@@ -10,6 +12,7 @@ import Login from "./pages/Login";
 import Shell from "./components/Shell";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminAccounts from "./pages/admin/Accounts";
+import AdminAccountImport from "./pages/admin/AccountImport";
 import AdminClasses from "./pages/admin/Classes";
 import AdminDepartments from "./pages/admin/Departments";
 import AdminTimetable from "./pages/admin/Timetable";
@@ -48,14 +51,17 @@ const getNavConfig = (user: AppUser): Record<AppUser["role"], NavItem[]> => ({
   chef: [
     { id: "dashboard", label: "Admin Dashboard", icon: "▦" },
     { id: "timetable", label: "Emploi du temps", icon: "▧" },
+    { id: "announcements", label: "Annonces", icon: "▤" },
     { id: "pfe-sessions", label: "Manage Campaigns", icon: "◉" },
     { id: "accounts", label: "Comptes", icon: "◎" },
+    { id: "import", label: "Import Excel", icon: "⬆" },
     { id: "classes", label: "Classes", icon: "▤" },
     { id: "departments", label: "Départements", icon: "◆" },
     { id: "heads", label: "Chefs département", icon: "◈" },
   ],
   enseignant: [
     { id: "dashboard", label: "Mon espace", icon: "▦" },
+    { id: "announcements", label: "Annonces", icon: "▤" },
     { id: "emploi", label: "Emploi du temps", icon: "▧" },
     { id: "planning", label: "Mes soutenances PFE", icon: "▤" },
     { id: "disponibilites", label: "Disponibilités PFE", icon: "◌" },
@@ -63,6 +69,7 @@ const getNavConfig = (user: AppUser): Record<AppUser["role"], NavItem[]> => ({
   ],
   etudiant: [
     { id: "dashboard", label: "Mon PFE", icon: "◉" },
+    { id: "announcements", label: "Annonces", icon: "▤" },
     { id: "emploi", label: "Emploi du temps", icon: "▧" },
     { id: "forum", label: "Forum PFE", icon: "◎" },
   ],
@@ -81,15 +88,18 @@ function renderPage(
     chef: {
       dashboard: <AdminDashboard {...props} />,
       timetable: <AdminTimetable />,
+      announcements: <AdminAnnouncements {...props} />,
       "pfe-sessions": <AdminPfeSessions />,
       "pfe-scheduler": <AdminPfeScheduler />,
       accounts: <AdminAccounts {...props} />,
+      import: <AdminAccountImport />,
       classes: <AdminClasses {...props} />,
       departments: <AdminDepartments {...props} mode="departments" />,
       heads: <AdminDepartments {...props} mode="heads" />,
     },
     enseignant: {
       dashboard: <EnseignantDashboard {...props} />,
+      announcements: <Announcements {...props} />,
       emploi: <EnseignantEmploi {...props} />,
       planning: <EnseignantPlanning {...props} />,
       disponibilites: <EnseignantDisponibilites {...props} />,
@@ -97,6 +107,7 @@ function renderPage(
     },
     etudiant: {
       dashboard: <EtudiantDashboard {...props} />,
+      announcements: <Announcements {...props} />,
       emploi: <EtudiantEmploi />,
       forum: <Forum {...props} />,
     },
