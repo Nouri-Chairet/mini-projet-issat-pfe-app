@@ -2,11 +2,18 @@ from django.urls import path
 from . import views
 from . import pfe_views
 from . import import_views
+from . import pfe_import_views
 
 urlpatterns = [
     # --- Excel account import ---
     path('import/students/', import_views.import_students, name='import_students'),
     path('import/teachers/', import_views.import_teachers, name='import_teachers'),
+    # --- PFE bulk Excel import (dry-run + commit + template) ---
+    path('pfe/import/dry-run/', pfe_import_views.pfe_import_dry_run, name='pfe_import_dry_run'),
+    path('pfe/import/commit/', pfe_import_views.pfe_import_commit, name='pfe_import_commit'),
+    path('pfe/import/template/', pfe_import_views.pfe_import_template, name='pfe_import_template'),
+    # --- Timetable Excel template ---
+    path('timetable/template/', pfe_import_views.timetable_template, name='timetable_template'),
     # --- Department announcements ---
     path('announcements/create/', views.create_department_announcement, name='create_department_announcement'),
     path('announcements/', views.list_department_announcements, name='list_department_announcements'),

@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from . import presence_views
 
 
 urlpatterns = [
@@ -9,4 +10,5 @@ urlpatterns = [
     path("pfe/overview/", views.get_student_pfe_overview, name="get_student_pfe_overview"),
     path("classmates/", views.get_student_classmates, name="get_student_classmates"),
     path("posts/", views.get_student_posts, name="get_student_posts"),
+    path("presence/summary/", presence_views.get_presence_summary, name="get_student_presence_summary"),
 ]
