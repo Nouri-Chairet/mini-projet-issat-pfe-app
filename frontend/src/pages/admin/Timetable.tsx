@@ -1,160 +1,153 @@
-import { useEffect, useState } from "react";
-import { Btn, Input, Select } from "../../components/UI";
+import { useCallback, useEffect, useState } from "react";
+import { useTimetableImport } from "../../hooks/useTimetableImport";
+import { TimetableImportPanel } from "../../components/timetable/TimetableImportPanel";
+import { TimetableDryRunPreview } from "../../components/timetable/TimetableDryRunPreview";
+import { TimetableManualPanel } from "../../components/timetable/TimetableManualPanel";
+import { TimetablePublishBar } from "../../components/timetable/TimetablePublishBar";
 import { getAdminClasses, getAdminTeachers } from "../../services/admin";
 import {
   createTimetableSlot,
   deleteTimetableSlot,
   exportTimetableIcs,
   getTimetablePublicationStatus,
-  getTimetableReadiness,
   listTimetableSlots,
   logTimetableTelemetry,
   publishTimetable,
-  timetableCommit,
-  timetableDryRun,
   unpublishTimetable,
+  type ManualTimetablePayload,
   type TeacherScheduleItem,
   type TimetablePublicationStatus,
-  type TimetableReadinessResponse,
-  type TimetableDryRunResult,
 } from "../../services/timetable";
 
+/*
+  AdminTimetable — thin orchestration page.
+
+  Heavy logic lives in:
+    - useTimetableImport (file/dry-run/commit/template)
+    - TimetableImportPanel / DryRunPreview / ManualPanel / PublishBar
+
+  The page just owns small page-level state (publish status, slots,
+  manual form, teachers/classes lists) and wires callbacks.
+*/
+
+const A = "var(--chef-accent)";
+
+const initialManualForm: ManualTimetablePayload = {
+  teacher_id: "",
+  class_id: "",
+  day_of_week: "Lundi",
+  start_time: "08:00",
+  end_time: "10:00",
+  room: "",
+  subject: "",
+};
+
 export default function AdminTimetable() {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [replaceExisting, setReplaceExisting] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [feedback, setFeedback] = useState("");
-  const [report, setReport] = useState<TimetableDryRunResult | null>(null);
   const [publishStatus, setPublishStatus] =
     useState<TimetablePublicationStatus | null>(null);
-  const [teachers, setTeachers] = useState<Array<{ id: string; username: string }>>([]);
-  const [classes, setClasses] = useState<Array<{ id: string; niveau: string; section: string; num: string }>>([]);
+  const [teachers, setTeachers] = useState<
+    Array<{ id: string; username: string }>
+  >([]);
+  const [classes, setClasses] = useState<
+    Array<{ id: string; niveau: string; section: string; num: string }>
+  >([]);
   const [slots, setSlots] = useState<TeacherScheduleItem[]>([]);
-  const [readiness, setReadiness] = useState<TimetableReadinessResponse | null>(null);
-  const [manualForm, setManualForm] = useState({
-    teacher_id: "",
-    class_id: "",
-    day_of_week: "Lundi",
-    start_time: "08:00",
-    end_time: "10:00",
-    room: "",
-    subject: "",
-  });
+  const [manualForm, setManualForm] =
+    useState<ManualTimetablePayload>(initialManualForm);
+  const [pageBusy, setPageBusy] = useState(false);
+  const [pageMsg, setPageMsg] = useState<{
+    text: string;
+    kind: "info" | "success" | "error";
+  } | null>(null);
 
-  const loadAll = async () => {
-    const [status, teacherItems, classItems, scheduleItems, readinessItems] =
-      await Promise.all([
-        getTimetablePublicationStatus(false),
-        getAdminTeachers(),
-        getAdminClasses(),
-        listTimetableSlots(),
-        getTimetableReadiness(),
-      ]);
-    setPublishStatus(status);
-    setTeachers(teacherItems.map((item) => ({ id: item.id, username: item.username })));
-    setClasses(classItems);
-    setSlots(scheduleItems);
-    setReadiness(readinessItems);
-  };
-
-  useEffect(() => {
-    loadAll().catch(() => {
-      setFeedback("Erreur de chargement du module emploi du temps.");
-    });
-    logTimetableTelemetry("admin_timetable_opened", "/admin/timetable").catch(() => undefined);
+  const refreshAll = useCallback(async () => {
+    try {
+      const [status, teacherItems, classItems, scheduleItems] =
+        await Promise.all([
+          getTimetablePublicationStatus(false),
+          getAdminTeachers(),
+          getAdminClasses(),
+          listTimetableSlots(),
+        ]);
+      setPublishStatus(status);
+      setTeachers(
+        teacherItems.map((item) => ({ id: item.id, username: item.username })),
+      );
+      setClasses(classItems);
+      setSlots(scheduleItems);
+    } catch {
+      setPageMsg({
+        text: "Erreur de chargement du module emploi du temps.",
+        kind: "error",
+      });
+    }
   }, []);
 
-  const runDryRun = async () => {
-    if (!selectedFile) {
-      setFeedback("Veuillez sélectionner un fichier Excel.");
-      return;
-    }
+  const importer = useTimetableImport({ onAfterCommit: refreshAll });
 
-    setLoading(true);
-    setFeedback("");
-    try {
-      const result = await timetableDryRun(selectedFile);
-      setReport(result);
-      setFeedback(
-        result.valid
-          ? "Validation réussie. Vous pouvez importer."
-          : "Validation terminée avec anomalies.",
-      );
-    } catch {
-      setFeedback("Erreur pendant la validation du fichier.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const commitImport = async () => {
-    if (!selectedFile) {
-      setFeedback("Veuillez sélectionner un fichier Excel.");
-      return;
-    }
-
-    setLoading(true);
-    setFeedback("");
-    try {
-      const result = await timetableCommit(selectedFile, replaceExisting);
-      setFeedback(`${result.message} (${result.created_count} séances)`);
-      setReport(null);
-      await loadAll();
-    } catch {
-      setFeedback("Erreur pendant l'import du planning.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    void refreshAll();
+    void logTimetableTelemetry(
+      "admin_timetable_opened",
+      "/admin/timetable",
+    ).catch(() => undefined);
+  }, [refreshAll]);
 
   const submitManualSlot = async () => {
-    setLoading(true);
-    setFeedback("");
+    setPageBusy(true);
+    setPageMsg(null);
     try {
       await createTimetableSlot(manualForm);
-      setFeedback("Séance ajoutée avec succès.");
+      setPageMsg({ text: "Séance ajoutée avec succès.", kind: "success" });
       setManualForm((prev) => ({ ...prev, room: "", subject: "" }));
-      await loadAll();
+      await refreshAll();
     } catch {
-      setFeedback("Erreur lors de la création manuelle.");
+      setPageMsg({
+        text: "Erreur lors de la création manuelle.",
+        kind: "error",
+      });
     } finally {
-      setLoading(false);
+      setPageBusy(false);
     }
   };
 
   const togglePublish = async () => {
-    if (!publishStatus) {
-      return;
-    }
-    setLoading(true);
-    setFeedback("");
+    if (!publishStatus) return;
+    setPageBusy(true);
+    setPageMsg(null);
     try {
       if (publishStatus.is_published) {
         await unpublishTimetable();
-        setFeedback("Planning dépublié.");
+        setPageMsg({ text: "Planning dépublié.", kind: "info" });
       } else {
         await publishTimetable();
-        setFeedback("Planning publié.");
+        setPageMsg({ text: "Planning publié.", kind: "success" });
       }
-      await loadAll();
+      await refreshAll();
     } catch {
-      setFeedback("Erreur lors du changement de statut de publication.");
+      setPageMsg({
+        text: "Erreur lors du changement de statut de publication.",
+        kind: "error",
+      });
     } finally {
-      setLoading(false);
+      setPageBusy(false);
     }
   };
 
   const removeSlot = async (slotId: string) => {
-    setLoading(true);
-    setFeedback("");
+    setPageBusy(true);
+    setPageMsg(null);
     try {
       await deleteTimetableSlot(slotId);
-      setFeedback("Séance supprimée.");
-      await loadAll();
+      setPageMsg({ text: "Séance supprimée.", kind: "info" });
+      await refreshAll();
     } catch {
-      setFeedback("Erreur lors de la suppression de la séance.");
+      setPageMsg({
+        text: "Erreur lors de la suppression de la séance.",
+        kind: "error",
+      });
     } finally {
-      setLoading(false);
+      setPageBusy(false);
     }
   };
 
@@ -165,350 +158,128 @@ export default function AdminTimetable() {
       const anchor = document.createElement("a");
       anchor.href = url;
       anchor.download = "timetable.ics";
+      document.body.appendChild(anchor);
       anchor.click();
+      anchor.remove();
       URL.revokeObjectURL(url);
     } catch {
-      setFeedback("Erreur lors de l'export ICS.");
+      setPageMsg({ text: "Erreur lors de l'export ICS.", kind: "error" });
     }
   };
 
   return (
-    <div style={{ padding: "36px 40px", maxWidth: 1100 }}>
-      <h1 style={{ marginTop: 0, marginBottom: 8 }}>Import emploi du temps</h1>
-      <p style={{ color: "var(--text2)", marginTop: 0, marginBottom: 20 }}>
-        Milestone 4 — validation et import transactionnel depuis Excel.
-      </p>
-
-      <div
-        style={{
-          border: "1px solid var(--border)",
-          borderRadius: "var(--r-lg)",
-          padding: 16,
-          marginBottom: 16,
-          display: "flex",
-          gap: 10,
-          flexWrap: "wrap",
-          alignItems: "center",
-        }}
-      >
-        <strong>
-          Statut: {publishStatus?.is_published ? "Publié" : "Brouillon (non publié)"}
-        </strong>
-        <Btn onClick={togglePublish}>
-          {publishStatus?.is_published ? "Dépublier" : "Publier"}
-        </Btn>
-        <Btn onClick={downloadIcs} variant="ghost">
-          Export ICS
-        </Btn>
-        <Btn onClick={() => window.print()} variant="ghost">
-          Imprimer
-        </Btn>
+    <div style={{ padding: "36px 40px", maxWidth: 1200 }}>
+      {/* Header */}
+      <div className="fu" style={{ marginBottom: 24 }}>
+        <div
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: 10,
+            color: A,
+            textTransform: "uppercase",
+            letterSpacing: "1.8px",
+            marginBottom: 8,
+          }}
+        >
+          Module · Emploi du temps
+        </div>
+        <h1
+          style={{
+            margin: 0,
+            fontSize: 30,
+            letterSpacing: "-0.035em",
+            fontFamily: "var(--font-display)",
+          }}
+        >
+          Import &amp; publication du planning
+        </h1>
+        <p
+          style={{
+            color: "var(--text2)",
+            margin: "8px 0 0 0",
+            maxWidth: 720,
+            lineHeight: 1.6,
+          }}
+        >
+          Importez l&apos;emploi du temps depuis Excel (validation transactionnelle,
+          puis import) ou ajoutez des séances manuellement. Publiez ensuite le
+          planning pour le rendre visible aux enseignants et étudiants.
+        </p>
       </div>
 
-      {feedback ? (
+      {/* Inline page-level message */}
+      {pageMsg ? (
         <div
+          role="status"
+          className="fu1"
           style={{
             marginBottom: 14,
-            border: "1px solid var(--border)",
-            borderRadius: "var(--r-md)",
             padding: "10px 12px",
-            background: "var(--surface)",
+            borderRadius: "var(--r-md)",
+            border: "1px solid var(--border2)",
+            background:
+              pageMsg.kind === "error"
+                ? "var(--danger-dim)"
+                : pageMsg.kind === "success"
+                  ? "var(--chef-dim)"
+                  : "var(--surface)",
+            color:
+              pageMsg.kind === "error"
+                ? "var(--danger)"
+                : pageMsg.kind === "success"
+                  ? "var(--chef-accent)"
+                  : "var(--text2)",
+            fontSize: 13,
           }}
         >
-          {feedback}
+          {pageMsg.text}
         </div>
       ) : null}
 
-      <div
-        style={{
-          border: "1px solid var(--border)",
-          borderRadius: "var(--r-lg)",
-          padding: 16,
-          marginBottom: 16,
-          display: "grid",
-          gap: 12,
-        }}
-      >
-        <Input
-          label="Fichier Excel (.xlsx)"
-          type="file"
-          accept=".xlsx"
-          onChange={(event) => {
-            const file = event.target.files?.[0] ?? null;
-            setSelectedFile(file);
-            setReport(null);
-          }}
+      <div className="fu1">
+        <TimetablePublishBar
+          status={publishStatus}
+          onTogglePublish={togglePublish}
+          onDownloadIcs={downloadIcs}
+          onPrint={() => window.print()}
+          busy={pageBusy}
         />
-
-        <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <input
-            type="checkbox"
-            checked={replaceExisting}
-            onChange={(event) => setReplaceExisting(event.target.checked)}
-          />
-          Remplacer les séances existantes avant import
-        </label>
-
-        <div style={{ display: "flex", gap: 10 }}>
-          <Btn onClick={runDryRun}>{loading ? "Validation..." : "Dry run"}</Btn>
-          <Btn onClick={commitImport} variant="ghost">
-            {loading ? "Import..." : "Importer"}
-          </Btn>
-        </div>
       </div>
 
-      <div
-        style={{
-          border: "1px solid var(--border)",
-          borderRadius: "var(--r-lg)",
-          padding: 16,
-          marginBottom: 16,
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: 10,
-          alignItems: "end",
-        }}
-      >
-        <Select
-          label="Enseignant"
-          value={manualForm.teacher_id}
-          onChange={(event) =>
-            setManualForm((prev) => ({ ...prev, teacher_id: event.target.value }))
-          }
-        >
-          <option value="">-- sélectionner --</option>
-          {teachers.map((teacher) => (
-            <option key={teacher.id} value={teacher.id}>
-              {teacher.username}
-            </option>
-          ))}
-        </Select>
-        <Select
-          label="Classe"
-          value={manualForm.class_id}
-          onChange={(event) =>
-            setManualForm((prev) => ({ ...prev, class_id: event.target.value }))
-          }
-        >
-          <option value="">-- sélectionner --</option>
-          {classes.map((item) => (
-            <option key={item.id} value={item.id}>
-              {`${item.niveau}-${item.section}-${item.num}`}
-            </option>
-          ))}
-        </Select>
-        <Select
-          label="Jour"
-          value={manualForm.day_of_week}
-          onChange={(event) =>
-            setManualForm((prev) => ({ ...prev, day_of_week: event.target.value }))
-          }
-        >
-          {[
-            { value: "Lundi", label: "Lundi" },
-            { value: "Mardi", label: "Mardi" },
-            { value: "Mercredi", label: "Mercredi" },
-            { value: "jeudi", label: "Jeudi" },
-            { value: "Vendredi", label: "Vendredi" },
-            { value: "Samedi", label: "Samedi" },
-          ].map((d) => (
-            <option key={d.value} value={d.value}>
-              {d.label}
-            </option>
-          ))}
-        </Select>
-        <Input
-          label="Matière"
-          value={manualForm.subject}
-          onChange={(event) =>
-            setManualForm((prev) => ({ ...prev, subject: event.target.value }))
-          }
+      <div className="fu2">
+        <TimetableImportPanel
+          file={importer.file}
+          busy={importer.busy}
+          feedback={importer.feedback}
+          feedbackKind={importer.feedbackKind}
+          replaceExisting={importer.replaceExisting}
+          report={importer.report}
+          onPickFile={importer.pickFile}
+          onToggleReplace={importer.setReplaceExisting}
+          onDryRun={importer.runDryRun}
+          onCommit={importer.runCommit}
+          onDownloadTemplate={importer.downloadTemplate}
         />
-        <Input
-          label="Heure début"
-          type="time"
-          value={manualForm.start_time}
-          onChange={(event) =>
-            setManualForm((prev) => ({ ...prev, start_time: event.target.value }))
-          }
-        />
-        <Input
-          label="Heure fin"
-          type="time"
-          value={manualForm.end_time}
-          onChange={(event) =>
-            setManualForm((prev) => ({ ...prev, end_time: event.target.value }))
-          }
-        />
-        <Input
-          label="Salle"
-          value={manualForm.room}
-          onChange={(event) =>
-            setManualForm((prev) => ({ ...prev, room: event.target.value }))
-          }
-        />
-        <div>
-          <Btn onClick={submitManualSlot}>Ajouter séance</Btn>
-        </div>
       </div>
 
-      <div
-        style={{
-          border: "1px solid var(--border)",
-          borderRadius: "var(--r-lg)",
-          padding: 16,
-          marginBottom: 16,
-        }}
-      >
-        <h3 style={{ marginTop: 0 }}>Séances ({slots.length})</h3>
-        <div style={{ display: "grid", gap: 8 }}>
-          {slots.map((slot) => (
-            <div
-              key={slot.id}
-              style={{
-                border: "1px solid var(--border2)",
-                borderRadius: "var(--r-md)",
-                padding: "8px 10px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <div>
-                <strong>
-                  {slot.day_of_week} {slot.start_time}-{slot.end_time}
-                </strong>
-                <div style={{ color: "var(--text2)", fontSize: 13 }}>
-                  {slot.subject} • {slot.class} • {slot.teacher}
-                </div>
-              </div>
-              <Btn onClick={() => removeSlot(slot.id)} variant="ghost">
-                Supprimer
-              </Btn>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {readiness ? (
-        <div
-          style={{
-            border: "1px solid var(--border)",
-            borderRadius: "var(--r-lg)",
-            padding: 16,
-            marginBottom: 16,
-          }}
-        >
-          <h3 style={{ marginTop: 0 }}>Readiness présence ({readiness.date})</h3>
-          <div style={{ display: "grid", gap: 8 }}>
-            {readiness.rows.map((row) => (
-              <div
-                key={row.schedule_id}
-                style={{
-                  border: "1px solid var(--border2)",
-                  borderRadius: "var(--r-md)",
-                  padding: "8px 10px",
-                }}
-              >
-                <strong>
-                  {row.class} • {row.day_of_week} {row.start_time}-{row.end_time}
-                </strong>
-                <div style={{ color: "var(--text2)", fontSize: 13 }}>
-                  {row.teacher} • présence {row.attendance_marked}/{row.students_expected} • {row.ready ? "Ready" : "Pending"}
-                </div>
-              </div>
-            ))}
-          </div>
+      {importer.report ? (
+        <div className="fu3">
+          <TimetableDryRunPreview report={importer.report} />
         </div>
       ) : null}
 
-      {report ? (
-        <div style={{ display: "grid", gap: 12 }}>
-          <div
-            style={{
-              border: "1px solid var(--border)",
-              borderRadius: "var(--r-lg)",
-              padding: 14,
-            }}
-          >
-            <div style={{ fontWeight: 700, marginBottom: 8 }}>Résumé</div>
-            <div style={{ color: "var(--text2)" }}>
-              {report.parsed_count} ligne(s) analysée(s)
-            </div>
-            <div style={{ color: "var(--text2)" }}>
-              {report.errors.length} erreur(s), {report.conflicts.length}{" "}
-              conflit(s)
-            </div>
-          </div>
-
-          {report.errors.length > 0 ? (
-            <div
-              style={{
-                border: "1px solid var(--border)",
-                borderRadius: "var(--r-lg)",
-                padding: 14,
-              }}
-            >
-              <div style={{ fontWeight: 700, marginBottom: 8 }}>Erreurs</div>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                {report.errors.map((error) => (
-                  <li key={error}>{error}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {report.conflicts.length > 0 ? (
-            <div
-              style={{
-                border: "1px solid var(--border)",
-                borderRadius: "var(--r-lg)",
-                padding: 14,
-              }}
-            >
-              <div style={{ fontWeight: 700, marginBottom: 8 }}>Conflits</div>
-              <ul style={{ margin: 0, paddingLeft: 18 }}>
-                {report.conflicts.map((conflict) => (
-                  <li key={conflict}>{conflict}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          <div
-            style={{
-              border: "1px solid var(--border)",
-              borderRadius: "var(--r-lg)",
-              padding: 14,
-            }}
-          >
-            <div style={{ fontWeight: 700, marginBottom: 8 }}>Aperçu</div>
-            <div style={{ display: "grid", gap: 8 }}>
-              {report.preview.map((row, index) => (
-                <div
-                  key={`${row.teacher}-${row.class}-${index}`}
-                  style={{
-                    border: "1px solid var(--border2)",
-                    borderRadius: "var(--r-md)",
-                    padding: "8px 10px",
-                  }}
-                >
-                  <strong>
-                    {row.day_of_week} {row.start_time}-{row.end_time}
-                  </strong>
-                  <div style={{ color: "var(--text2)", fontSize: 13 }}>
-                    {row.teacher} • {row.class} • {row.room}
-                  </div>
-                  <div style={{ color: "var(--text3)", fontSize: 12 }}>
-                    {row.subject}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : null}
+      <div className="fu4">
+        <TimetableManualPanel
+          teachers={teachers}
+          classes={classes}
+          slots={slots}
+          manualForm={manualForm}
+          setManualForm={setManualForm}
+          onSubmit={submitManualSlot}
+          onDelete={removeSlot}
+          busy={pageBusy}
+        />
+      </div>
     </div>
   );
 }
