@@ -1,61 +1,289 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+/*
+  GestionPFE — Premium developer-oriented theme
+  Palette (mandatory):
+    Deep Dark   #040F0F   primary background
+    Soft Beige  #F5F5DC   text and surfaces
+    Gold        #D4AF37   premium accents (admin / CTAs)
+    Blue        #2E789D   secondary accents (teacher / interactive)
+*/
 
 :root {
-  --bg: #080c12;
-  --bg2: #0d1420;
-  --bg3: #111927;
-  --surface: #141e2e;
-  --surface2: #1a2540;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text: #f0f4ff;
-  --text2: #8899bb;
-  --text3: #445577;
-  --chef-accent: #00e5a0;
-  --chef-glow: rgba(0,229,160,0.15);
-  --chef-dim: rgba(0,229,160,0.06);
-  --ens-accent: #ff6b35;
-  --ens-glow: rgba(255,107,53,0.15);
-  --ens-dim: rgba(255,107,53,0.06);
-  --etu-accent: #7c9eff;
-  --etu-glow: rgba(124,158,255,0.15);
-  --etu-dim: rgba(124,158,255,0.06);
-  --accent: #00e5a0;
-  --danger: #ff4d6d;
-  --warning: #ffb547;
-  --success: #00e5a0;
-  --font-display: 'Segoe UI', sans-serif;
-  --font-mono: 'Cascadia Code', monospace;
-  --font-serif: 'Georgia', serif;
-  --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
+  /* Backgrounds — layered deep dark with subtle warm tint */
+  --bg:         #040F0F;
+  --bg2:        #071818;
+  --bg3:        #0B2024;
+  --surface:    #0E2629;
+  --surface2:   #133235;
+  --surface3:   #1A4145;
+
+  /* Borders — beige-tinted for premium warmth */
+  --border:     rgba(245, 245, 220, 0.06);
+  --border2:    rgba(245, 245, 220, 0.12);
+  --border3:    rgba(245, 245, 220, 0.20);
+
+  /* Text — soft beige instead of pure white */
+  --text:       #F5F5DC;
+  --text2:      rgba(245, 245, 220, 0.65);
+  --text3:      rgba(245, 245, 220, 0.40);
+  --text4:      rgba(245, 245, 220, 0.22);
+
+  /* Brand accents */
+  --gold:       #D4AF37;
+  --gold-soft:  #E8C766;
+  --gold-deep:  #A8862A;
+  --blue:       #2E789D;
+  --blue-soft:  #5BA3C7;
+  --blue-deep:  #1F5670;
+  --beige:      #F5F5DC;
+
+  /* Glows & dims */
+  --gold-glow:  rgba(212, 175, 55, 0.22);
+  --gold-dim:   rgba(212, 175, 55, 0.08);
+  --blue-glow:  rgba(46, 120, 157, 0.25);
+  --blue-dim:   rgba(46, 120, 157, 0.08);
+  --beige-glow: rgba(245, 245, 220, 0.10);
+
+  /* Role accents — admin = gold (premium), teacher = blue, student = soft blue */
+  --chef-accent:   #D4AF37;
+  --chef-glow:     rgba(212, 175, 55, 0.22);
+  --chef-dim:      rgba(212, 175, 55, 0.08);
+
+  --ens-accent:    #2E789D;
+  --ens-glow:      rgba(46, 120, 157, 0.25);
+  --ens-dim:       rgba(46, 120, 157, 0.08);
+
+  --etu-accent:    #5BA3C7;
+  --etu-glow:      rgba(91, 163, 199, 0.22);
+  --etu-dim:       rgba(91, 163, 199, 0.08);
+
+  /* System tokens */
+  --accent:        #D4AF37;
+  --accent-soft:   #E8C766;
+  --danger:        #C25450;
+  --danger-dim:    rgba(194, 84, 80, 0.10);
+  --warning:       #D4AF37;
+  --success:       #5BA3C7;
+
+  /* Fonts */
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+  --font-serif:   'Cormorant Garamond', 'Georgia', serif;
+
+  /* Radii */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-2xl: 28px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.50), 0 2px 6px rgba(0, 0, 0, 0.30);
+  --shadow-gold: 0 0 0 1px rgba(212, 175, 55, 0.18), 0 8px 32px rgba(212, 175, 55, 0.12);
+  --shadow-blue: 0 0 0 1px rgba(46, 120, 157, 0.20), 0 8px 32px rgba(46, 120, 157, 0.14);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
 body {
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text);
   font-size: 14px;
   line-height: 1.6;
+  letter-spacing: -0.005em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
-button { cursor: pointer; font-family: inherit; }
-input, select, textarea { font-family: inherit; font-size: 14px; }
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-@keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
-@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-@keyframes glow { 0%,100%{box-shadow:0 0 20px var(--accent-glow,rgba(0,229,160,0.2))} 50%{box-shadow:0 0 40px var(--accent-glow,rgba(0,229,160,0.4))} }
+/* Subtle ambient backdrop — fixed, performance-friendly, dev-grid feel */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1100px 600px at 12% -10%, rgba(212, 175, 55, 0.07), transparent 60%),
+    radial-gradient(900px 500px at 90% 110%, rgba(46, 120, 157, 0.08), transparent 60%),
+    linear-gradient(rgba(245, 245, 220, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 245, 220, 0.025) 1px, transparent 1px);
+  background-size: auto, auto, 48px 48px, 48px 48px;
+  background-position: 0 0, 0 0, -1px -1px, -1px -1px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
 
-.fu { animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) both; }
-.fu1 { animation: fadeUp 0.5s 0.06s cubic-bezier(0.16,1,0.3,1) both; }
-.fu2 { animation: fadeUp 0.5s 0.12s cubic-bezier(0.16,1,0.3,1) both; }
-.fu3 { animation: fadeUp 0.5s 0.18s cubic-bezier(0.16,1,0.3,1) both; }
-.fu4 { animation: fadeUp 0.5s 0.24s cubic-bezier(0.16,1,0.3,1) both; }
-.fu5 { animation: fadeUp 0.5s 0.30s cubic-bezier(0.16,1,0.3,1) both; }
+#root {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text4);
+}
+
+a {
+  color: var(--blue-soft);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--gold);
+}
+
+/* Selection */
+::selection {
+  background: var(--gold-glow);
+  color: var(--text);
+}
+
+/* Scrollbar — slim, premium */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border3);
+  background-clip: padding-box;
+}
+
+/* Headings — tight, refined */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+h1 { letter-spacing: -0.035em; }
+h2 { letter-spacing: -0.025em; }
+
+/* Code-like / mono accents */
+code, kbd, pre {
+  font-family: var(--font-mono);
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.0); }
+  50%      { box-shadow: 0 0 24px 0 rgba(212, 175, 55, 0.25); }
+}
+
+@keyframes auroraShift {
+  0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  50%      { transform: translate(2%, -1%) scale(1.03); opacity: 0.85; }
+}
+
+.fu  { animation: fadeUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fu1 { animation: fadeUp 0.55s 0.07s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fu2 { animation: fadeUp 0.55s 0.14s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fu3 { animation: fadeUp 0.55s 0.21s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fu4 { animation: fadeUp 0.55s 0.28s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.fu5 { animation: fadeUp 0.55s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Utility — premium glass surface */
+.glass {
+  background: linear-gradient(180deg, rgba(245, 245, 220, 0.03), rgba(245, 245, 220, 0.01));
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Utility — gradient text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, var(--gold-soft) 0%, var(--gold) 50%, var(--gold-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Form focus ring used on many fields */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
+/* Disabled state */
+button:disabled, input:disabled, select:disabled {
+  cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  body { font-size: 13px; }
+}

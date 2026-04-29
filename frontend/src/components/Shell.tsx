@@ -11,6 +11,30 @@ interface ShellProps {
   children: ReactNode;
 }
 
+const ROLE_META: Record<
+  AppUser["role"],
+  { label: string; accent: string; dim: string; glow: string }
+> = {
+  chef: {
+    label: "Admin",
+    accent: "var(--chef-accent)",
+    dim: "var(--chef-dim)",
+    glow: "var(--chef-glow)",
+  },
+  enseignant: {
+    label: "Enseignant",
+    accent: "var(--ens-accent)",
+    dim: "var(--ens-dim)",
+    glow: "var(--ens-glow)",
+  },
+  etudiant: {
+    label: "Étudiant",
+    accent: "var(--etu-accent)",
+    dim: "var(--etu-dim)",
+    glow: "var(--etu-glow)",
+  },
+};
+
 export default function Shell({
   user,
   nav,
@@ -19,29 +43,27 @@ export default function Shell({
   onLogout,
   children,
 }: ShellProps) {
-  const accentVar =
-    user.role === "chef"
-      ? "var(--chef-accent)"
-      : user.role === "enseignant"
-        ? "var(--ens-accent)"
-        : "var(--etu-accent)";
-  const dimVar =
-    user.role === "chef"
-      ? "var(--chef-dim)"
-      : user.role === "enseignant"
-        ? "var(--ens-dim)"
-        : "var(--etu-dim)";
+  const meta = ROLE_META[user.role];
   const [collapsed, setCollapsed] = useState(false);
+
+  const SIDEBAR_W = collapsed ? 72 : 248;
 
   return (
     <div
-      style={{ display: "flex", minHeight: "100vh", background: "var(--bg)" }}
+      style={{
+        display: "flex",
+        minHeight: "100vh",
+        background: "var(--bg)",
+        color: "var(--text)",
+      }}
     >
+      {/* ============================ SIDEBAR ============================ */}
       <aside
         style={{
-          width: collapsed ? 68 : 228,
+          width: SIDEBAR_W,
           minHeight: "100vh",
-          background: "var(--bg2)",
+          background:
+            "linear-gradient(180deg, rgba(245,245,220,0.018), rgba(245,245,220,0.003)), var(--bg2)",
           borderRight: "1px solid var(--border)",
           display: "flex",
           flexDirection: "column",
@@ -50,75 +72,196 @@ export default function Shell({
           left: 0,
           bottom: 0,
           zIndex: 100,
-          transition: "width 0.25s cubic-bezier(0.16,1,0.3,1)",
+          transition: "width 0.28s cubic-bezier(0.16, 1, 0.3, 1)",
           overflow: "hidden",
         }}
       >
+        {/* Logo block */}
         <div
           style={{
-            padding: collapsed ? "20px 16px" : "22px 20px",
+            padding: collapsed ? "20px 12px" : "22px 22px",
             borderBottom: "1px solid var(--border)",
             display: "flex",
             alignItems: "center",
             gap: 12,
-            justifyContent: collapsed ? "center" : "flex-start",
+            justifyContent: collapsed ? "center" : "space-between",
           }}
         >
-          <button
-            onClick={() => {
-              setCollapsed((state) => !state);
-            }}
+          <div
             style={{
-              background: "none",
-              border: "none",
-              color: accentVar,
-              fontSize: 20,
-              cursor: "pointer",
-              lineHeight: 1,
-              flexShrink: 0,
+              display: "flex",
+              alignItems: "center",
+              gap: 11,
+              minWidth: 0,
             }}
           >
-            ◈
-          </button>
-          {!collapsed && (
-            <span
+            <div
               style={{
+                width: 34,
+                height: 34,
+                borderRadius: 9,
+                background:
+                  "linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "var(--bg)",
                 fontWeight: 800,
-                fontSize: 16,
-                letterSpacing: "-0.5px",
-                color: "var(--text)",
-                whiteSpace: "nowrap",
+                fontSize: 15,
+                fontFamily: "var(--font-mono)",
+                boxShadow:
+                  "0 0 0 1px rgba(212,175,55,0.3), 0 6px 16px -6px rgba(212,175,55,0.5)",
+                flexShrink: 0,
+                letterSpacing: "-0.04em",
               }}
             >
-              GestionPFE
-            </span>
+              {"</>"}
+            </div>
+            {!collapsed && (
+              <div style={{ minWidth: 0, lineHeight: 1.1 }}>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontSize: 15,
+                    letterSpacing: "-0.02em",
+                    color: "var(--text)",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  GestionPFE
+                </div>
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: 9,
+                    textTransform: "uppercase",
+                    letterSpacing: "1.5px",
+                    color: "var(--gold)",
+                    marginTop: 3,
+                  }}
+                >
+                  v1.0 · ISSAT
+                </div>
+              </div>
+            )}
+          </div>
+          {!collapsed && (
+            <button
+              onClick={() => setCollapsed(true)}
+              aria-label="Réduire le menu"
+              style={{
+                background: "transparent",
+                border: "1px solid var(--border)",
+                borderRadius: 8,
+                width: 26,
+                height: 26,
+                color: "var(--text3)",
+                fontSize: 12,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "all 0.15s",
+                flexShrink: 0,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "var(--gold)";
+                e.currentTarget.style.borderColor = "var(--gold)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "var(--text3)";
+                e.currentTarget.style.borderColor = "var(--border)";
+              }}
+            >
+              ‹
+            </button>
+          )}
+          {collapsed && (
+            <button
+              onClick={() => setCollapsed(false)}
+              aria-label="Étendre le menu"
+              style={{
+                position: "absolute",
+                bottom: 16,
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "var(--surface)",
+                border: "1px solid var(--border2)",
+                borderRadius: 8,
+                width: 26,
+                height: 26,
+                color: "var(--text3)",
+                fontSize: 12,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 2,
+              }}
+            >
+              ›
+            </button>
           )}
         </div>
 
+        {/* User card */}
         {!collapsed && (
-          <div style={{ padding: "14px 20px 10px" }}>
+          <div style={{ padding: "16px 18px 8px" }}>
             <div
               style={{
-                padding: "8px 12px",
-                background: dimVar,
+                padding: "11px 13px",
+                background: meta.dim,
                 borderRadius: "var(--r-md)",
-                border: `1px solid ${accentVar}25`,
+                border: `1px solid ${meta.accent}25`,
+                position: "relative",
+                overflow: "hidden",
               }}
             >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  bottom: 0,
+                  width: 2,
+                  background: meta.accent,
+                }}
+              />
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: 9,
                   textTransform: "uppercase",
-                  letterSpacing: "1.5px",
-                  color: accentVar,
-                  marginBottom: 3,
+                  letterSpacing: "1.6px",
+                  color: meta.accent,
+                  marginBottom: 4,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 5,
                 }}
               >
-                Connecté en tant que
+                <span
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: "50%",
+                    background: meta.accent,
+                    boxShadow: `0 0 8px ${meta.accent}`,
+                    animation: "pulse 2s infinite",
+                  }}
+                />
+                {meta.label}
               </div>
               <div
-                style={{ fontWeight: 700, fontSize: 13, color: "var(--text)" }}
+                style={{
+                  fontWeight: 600,
+                  fontSize: 13,
+                  color: "var(--text)",
+                  letterSpacing: "-0.01em",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
               >
                 {user.name}
               </div>
@@ -126,10 +269,26 @@ export default function Shell({
           </div>
         )}
 
+        {/* Nav section label */}
+        {!collapsed && (
+          <div
+            style={{
+              padding: "16px 22px 6px",
+              fontFamily: "var(--font-mono)",
+              fontSize: 9,
+              textTransform: "uppercase",
+              letterSpacing: "1.8px",
+              color: "var(--text3)",
+            }}
+          >
+            ▸ Navigation
+          </div>
+        )}
+
         <nav
           style={{
             flex: 1,
-            padding: collapsed ? "10px 10px" : "10px 12px",
+            padding: collapsed ? "12px 10px" : "4px 12px",
             overflowY: "auto",
             overflowX: "hidden",
           }}
@@ -139,9 +298,7 @@ export default function Shell({
             return (
               <button
                 key={item.id}
-                onClick={() => {
-                  onNav(item.id);
-                }}
+                onClick={() => onNav(item.id)}
                 title={collapsed ? item.label : ""}
                 style={{
                   width: "100%",
@@ -152,23 +309,24 @@ export default function Shell({
                   justifyContent: collapsed ? "center" : "flex-start",
                   marginBottom: 3,
                   borderRadius: "var(--r-md)",
-                  border: "none",
-                  background: active ? dimVar : "transparent",
-                  color: active ? accentVar : "var(--text2)",
-                  fontWeight: active ? 700 : 400,
+                  border: "1px solid transparent",
+                  background: active ? meta.dim : "transparent",
+                  borderColor: active ? `${meta.accent}30` : "transparent",
+                  color: active ? meta.accent : "var(--text2)",
+                  fontWeight: active ? 600 : 500,
                   fontSize: 13,
                   cursor: "pointer",
                   textAlign: "left",
-                  transition: "all 0.15s",
+                  transition: "all 0.15s ease",
                   whiteSpace: "nowrap",
-                  borderLeft:
-                    active && !collapsed
-                      ? `2px solid ${accentVar}`
-                      : "2px solid transparent",
+                  position: "relative",
+                  fontFamily: "inherit",
+                  letterSpacing: "-0.005em",
                 }}
                 onMouseEnter={(e) => {
                   if (!active) {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                    e.currentTarget.style.background =
+                      "rgba(245,245,220,0.03)";
                     e.currentTarget.style.color = "var(--text)";
                   }
                 }}
@@ -179,18 +337,46 @@ export default function Shell({
                   }
                 }}
               >
-                <span style={{ fontSize: 16, flexShrink: 0 }}>{item.icon}</span>
+                {active && !collapsed && (
+                  <span
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      left: -12,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      width: 3,
+                      height: 18,
+                      background: meta.accent,
+                      borderRadius: "0 4px 4px 0",
+                      boxShadow: `0 0 12px ${meta.accent}`,
+                    }}
+                  />
+                )}
+                <span
+                  style={{
+                    fontSize: 14,
+                    flexShrink: 0,
+                    width: 18,
+                    textAlign: "center",
+                    opacity: active ? 1 : 0.75,
+                  }}
+                >
+                  {item.icon}
+                </span>
                 {!collapsed && <span>{item.label}</span>}
                 {!collapsed && item.badge && (
                   <span
                     style={{
                       marginLeft: "auto",
-                      background: accentVar,
-                      color: "#000",
+                      background: meta.accent,
+                      color: "var(--bg)",
                       fontSize: 10,
                       fontWeight: 700,
                       padding: "1px 7px",
                       borderRadius: 20,
+                      minWidth: 18,
+                      textAlign: "center",
                     }}
                   >
                     {item.badge}
@@ -201,12 +387,41 @@ export default function Shell({
           })}
         </nav>
 
+        {/* Bottom — terminal-style status */}
         <div
           style={{
-            padding: collapsed ? "12px 10px" : "12px",
+            padding: collapsed ? "12px 10px" : "12px 14px",
             borderTop: "1px solid var(--border)",
           }}
         >
+          {!collapsed && (
+            <div
+              style={{
+                padding: "8px 10px",
+                marginBottom: 8,
+                background: "var(--bg)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--r-sm)",
+                fontFamily: "var(--font-mono)",
+                fontSize: 10,
+                color: "var(--text3)",
+                display: "flex",
+                alignItems: "center",
+                gap: 7,
+              }}
+            >
+              <span
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: "var(--gold)",
+                  boxShadow: "0 0 8px var(--gold)",
+                }}
+              />
+              <span>system.online</span>
+            </div>
+          )}
           <button
             onClick={onLogout}
             title={collapsed ? "Déconnexion" : ""}
@@ -218,39 +433,47 @@ export default function Shell({
               justifyContent: collapsed ? "center" : "flex-start",
               padding: collapsed ? "10px 0" : "10px 12px",
               borderRadius: "var(--r-md)",
-              border: "none",
-              background: "none",
+              border: "1px solid transparent",
+              background: "transparent",
               color: "var(--text3)",
               cursor: "pointer",
               fontSize: 13,
-              transition: "color 0.15s",
+              fontFamily: "inherit",
+              transition: "all 0.15s ease",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = "var(--danger)";
+              e.currentTarget.style.borderColor = "rgba(194,84,80,0.25)";
+              e.currentTarget.style.background = "var(--danger-dim)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.color = "var(--text3)";
+              e.currentTarget.style.borderColor = "transparent";
+              e.currentTarget.style.background = "transparent";
             }}
           >
-            <span style={{ fontSize: 16 }}>⊗</span>
+            <span style={{ fontSize: 14 }}>⊗</span>
             {!collapsed && <span>Déconnexion</span>}
           </button>
         </div>
       </aside>
 
+      {/* ============================ MAIN ============================ */}
       <div
         style={{
-          marginLeft: collapsed ? 68 : 228,
+          marginLeft: SIDEBAR_W,
           flex: 1,
-          transition: "margin-left 0.25s cubic-bezier(0.16,1,0.3,1)",
+          transition: "margin-left 0.28s cubic-bezier(0.16, 1, 0.3, 1)",
           display: "flex",
           flexDirection: "column",
           minHeight: "100vh",
+          minWidth: 0,
         }}
       >
+        {/* Top header */}
         <header
           style={{
-            height: 56,
+            height: 60,
             borderBottom: "1px solid var(--border)",
             display: "flex",
             alignItems: "center",
@@ -259,33 +482,65 @@ export default function Shell({
             position: "sticky",
             top: 0,
             zIndex: 50,
-            background: "rgba(8,12,18,0.85)",
-            backdropFilter: "blur(12px)",
+            background: "rgba(4, 15, 15, 0.72)",
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
           }}
         >
+          {/* Breadcrumb / current page */}
           <div
-            style={{ flex: 1, display: "flex", alignItems: "center", gap: 10 }}
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              minWidth: 0,
+            }}
           >
             <span
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: 11,
                 color: "var(--text3)",
-                textTransform: "uppercase",
-                letterSpacing: "1px",
+                letterSpacing: "0.5px",
               }}
             >
-              {nav.find((n) => n.id === activePage)?.label || "—"}
+              ~/{meta.label.toLowerCase()}
+            </span>
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                color: "var(--text4)",
+              }}
+            >
+              /
+            </span>
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                color: meta.accent,
+                textTransform: "lowercase",
+                letterSpacing: "0.5px",
+                fontWeight: 500,
+              }}
+            >
+              {(nav.find((n) => n.id === activePage)?.label || "—").toLowerCase()}
             </span>
           </div>
+
+          {/* Date pill */}
           <div
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: 11,
-              color: "var(--text3)",
-              padding: "4px 12px",
-              border: "1px solid var(--border)",
+              color: "var(--text2)",
+              padding: "5px 12px",
+              border: "1px solid var(--border2)",
               borderRadius: 40,
+              background: "var(--surface)",
+              letterSpacing: "0.3px",
             }}
           >
             {new Date().toLocaleDateString("fr-FR", {
@@ -294,26 +549,32 @@ export default function Shell({
               year: "numeric",
             })}
           </div>
+
+          {/* Avatar */}
           <div
             style={{
-              width: 32,
-              height: 32,
+              width: 34,
+              height: 34,
               borderRadius: 10,
-              background: dimVar,
-              border: `1px solid ${accentVar}30`,
+              background: `linear-gradient(135deg, ${meta.accent}28, ${meta.accent}10)`,
+              border: `1px solid ${meta.accent}40`,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: accentVar,
-              fontWeight: 800,
+              color: meta.accent,
+              fontWeight: 700,
               fontSize: 12,
+              letterSpacing: "-0.02em",
+              boxShadow: `0 0 0 3px ${meta.accent}10`,
             }}
           >
             {user.avatar}
           </div>
         </header>
 
-        <main style={{ flex: 1, overflowY: "auto" }}>{children}</main>
+        <main style={{ flex: 1, overflowY: "auto", position: "relative" }}>
+          {children}
+        </main>
       </div>
     </div>
   );
