@@ -323,7 +323,7 @@ def get_teacher(request):
         try:
             teacher = Teachers.objects.get(user=user)
             return Response({
-                'id': teacher.id,
+                'id': teacher.user_id,
                 'user': {
                     'id': user.id,
                     'email': user.email,

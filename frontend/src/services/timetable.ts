@@ -243,6 +243,17 @@ export async function exportTimetableIcs(scope?: {
   return response.data as Blob;
 }
 
+export async function downloadTimetableTemplate(): Promise<Blob> {
+  const response = await axios.get(
+    `${API_BASE_URL}/api/admin/timetable/template/`,
+    {
+      headers: authHeaders(),
+      responseType: "blob",
+    },
+  );
+  return response.data as Blob;
+}
+
 export async function logTimetableTelemetry(eventName: string, route: string, payload?: unknown): Promise<void> {
   await axios.post(
     `${API_BASE_URL}/api/admin/timetable/telemetry/`,

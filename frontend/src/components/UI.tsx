@@ -1,18 +1,31 @@
 import type { CSSProperties, ReactNode } from "react";
 
+/* ----------------------------------------------------------------
+   Card — premium elevated surface with subtle gradient border
+----------------------------------------------------------------- */
 interface CardProps {
   children: ReactNode;
   style?: CSSProperties;
   className?: string;
+  onClick?: () => void;
 }
 
-export const Card = ({ children, style = {}, className = "" }: CardProps) => (
+export const Card = ({
+  children,
+  style = {},
+  className = "",
+  onClick,
+}: CardProps) => (
   <div
+    onClick={onClick}
     className={className}
     style={{
-      background: "var(--surface)",
+      background:
+        "linear-gradient(180deg, rgba(245,245,220,0.025), rgba(245,245,220,0.005)), var(--surface)",
       border: "1px solid var(--border)",
       borderRadius: "var(--r-lg)",
+      boxShadow: "var(--shadow-md)",
+      transition: "border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
       ...style,
     }}
   >
@@ -20,6 +33,9 @@ export const Card = ({ children, style = {}, className = "" }: CardProps) => (
   </div>
 );
 
+/* ----------------------------------------------------------------
+   Tag — refined chip with mono uppercase
+----------------------------------------------------------------- */
 interface TagProps {
   children: ReactNode;
   color?: string;
@@ -35,32 +51,36 @@ export const Tag = ({
     style={{
       display: "inline-flex",
       alignItems: "center",
-      gap: 5,
-      padding: "3px 10px",
-      borderRadius: 40,
+      gap: 6,
+      padding: "4px 10px",
+      borderRadius: 999,
       background: bg,
       color,
       fontFamily: "var(--font-mono)",
       fontSize: 10,
       fontWeight: 500,
       textTransform: "uppercase",
-      letterSpacing: "0.8px",
+      letterSpacing: "1px",
       whiteSpace: "nowrap",
+      border: "1px solid var(--border)",
     }}
   >
     {children}
   </span>
 );
 
+/* ----------------------------------------------------------------
+   StatusTag
+----------------------------------------------------------------- */
 interface StatusTagProps {
   statut: "planifié" | "validé" | "en attente";
 }
 
 export const StatusTag = ({ statut }: StatusTagProps) => {
   const map = {
-    planifié: { color: "var(--etu-accent)", bg: "var(--etu-dim)" },
-    validé: { color: "var(--chef-accent)", bg: "var(--chef-dim)" },
-    "en attente": { color: "var(--warning)", bg: "rgba(255,181,71,0.08)" },
+    planifié: { color: "var(--blue-soft)", bg: "var(--blue-dim)" },
+    validé: { color: "var(--gold)", bg: "var(--gold-dim)" },
+    "en attente": { color: "var(--gold-soft)", bg: "rgba(232, 199, 102, 0.08)" },
   };
 
   const s = map[statut];
@@ -68,11 +88,12 @@ export const StatusTag = ({ statut }: StatusTagProps) => {
     <Tag color={s.color} bg={s.bg}>
       <span
         style={{
-          width: 5,
-          height: 5,
+          width: 6,
+          height: 6,
           borderRadius: "50%",
           background: s.color,
           display: "inline-block",
+          boxShadow: `0 0 8px ${s.color}`,
           animation: statut === "en attente" ? "pulse 2s infinite" : "none",
         }}
       />
@@ -81,6 +102,9 @@ export const StatusTag = ({ statut }: StatusTagProps) => {
   );
 };
 
+/* ----------------------------------------------------------------
+   Avatar
+----------------------------------------------------------------- */
 interface AvatarProps {
   initials: string;
   accent: string;
@@ -92,22 +116,27 @@ export const Avatar = ({ initials, accent, size = 36 }: AvatarProps) => (
     style={{
       width: size,
       height: size,
-      borderRadius: Math.round(size * 0.28),
-      background: `${accent}18`,
-      border: `1px solid ${accent}35`,
+      borderRadius: Math.round(size * 0.32),
+      background: `linear-gradient(135deg, ${accent}28, ${accent}10)`,
+      border: `1px solid ${accent}40`,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
       color: accent,
-      fontWeight: 800,
-      fontSize: size * 0.33,
+      fontWeight: 700,
+      fontSize: Math.round(size * 0.36),
       flexShrink: 0,
+      letterSpacing: "-0.02em",
+      boxShadow: `inset 0 1px 0 rgba(245,245,220,0.06)`,
     }}
   >
     {initials}
   </div>
 );
 
+/* ----------------------------------------------------------------
+   Btn — premium with gold/blue variants
+----------------------------------------------------------------- */
 interface BtnProps {
   children: ReactNode;
   onClick?: () => void;
@@ -115,44 +144,61 @@ interface BtnProps {
   variant?: "fill" | "ghost" | "muted";
   style?: CSSProperties;
   disabled?: boolean;
+  type?: "button" | "submit" | "reset";
 }
 
 export const Btn = ({
   children,
   onClick,
-  accent = "#00e5a0",
+  accent = "var(--gold)",
   variant = "fill",
   style = {},
   disabled = false,
+  type = "button",
 }: BtnProps) => {
   const base: CSSProperties = {
-    padding: "10px 20px",
+    padding: "10px 18px",
     borderRadius: "var(--r-md)",
-    fontWeight: 700,
+    fontWeight: 600,
     fontSize: 13,
     cursor: disabled ? "not-allowed" : "pointer",
-    opacity: disabled ? 0.5 : 1,
-    transition: "all 0.15s",
+    opacity: disabled ? 0.45 : 1,
+    transition: "all 0.18s cubic-bezier(0.16, 1, 0.3, 1)",
     display: "inline-flex",
     alignItems: "center",
-    gap: 7,
-    border: "none",
+    justifyContent: "center",
+    gap: 8,
+    border: "1px solid transparent",
     fontFamily: "inherit",
-    letterSpacing: "0.2px",
+    letterSpacing: "0.01em",
+    whiteSpace: "nowrap",
     ...style,
   };
 
   if (variant === "fill") {
     return (
       <button
+        type={type}
         onClick={disabled ? undefined : onClick}
         disabled={disabled}
-        style={{ ...base, background: accent, color: "#000" }}
+        style={{
+          ...base,
+          background: `linear-gradient(180deg, ${accent}, ${accent})`,
+          color: "var(--bg)",
+          borderColor: accent,
+          boxShadow: `0 4px 14px -4px ${accent}80, inset 0 1px 0 rgba(255,255,255,0.18)`,
+        }}
         onMouseEnter={(e) => {
-          if (!disabled) e.currentTarget.style.opacity = "0.88";
+          if (!disabled) {
+            e.currentTarget.style.transform = "translateY(-1px)";
+            e.currentTarget.style.boxShadow = `0 8px 22px -6px ${accent}, inset 0 1px 0 rgba(255,255,255,0.25)`;
+          }
         }}
         onMouseLeave={(e) => {
-          if (!disabled) e.currentTarget.style.opacity = "1";
+          if (!disabled) {
+            e.currentTarget.style.transform = "translateY(0)";
+            e.currentTarget.style.boxShadow = `0 4px 14px -4px ${accent}80, inset 0 1px 0 rgba(255,255,255,0.18)`;
+          }
         }}
       >
         {children}
@@ -163,19 +209,26 @@ export const Btn = ({
   if (variant === "ghost") {
     return (
       <button
+        type={type}
         onClick={disabled ? undefined : onClick}
         disabled={disabled}
         style={{
           ...base,
           background: "transparent",
           color: accent,
-          border: `1px solid ${accent}40`,
+          border: `1px solid ${accent}50`,
         }}
         onMouseEnter={(e) => {
-          if (!disabled) e.currentTarget.style.background = `${accent}12`;
+          if (!disabled) {
+            e.currentTarget.style.background = `${accent}14`;
+            e.currentTarget.style.borderColor = accent;
+          }
         }}
         onMouseLeave={(e) => {
-          if (!disabled) e.currentTarget.style.background = "transparent";
+          if (!disabled) {
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.borderColor = `${accent}50`;
+          }
         }}
       >
         {children}
@@ -185,6 +238,7 @@ export const Btn = ({
 
   return (
     <button
+      type={type}
       onClick={disabled ? undefined : onClick}
       disabled={disabled}
       style={{
@@ -193,12 +247,27 @@ export const Btn = ({
         color: "var(--text2)",
         border: "1px solid var(--border2)",
       }}
+      onMouseEnter={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.background = "var(--surface3)";
+          e.currentTarget.style.color = "var(--text)";
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.background = "var(--surface2)";
+          e.currentTarget.style.color = "var(--text2)";
+        }
+      }}
     >
       {children}
     </button>
   );
 };
 
+/* ----------------------------------------------------------------
+   Stat — premium KPI card with gradient accent line
+----------------------------------------------------------------- */
 interface StatProps {
   label: string;
   value: string | number;
@@ -209,14 +278,18 @@ interface StatProps {
 export const Stat = ({ label, value, accent, sub }: StatProps) => (
   <div
     style={{
-      background: "var(--surface)",
+      background:
+        "linear-gradient(180deg, rgba(245,245,220,0.03), rgba(245,245,220,0.005)), var(--surface)",
       border: "1px solid var(--border)",
       borderRadius: "var(--r-lg)",
-      padding: "20px 22px",
+      padding: "22px 24px",
       position: "relative",
       overflow: "hidden",
+      boxShadow: "var(--shadow-md)",
+      transition: "transform 0.2s ease, border-color 0.2s ease",
     }}
   >
+    {/* Gradient accent bar */}
     <div
       style={{
         position: "absolute",
@@ -224,8 +297,19 @@ export const Stat = ({ label, value, accent, sub }: StatProps) => (
         left: 0,
         right: 0,
         height: 2,
-        background: accent,
-        opacity: 0.6,
+        background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
+      }}
+    />
+    {/* Soft accent glow */}
+    <div
+      style={{
+        position: "absolute",
+        top: -40,
+        right: -40,
+        width: 140,
+        height: 140,
+        background: `radial-gradient(circle, ${accent}15, transparent 70%)`,
+        pointerEvents: "none",
       }}
     />
     <div
@@ -233,21 +317,23 @@ export const Stat = ({ label, value, accent, sub }: StatProps) => (
         fontFamily: "var(--font-mono)",
         fontSize: 10,
         textTransform: "uppercase",
-        letterSpacing: "1.5px",
+        letterSpacing: "1.6px",
         color: "var(--text3)",
-        marginBottom: 10,
+        marginBottom: 12,
+        position: "relative",
       }}
     >
       {label}
     </div>
     <div
       style={{
-        fontSize: 36,
-        fontWeight: 800,
+        fontSize: 38,
+        fontWeight: 700,
         color: "var(--text)",
-        letterSpacing: "-2px",
+        letterSpacing: "-0.04em",
         lineHeight: 1,
         fontFamily: "var(--font-display)",
+        position: "relative",
       }}
     >
       {value}
@@ -255,10 +341,12 @@ export const Stat = ({ label, value, accent, sub }: StatProps) => (
     {sub && (
       <div
         style={{
-          marginTop: 8,
+          marginTop: 10,
           fontFamily: "var(--font-mono)",
           fontSize: 11,
           color: accent,
+          position: "relative",
+          letterSpacing: "0.02em",
         }}
       >
         {sub}
@@ -267,6 +355,9 @@ export const Stat = ({ label, value, accent, sub }: StatProps) => (
   </div>
 );
 
+/* ----------------------------------------------------------------
+   Input
+----------------------------------------------------------------- */
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   accent?: string;
@@ -280,10 +371,10 @@ export const Input = ({ label, accent, ...props }: InputProps) => (
           fontFamily: "var(--font-mono)",
           fontSize: 10,
           textTransform: "uppercase",
-          letterSpacing: "1px",
+          letterSpacing: "1.2px",
           color: "var(--text2)",
           display: "block",
-          marginBottom: 7,
+          marginBottom: 8,
         }}
       >
         {label}
@@ -293,32 +384,42 @@ export const Input = ({ label, accent, ...props }: InputProps) => (
       {...props}
       style={{
         width: "100%",
-        padding: "11px 15px",
+        padding: "12px 15px",
         background: "var(--bg2)",
         border: "1px solid var(--border2)",
         borderRadius: "var(--r-md)",
         color: "var(--text)",
         outline: "none",
-        transition: "border 0.2s",
+        transition: "border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
         ...props.style,
       }}
       onFocus={(e) => {
-        e.target.style.borderColor = `${accent || "#00e5a0"}70`;
+        const c = accent || "var(--gold)";
+        e.target.style.borderColor = c;
+        e.target.style.boxShadow = `0 0 0 3px ${c}22`;
+        e.target.style.background = "var(--bg3)";
+        props.onFocus?.(e);
       }}
       onBlur={(e) => {
         e.target.style.borderColor = "var(--border2)";
+        e.target.style.boxShadow = "none";
+        e.target.style.background = "var(--bg2)";
+        props.onBlur?.(e);
       }}
     />
   </div>
 );
 
+/* ----------------------------------------------------------------
+   Select
+----------------------------------------------------------------- */
 interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   accent?: string;
   children: ReactNode;
 }
 
-export const Select = ({ label, children, ...props }: SelectProps) => (
+export const Select = ({ label, accent, children, ...props }: SelectProps) => (
   <div>
     {label && (
       <label
@@ -326,33 +427,66 @@ export const Select = ({ label, children, ...props }: SelectProps) => (
           fontFamily: "var(--font-mono)",
           fontSize: 10,
           textTransform: "uppercase",
-          letterSpacing: "1px",
+          letterSpacing: "1.2px",
           color: "var(--text2)",
           display: "block",
-          marginBottom: 7,
+          marginBottom: 8,
         }}
       >
         {label}
       </label>
     )}
-    <select
-      {...props}
-      style={{
-        width: "100%",
-        padding: "11px 15px",
-        background: "var(--bg2)",
-        border: "1px solid var(--border2)",
-        borderRadius: "var(--r-md)",
-        color: "var(--text)",
-        outline: "none",
-        appearance: "none",
-      }}
-    >
-      {children}
-    </select>
+    <div style={{ position: "relative" }}>
+      <select
+        {...props}
+        style={{
+          width: "100%",
+          padding: "12px 36px 12px 15px",
+          background: "var(--bg2)",
+          border: "1px solid var(--border2)",
+          borderRadius: "var(--r-md)",
+          color: "var(--text)",
+          outline: "none",
+          appearance: "none",
+          cursor: "pointer",
+          transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+        }}
+        onFocus={(e) => {
+          const c = accent || "var(--gold)";
+          e.target.style.borderColor = c;
+          e.target.style.boxShadow = `0 0 0 3px ${c}22`;
+          props.onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = "var(--border2)";
+          e.target.style.boxShadow = "none";
+          props.onBlur?.(e);
+        }}
+      >
+        {children}
+      </select>
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          right: 14,
+          top: "50%",
+          transform: "translateY(-50%)",
+          color: "var(--text3)",
+          fontSize: 10,
+          pointerEvents: "none",
+          fontFamily: "var(--font-mono)",
+        }}
+      >
+        ▾
+      </span>
+    </div>
   </div>
 );
 
+/* ----------------------------------------------------------------
+   Modal — refined with glass + gold accent border
+----------------------------------------------------------------- */
 interface ModalProps {
   title: string;
   onClose: () => void;
@@ -360,65 +494,103 @@ interface ModalProps {
   accent?: string;
 }
 
-export const Modal = ({ title, onClose, children, accent }: ModalProps) => (
-  <div
-    style={{
-      position: "fixed",
-      inset: 0,
-      background: "rgba(0,0,0,0.7)",
-      zIndex: 300,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: 20,
-      backdropFilter: "blur(4px)",
-      animation: "fadeIn 0.2s ease",
-    }}
-  >
+export const Modal = ({ title, onClose, children, accent }: ModalProps) => {
+  const accentColor = accent || "var(--gold)";
+  return (
     <div
       style={{
-        background: "var(--bg2)",
-        border: `1px solid ${accent ? `${accent}33` : "var(--border2)"}`,
-        borderRadius: "var(--r-xl)",
-        padding: 28,
-        width: "100%",
-        maxWidth: 520,
-        maxHeight: "90vh",
-        overflowY: "auto",
-        animation: "fadeUp 0.3s cubic-bezier(0.16,1,0.3,1) both",
+        position: "fixed",
+        inset: 0,
+        background: "rgba(4, 15, 15, 0.78)",
+        zIndex: 300,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        animation: "fadeIn 0.2s ease",
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 24,
+          background:
+            "linear-gradient(180deg, rgba(245,245,220,0.035), rgba(245,245,220,0.008)), var(--bg2)",
+          border: `1px solid ${accentColor}30`,
+          borderRadius: "var(--r-2xl)",
+          padding: 30,
+          width: "100%",
+          maxWidth: 540,
+          maxHeight: "90vh",
+          overflowY: "auto",
+          boxShadow: `var(--shadow-lg), 0 0 0 1px ${accentColor}15`,
+          animation: "fadeUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both",
+          position: "relative",
         }}
       >
-        <h2 style={{ fontSize: 18, fontWeight: 800, letterSpacing: "-0.5px" }}>
-          {title}
-        </h2>
-        <button
-          onClick={onClose}
+        {/* Top accent line */}
+        <div
           style={{
-            background: "var(--surface)",
-            border: "1px solid var(--border)",
-            borderRadius: 9,
-            width: 32,
-            height: 32,
+            position: "absolute",
+            top: 0,
+            left: 24,
+            right: 24,
+            height: 1,
+            background: `linear-gradient(90deg, transparent, ${accentColor}, transparent)`,
+          }}
+        />
+        <div
+          style={{
             display: "flex",
+            justifyContent: "space-between",
             alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            color: "var(--text2)",
-            fontSize: 16,
+            marginBottom: 22,
           }}
         >
-          ×
-        </button>
+          <h2
+            style={{
+              fontSize: 19,
+              fontWeight: 700,
+              letterSpacing: "-0.025em",
+              color: "var(--text)",
+            }}
+          >
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            aria-label="Fermer"
+            style={{
+              background: "var(--surface)",
+              border: "1px solid var(--border2)",
+              borderRadius: 10,
+              width: 32,
+              height: 32,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "var(--text2)",
+              fontSize: 16,
+              transition: "all 0.15s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--text)";
+              e.currentTarget.style.background = "var(--surface2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--text2)";
+              e.currentTarget.style.background = "var(--surface)";
+            }}
+          >
+            ×
+          </button>
+        </div>
+        {children}
       </div>
-      {children}
     </div>
-  </div>
-);
+  );
+};

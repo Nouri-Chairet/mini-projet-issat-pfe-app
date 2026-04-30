@@ -110,9 +110,7 @@ export default function EnseignantEmploi({ user }: TeacherEmploiProps) {
   return (
     <div style={{ padding: "36px 40px", maxWidth: 1000 }}>
       <h1 style={{ marginTop: 0, marginBottom: 8 }}>Mon emploi du temps</h1>
-      <p style={{ color: "var(--text2)", marginTop: 0, marginBottom: 18 }}>
-        Milestone 4 — consommation enseignant.
-      </p>
+
 
       <div style={{ display: "flex", gap: 10, marginBottom: 14, alignItems: "end" }}>
         <Select

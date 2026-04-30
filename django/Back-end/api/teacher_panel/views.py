@@ -50,9 +50,9 @@ def make_presence(request):
             student_obj = Students.objects.filter(user=student_id).first()
             if not student_obj:
                 return Response({"error": f"student_id {student_id} is invalid"}, status=400)
-            if presence is False or str(presence).lower() == 'false':
-                student_obj.access_status = False
-                student_obj.save()
+            # NOTE: previously this branch flipped student.access_status to False on any
+            # absence, which permanently locked students out of the platform after a
+            # single absence. Removed — Attendance is the source of truth for absences.
 
             Attendance.objects.update_or_create(
                 student=student_obj,

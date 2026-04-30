@@ -92,9 +92,7 @@ export default function EtudiantEmploi() {
   return (
     <div style={{ padding: "36px 40px", maxWidth: 1000 }}>
       <h1 style={{ marginTop: 0, marginBottom: 8 }}>Emploi du temps</h1>
-      <p style={{ color: "var(--text2)", marginTop: 0, marginBottom: 18 }}>
-        Milestone 4 — consommation étudiant.
-      </p>
+
 
       <div
         style={{
