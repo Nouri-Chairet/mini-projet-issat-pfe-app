@@ -1,3 +1,6 @@
 django/.env
 .env
-
+.claude
+.venv
+.agent/*
+rapport

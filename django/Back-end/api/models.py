@@ -209,7 +209,6 @@ class TimetablePublications(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        managed = False
         db_table = 'timetable_publications'
 
 
@@ -223,7 +222,6 @@ class TimetableTelemetry(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        managed = False
         db_table = 'timetable_telemetry'
 
 class Posts(models.Model):
