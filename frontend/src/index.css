@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
 
 /*
-  GestionPFE — Premium developer-oriented theme
+  Issat sousse — Premium developer-oriented theme
   Palette (mandatory):
     Deep Dark   #040F0F   primary background
     Soft Beige  #F5F5DC   text and surfaces
@@ -149,41 +149,33 @@ body::before {
   inset: -10%;
   pointer-events: none;
   z-index: 0;
-  filter: blur(80px);
-  opacity: 0.55;
+  opacity: 0.2;
 }
 .aurora-layer .aurora-blob {
   position: absolute;
   border-radius: 50%;
   mix-blend-mode: screen;
-  will-change: transform, opacity;
-  animation: auroraShift 18s ease-in-out infinite;
 }
 .aurora-layer .aurora-blob.b1 {
   top: 4%;
   left: 6%;
   width: 520px;
   height: 520px;
-  background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.55), transparent 65%);
-  animation-delay: -2s;
+  background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.25), transparent 65%);
 }
 .aurora-layer .aurora-blob.b2 {
   top: 38%;
   right: 6%;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle at 60% 40%, rgba(46, 120, 157, 0.55), transparent 65%);
-  animation-delay: -7s;
-  animation-duration: 24s;
+  background: radial-gradient(circle at 60% 40%, rgba(46, 120, 157, 0.25), transparent 65%);
 }
 .aurora-layer .aurora-blob.b3 {
   bottom: 4%;
   left: 30%;
   width: 460px;
   height: 460px;
-  background: radial-gradient(circle at 50% 50%, rgba(91, 163, 199, 0.40), transparent 65%);
-  animation-delay: -12s;
-  animation-duration: 30s;
+  background: radial-gradient(circle at 50% 50%, rgba(91, 163, 199, 0.20), transparent 65%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -202,10 +194,10 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.06;
+  opacity: 0.02;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96  0 0 0 0 0.96  0 0 0 0 0.86  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-size: 220px 220px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4'><rect width='4' height='4' fill='%23fff'/><rect width='2' height='2' fill='%23000'/></svg>");
+  background-size: 4px 4px;
 }
 
 #root {

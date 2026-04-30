@@ -18,10 +18,13 @@ export const LoginBrandPanel = () => (
   <div
     className="login-brand"
     style={{
-      flex: 1,
+      flex: 1.5,
       display: "flex",
       flexDirection: "column",
-      justifyContent: "space-between",
+      justifyContent: "center",
+      alignItems: "center",
+      textAlign: "center",
+      gap: "60px",
       padding: "44px 56px",
       borderRight: "1px solid var(--border)",
       position: "relative",
@@ -55,7 +58,7 @@ export const LoginBrandPanel = () => (
             fontFamily: "var(--font-display)",
           }}
         >
-          GestionPFE
+          Issat sousse
         </div>
         <div
           style={{
@@ -73,7 +76,7 @@ export const LoginBrandPanel = () => (
     </div>
 
     {/* Main copy */}
-    <div className="fu" style={{ maxWidth: 540 }}>
+    <div className="fu" style={{ width: "100%", maxWidth: 800 }}>
       <div
         style={{
           fontFamily: "var(--font-mono)",
@@ -84,6 +87,7 @@ export const LoginBrandPanel = () => (
           marginBottom: 22,
           display: "flex",
           alignItems: "center",
+          justifyContent: "center",
           gap: 10,
         }}
       >
@@ -97,46 +101,34 @@ export const LoginBrandPanel = () => (
         />
         Built for engineers
       </div>
-      <h1
-        style={{
-          fontSize: "clamp(36px, 5vw, 56px)",
-          fontWeight: 700,
-          letterSpacing: "-0.04em",
-          lineHeight: 1.05,
-          marginBottom: 20,
-          fontFamily: "var(--font-display)",
-        }}
-      >
-        Pilotez vos
-        <br />
-        <span
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontStyle: "italic",
-            fontWeight: 500,
-            color: "var(--gold)",
-          }}
-        >
-          projets de fin d&apos;études
-        </span>
-        <br />
-        avec précision.
-      </h1>
-      <p
-        style={{
-          color: "var(--text2)",
-          fontSize: 15,
-          lineHeight: 1.65,
-          maxWidth: 460,
-          marginBottom: 36,
-        }}
-      >
-        Une plateforme premium pour les étudiants, enseignants et chefs de
-        département. Sujets, soutenances, jurys, plannings — tout au même
-        endroit, en temps réel.
-      </p>
+      <div style={{ textAlign: "center", width: "100%", maxWidth: 800 }}>
+        <svg viewBox="0 0 700 100" style={{ width: "100%", height: "auto" }}>
+          <defs>
+            <linearGradient id="welcomeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="var(--gold)" />
+              <stop offset="100%" stopColor="var(--gold-deep)" />
+            </linearGradient>
+          </defs>
+          <text
+            x="50%"
+            y="50%"
+            dominantBaseline="middle"
+            textAnchor="middle"
+            fill="url(#welcomeGrad)"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 800,
+              fontSize: "42px",
+              letterSpacing: "-0.04em",
+              textTransform: "uppercase"
+            }}
+          >
+            Welcome to ISSAT Sousse
+          </text>
+        </svg>
+      </div>
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
         {FEATURES.map((feature) => (
           <span
             key={feature.label}
@@ -214,7 +206,7 @@ export const LoginBrandPanel = () => (
             textTransform: "uppercase",
           }}
         >
-          gestion-pfe ~ session
+          study-management ~ session
         </span>
       </div>
       <div style={{ padding: "14px 16px", fontSize: 12, lineHeight: 1.85 }}>

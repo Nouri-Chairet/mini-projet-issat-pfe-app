@@ -10,7 +10,7 @@ interface LoginFormPanelProps {
   password: string;
   error: string;
   message: string;
-  isLoggingIn: boolean;
+  isLoading: boolean;
   isResetting: boolean;
   onEmailChange: (next: string) => void;
   onPasswordChange: (next: string) => void;
@@ -48,7 +48,7 @@ export const LoginFormPanel = ({
   password,
   error,
   message,
-  isLoggingIn,
+  isLoading,
   isResetting,
   onEmailChange,
   onPasswordChange,
@@ -102,7 +102,7 @@ export const LoginFormPanel = ({
             fontFamily: "var(--font-display)",
           }}
         >
-          GestionPFE
+          Issat Sousse
         </span>
       </div>
 
@@ -135,12 +135,6 @@ export const LoginFormPanel = ({
         >
           Bon retour parmi nous.
         </h2>
-        <p style={{ color: "var(--text2)", fontSize: 14, lineHeight: 1.6 }}>
-          Accédez à votre espace selon votre rôle —{" "}
-          <span style={{ color: "var(--gold)" }}>admin</span>,{" "}
-          <span style={{ color: "var(--blue-soft)" }}>enseignant</span> ou{" "}
-          <span style={{ color: "var(--blue-soft)" }}>étudiant</span>.
-        </p>
       </div>
 
       <form onSubmit={onSubmit} style={{ display: "grid", gap: 18 }}>
@@ -303,7 +297,7 @@ export const LoginFormPanel = ({
         {/* Submit */}
         <button
           type="submit"
-          disabled={isLoggingIn}
+          disabled={isLoading}
           style={{
             marginTop: 6,
             background:
@@ -315,8 +309,8 @@ export const LoginFormPanel = ({
             fontWeight: 700,
             fontSize: 14,
             letterSpacing: "0.01em",
-            cursor: isLoggingIn ? "wait" : "pointer",
-            opacity: isLoggingIn ? 0.7 : 1,
+            cursor: isLoading ? "wait" : "pointer",
+            opacity: isLoading ? 0.7 : 1,
             display: "inline-flex",
             alignItems: "center",
             justifyContent: "center",
@@ -327,21 +321,21 @@ export const LoginFormPanel = ({
             fontFamily: "inherit",
           }}
           onMouseEnter={(e) => {
-            if (!isLoggingIn) {
+            if (!isLoading) {
               e.currentTarget.style.transform = "translateY(-1px)";
               e.currentTarget.style.boxShadow =
                 "0 10px 24px -6px rgba(212,175,55,0.75), inset 0 1px 0 rgba(255,255,255,0.3)";
             }
           }}
           onMouseLeave={(e) => {
-            if (!isLoggingIn) {
+            if (!isLoading) {
               e.currentTarget.style.transform = "translateY(0)";
               e.currentTarget.style.boxShadow =
                 "0 6px 18px -6px rgba(212,175,55,0.6), inset 0 1px 0 rgba(255,255,255,0.25)";
             }
           }}
         >
-          {isLoggingIn ? (
+          {isLoading ? (
             <>
               <span
                 style={{

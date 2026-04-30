@@ -137,12 +137,12 @@ export default function Shell({
                     fontFamily: "var(--font-display)",
                   }}
                 >
-                  GestionPFE
+                  Issat sousse
                 </div>
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: 9,
+                    fontSize: 11,
                     textTransform: "uppercase",
                     letterSpacing: "1.5px",
                     color: "var(--gold)",
@@ -237,7 +237,7 @@ export default function Shell({
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: 9,
+                  fontSize: 11,
                   textTransform: "uppercase",
                   letterSpacing: "1.6px",
                   color: meta.accent,
@@ -262,7 +262,7 @@ export default function Shell({
               <div
                 style={{
                   fontWeight: 600,
-                  fontSize: 13,
+                  fontSize: 15,
                   color: "var(--text)",
                   letterSpacing: "-0.01em",
                   whiteSpace: "nowrap",
@@ -282,7 +282,7 @@ export default function Shell({
             style={{
               padding: "16px 22px 6px",
               fontFamily: "var(--font-mono)",
-              fontSize: 9,
+              fontSize: 11,
               textTransform: "uppercase",
               letterSpacing: "1.8px",
               color: "var(--text3)",
@@ -325,7 +325,7 @@ export default function Shell({
                   borderColor: active ? `${meta.accent}30` : "transparent",
                   color: active ? meta.accent : "var(--text2)",
                   fontWeight: active ? 600 : 500,
-                  fontSize: 13,
+                  fontSize: 15,
                   cursor: "pointer",
                   textAlign: "left",
                   transition: "all 0.15s ease",
@@ -387,7 +387,7 @@ export default function Shell({
                       marginLeft: "auto",
                       background: meta.accent,
                       color: "var(--bg)",
-                      fontSize: 10,
+                      fontSize: 12,
                       fontWeight: 700,
                       padding: "1px 7px",
                       borderRadius: 20,
@@ -419,7 +419,7 @@ export default function Shell({
                 border: "1px solid var(--border)",
                 borderRadius: "var(--r-sm)",
                 fontFamily: "var(--font-mono)",
-                fontSize: 10,
+                fontSize: 12,
                 color: "var(--text3)",
                 display: "flex",
                 alignItems: "center",
@@ -453,7 +453,7 @@ export default function Shell({
               background: "transparent",
               color: "var(--text3)",
               cursor: "pointer",
-              fontSize: 13,
+              fontSize: 15,
               fontFamily: "inherit",
               transition: "all 0.15s ease",
             }}
@@ -516,7 +516,7 @@ export default function Shell({
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: 11,
+                fontSize: 13,
                 color: "var(--text3)",
                 letterSpacing: "0.5px",
               }}
@@ -526,7 +526,7 @@ export default function Shell({
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: 11,
+                fontSize: 13,
                 color: "var(--text4)",
               }}
             >
@@ -535,7 +535,7 @@ export default function Shell({
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: 11,
+                fontSize: 13,
                 color: meta.accent,
                 textTransform: "lowercase",
                 letterSpacing: "0.5px",

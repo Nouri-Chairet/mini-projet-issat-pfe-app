@@ -36,11 +36,8 @@ export default function Login({ onLogin, onForgotPassword }: LoginProps) {
           left: "-10%",
           width: 600,
           height: 600,
-          background:
-            "radial-gradient(circle, var(--gold-glow), transparent 65%)",
-          filter: "blur(40px)",
+          background: "radial-gradient(circle, rgba(212, 175, 55, 0.15), transparent 70%)",
           pointerEvents: "none",
-          animation: "auroraShift 12s ease-in-out infinite",
         }}
       />
       <div
@@ -51,11 +48,8 @@ export default function Login({ onLogin, onForgotPassword }: LoginProps) {
           right: "-10%",
           width: 700,
           height: 700,
-          background:
-            "radial-gradient(circle, var(--blue-glow), transparent 65%)",
-          filter: "blur(50px)",
+          background: "radial-gradient(circle, rgba(46, 120, 157, 0.15), transparent 70%)",
           pointerEvents: "none",
-          animation: "auroraShift 14s ease-in-out infinite reverse",
         }}
       />
 
@@ -65,10 +59,10 @@ export default function Login({ onLogin, onForgotPassword }: LoginProps) {
         password={form.password}
         error={form.error}
         message={form.message}
-        isLoading={form.isLoading}
-        isResetLoading={form.isResetLoading}
-        setEmail={form.setEmail}
-        setPassword={form.setPassword}
+        isLoading={form.isLoggingIn}
+        isResetting={form.isResetting}
+        onEmailChange={form.setEmail}
+        onPasswordChange={form.setPassword}
         onSubmit={form.submitLogin}
         onForgotPassword={form.triggerForgotPassword}
       />

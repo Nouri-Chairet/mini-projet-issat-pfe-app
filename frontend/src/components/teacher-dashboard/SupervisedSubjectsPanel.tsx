@@ -1,5 +1,5 @@
 import { Avatar, StatusTag } from "../UI";
-import type { Sujet } from "../../data/mockData";
+import type { Sujet } from "../../types/app";
 
 interface Props {
   accent: string;
