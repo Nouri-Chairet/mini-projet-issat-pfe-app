@@ -1,6 +1,8 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
 import type { AppUser, NavItem, PageId } from "../types/app";
+import Icon from "./Icon";
+import ProfileAvatar from "./ProfileAvatar";
 
 interface ShellProps {
   user: AppUser;
@@ -46,25 +48,35 @@ export default function Shell({
   const meta = ROLE_META[user.role];
   const [collapsed, setCollapsed] = useState(false);
 
-  const SIDEBAR_W = collapsed ? 72 : 248;
+  const SIDEBAR_W = collapsed ? 76 : 252;
 
   return (
     <div
       style={{
         display: "flex",
         minHeight: "100vh",
-        background: "var(--bg)",
+        background: "transparent",
         color: "var(--text)",
+        position: "relative",
       }}
     >
+      {/* Animated aurora background */}
+      <div className="aurora-layer" aria-hidden>
+        <span className="aurora-blob b1" />
+        <span className="aurora-blob b2" />
+        <span className="aurora-blob b3" />
+      </div>
+
       {/* ============================ SIDEBAR ============================ */}
       <aside
         style={{
           width: SIDEBAR_W,
           minHeight: "100vh",
           background:
-            "linear-gradient(180deg, rgba(245,245,220,0.018), rgba(245,245,220,0.003)), var(--bg2)",
-          borderRight: "1px solid var(--border)",
+            "linear-gradient(180deg, rgba(245,245,220,0.04), rgba(245,245,220,0.01)), rgba(7, 24, 24, 0.72)",
+          backdropFilter: "blur(18px) saturate(1.4)",
+          WebkitBackdropFilter: "blur(18px) saturate(1.4)",
+          borderRight: "1px solid var(--border2)",
           display: "flex",
           flexDirection: "column",
           position: "fixed",
@@ -97,25 +109,21 @@ export default function Shell({
           >
             <div
               style={{
-                width: 34,
-                height: 34,
-                borderRadius: 9,
+                width: 36,
+                height: 36,
+                borderRadius: 10,
                 background:
                   "linear-gradient(135deg, var(--gold) 0%, var(--gold-deep) 100%)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 color: "var(--bg)",
-                fontWeight: 800,
-                fontSize: 15,
-                fontFamily: "var(--font-mono)",
                 boxShadow:
                   "0 0 0 1px rgba(212,175,55,0.3), 0 6px 16px -6px rgba(212,175,55,0.5)",
                 flexShrink: 0,
-                letterSpacing: "-0.04em",
               }}
             >
-              {"</>"}
+              <Icon name="graduation" size={18} strokeWidth={2.2} />
             </div>
             {!collapsed && (
               <div style={{ minWidth: 0, lineHeight: 1.1 }}>
@@ -126,14 +134,15 @@ export default function Shell({
                     letterSpacing: "-0.02em",
                     color: "var(--text)",
                     whiteSpace: "nowrap",
+                    fontFamily: "var(--font-display)",
                   }}
                 >
-                  GestionPFE
+                  Issat sousse
                 </div>
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: 9,
+                    fontSize: 11,
                     textTransform: "uppercase",
                     letterSpacing: "1.5px",
                     color: "var(--gold)",
@@ -153,10 +162,9 @@ export default function Shell({
                 background: "transparent",
                 border: "1px solid var(--border)",
                 borderRadius: 8,
-                width: 26,
-                height: 26,
+                width: 28,
+                height: 28,
                 color: "var(--text3)",
-                fontSize: 12,
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -173,7 +181,7 @@ export default function Shell({
                 e.currentTarget.style.borderColor = "var(--border)";
               }}
             >
-              ‹
+              <Icon name="chevron-left" size={14} />
             </button>
           )}
           {collapsed && (
@@ -188,10 +196,9 @@ export default function Shell({
                 background: "var(--surface)",
                 border: "1px solid var(--border2)",
                 borderRadius: 8,
-                width: 26,
-                height: 26,
+                width: 28,
+                height: 28,
                 color: "var(--text3)",
-                fontSize: 12,
                 cursor: "pointer",
                 display: "flex",
                 alignItems: "center",
@@ -199,7 +206,7 @@ export default function Shell({
                 zIndex: 2,
               }}
             >
-              ›
+              <Icon name="chevron-right" size={14} />
             </button>
           )}
         </div>
@@ -230,7 +237,7 @@ export default function Shell({
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: 9,
+                  fontSize: 11,
                   textTransform: "uppercase",
                   letterSpacing: "1.6px",
                   color: meta.accent,
@@ -255,7 +262,7 @@ export default function Shell({
               <div
                 style={{
                   fontWeight: 600,
-                  fontSize: 13,
+                  fontSize: 15,
                   color: "var(--text)",
                   letterSpacing: "-0.01em",
                   whiteSpace: "nowrap",
@@ -275,13 +282,17 @@ export default function Shell({
             style={{
               padding: "16px 22px 6px",
               fontFamily: "var(--font-mono)",
-              fontSize: 9,
+              fontSize: 11,
               textTransform: "uppercase",
               letterSpacing: "1.8px",
               color: "var(--text3)",
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
             }}
           >
-            ▸ Navigation
+            <Icon name="chevron-right" size={10} />
+            Navigation
           </div>
         )}
 
@@ -314,7 +325,7 @@ export default function Shell({
                   borderColor: active ? `${meta.accent}30` : "transparent",
                   color: active ? meta.accent : "var(--text2)",
                   fontWeight: active ? 600 : 500,
-                  fontSize: 13,
+                  fontSize: 15,
                   cursor: "pointer",
                   textAlign: "left",
                   transition: "all 0.15s ease",
@@ -355,23 +366,28 @@ export default function Shell({
                 )}
                 <span
                   style={{
-                    fontSize: 14,
                     flexShrink: 0,
                     width: 18,
-                    textAlign: "center",
-                    opacity: active ? 1 : 0.75,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: active ? 1 : 0.85,
                   }}
                 >
-                  {item.icon}
+                  <Icon
+                    name={item.icon}
+                    size={16}
+                    strokeWidth={active ? 2 : 1.75}
+                  />
                 </span>
                 {!collapsed && <span>{item.label}</span>}
-                {!collapsed && item.badge && (
+                {!collapsed && item.badge ? (
                   <span
                     style={{
                       marginLeft: "auto",
                       background: meta.accent,
                       color: "var(--bg)",
-                      fontSize: 10,
+                      fontSize: 12,
                       fontWeight: 700,
                       padding: "1px 7px",
                       borderRadius: 20,
@@ -381,7 +397,7 @@ export default function Shell({
                   >
                     {item.badge}
                   </span>
-                )}
+                ) : null}
               </button>
             );
           })}
@@ -403,7 +419,7 @@ export default function Shell({
                 border: "1px solid var(--border)",
                 borderRadius: "var(--r-sm)",
                 fontFamily: "var(--font-mono)",
-                fontSize: 10,
+                fontSize: 12,
                 color: "var(--text3)",
                 display: "flex",
                 alignItems: "center",
@@ -437,7 +453,7 @@ export default function Shell({
               background: "transparent",
               color: "var(--text3)",
               cursor: "pointer",
-              fontSize: 13,
+              fontSize: 15,
               fontFamily: "inherit",
               transition: "all 0.15s ease",
             }}
@@ -452,7 +468,7 @@ export default function Shell({
               e.currentTarget.style.background = "transparent";
             }}
           >
-            <span style={{ fontSize: 14 }}>⊗</span>
+            <Icon name="logout" size={15} />
             {!collapsed && <span>Déconnexion</span>}
           </button>
         </div>
@@ -482,9 +498,9 @@ export default function Shell({
             position: "sticky",
             top: 0,
             zIndex: 50,
-            background: "rgba(4, 15, 15, 0.72)",
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
+            background: "rgba(4, 15, 15, 0.55)",
+            backdropFilter: "blur(18px) saturate(1.4)",
+            WebkitBackdropFilter: "blur(18px) saturate(1.4)",
           }}
         >
           {/* Breadcrumb / current page */}
@@ -500,7 +516,7 @@ export default function Shell({
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: 11,
+                fontSize: 13,
                 color: "var(--text3)",
                 letterSpacing: "0.5px",
               }}
@@ -510,7 +526,7 @@ export default function Shell({
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: 11,
+                fontSize: 13,
                 color: "var(--text4)",
               }}
             >
@@ -519,7 +535,7 @@ export default function Shell({
             <span
               style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: 11,
+                fontSize: 13,
                 color: meta.accent,
                 textTransform: "lowercase",
                 letterSpacing: "0.5px",
@@ -533,6 +549,9 @@ export default function Shell({
           {/* Date pill */}
           <div
             style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
               fontFamily: "var(--font-mono)",
               fontSize: 11,
               color: "var(--text2)",
@@ -543,6 +562,7 @@ export default function Shell({
               letterSpacing: "0.3px",
             }}
           >
+            <Icon name="calendar" size={12} />
             {new Date().toLocaleDateString("fr-FR", {
               day: "numeric",
               month: "short",
@@ -551,25 +571,12 @@ export default function Shell({
           </div>
 
           {/* Avatar */}
-          <div
-            style={{
-              width: 34,
-              height: 34,
-              borderRadius: 10,
-              background: `linear-gradient(135deg, ${meta.accent}28, ${meta.accent}10)`,
-              border: `1px solid ${meta.accent}40`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: meta.accent,
-              fontWeight: 700,
-              fontSize: 12,
-              letterSpacing: "-0.02em",
-              boxShadow: `0 0 0 3px ${meta.accent}10`,
-            }}
-          >
-            {user.avatar}
-          </div>
+          <ProfileAvatar
+            name={user.name}
+            initials={user.avatar}
+            accent={meta.accent}
+            size={36}
+          />
         </header>
 
         <main style={{ flex: 1, overflowY: "auto", position: "relative" }}>

@@ -308,7 +308,7 @@ def timetable_import_dry_run(request):
             status=200,
         )
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -368,7 +368,7 @@ def timetable_import_commit(request):
             status=201,
         )
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 def _build_exam_calendar_pdf(exams):
@@ -462,7 +462,7 @@ def get_timetable_publish_status(request):
             status=200,
         )
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -477,7 +477,7 @@ def publish_timetable(request):
         publication.save()
         return Response({"message": "Timetable published"}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -490,7 +490,7 @@ def unpublish_timetable(request):
         publication.save()
         return Response({"message": "Timetable unpublished"}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
@@ -524,7 +524,7 @@ def list_timetable_slots(request):
         )
         return Response({"schedules": [_serialize_schedule(s) for s in schedules]}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -578,7 +578,7 @@ def create_timetable_slot(request):
         schedule.save()
         return Response({"message": "Slot created", "slot": _serialize_schedule(schedule)}, status=201)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -595,7 +595,7 @@ def delete_timetable_slot(request):
         schedule.delete()
         return Response({"message": "Slot deleted"}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
@@ -653,7 +653,7 @@ def export_timetable_ics(request):
         response['Content-Disposition'] = 'attachment; filename="timetable.ics"'
         return response
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
@@ -685,7 +685,7 @@ def get_timetable_readiness(request):
 
         return Response({"date": str(session_date), "rows": rows}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -783,7 +783,7 @@ def get_classes (request):
             })
         return Response({"classes": class_data}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 #excel file format :
 #jour,heure-debut,heure-fin,matiere,professeur,classe,salle
 #classes are in this format : 1-tronc commun-3
@@ -847,7 +847,7 @@ def create_schedule (request):
 
     except Exception as e:
         print("error",e)
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 #request under this form :
 # params = niveau section classe_num or just the class_id
@@ -887,7 +887,7 @@ def get_classes_schedule (request):
             })
         return Response({"schedules": schedule_data}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 #request under this form :
 # params = teacher-id
@@ -911,7 +911,7 @@ def get_teacher_schedule (request):
         for schedule in schedules:
             classe = Classes.objects.get(id=schedule.class_id.id)
             schedule_data.append({
-                "id": schedule.id,
+                "id": str(schedule.id),
                 "class": f"{classe.niveau}-{classe.classe_section}-{classe.classe_num}",
                 "day_of_week": schedule.day_of_week,
                 "start_time": str(schedule.start_time),
@@ -922,7 +922,7 @@ def get_teacher_schedule (request):
         return Response({"schedules": schedule_data}, status=200)
             
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
@@ -945,7 +945,7 @@ def get_teachers(request):
     
     except Exception as e:
         print("error",e)
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
@@ -970,7 +970,7 @@ def get_admin_dashboard_stats(request):
             status=200,
         )
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
@@ -999,7 +999,7 @@ def get_departments(request):
             )
         return Response({"departments": data}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -1022,7 +1022,7 @@ def create_department(request):
             status=201 if created else 200,
         )
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -1072,7 +1072,7 @@ def assign_department_head(request):
             status=200,
         )
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 #request under this form :
 # params = niveau section classe_num
@@ -1106,7 +1106,7 @@ def get_students(request):
         return Response({"students": student_data}, status=200)
     
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 #request under this form :
 # {
@@ -1157,7 +1157,7 @@ def update_student(request):
       
         return Response({"message": "Student updated successfully"}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 #request under this form :
 # params = student_id
@@ -1178,7 +1178,7 @@ def delete_student(request):
         student.delete()
         return Response({"message": "Student deleted successfully"}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 #request under this form :
 # {
@@ -1225,7 +1225,7 @@ def create_post(request):
         post.save()
         return Response({"message": "Post created successfully"}, status=201)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 #request under this form :
 # params = post_id
@@ -1243,7 +1243,7 @@ def delete_post(request):
         post.delete()
         return Response({"message": "Post deleted successfully"}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated, IsAdmin])
@@ -1264,7 +1264,7 @@ def update_post(request):
         post.save()
         return Response({"message": "Post updated successfully"}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 @extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
@@ -1307,7 +1307,7 @@ def get_announcement_posts(request):
             })
         return Response({"posts": post_data}, status=200)
     except Exception as e:
-        return Response({"error": str(e)}, status=500)
+        import traceback; traceback.print_exc(); return Response({"error": str(e)}, status=500)
 
 
 @extend_schema(tags=['Admin Panel'], request=OpenApiTypes.OBJECT, responses=GENERIC_RESPONSES)
@@ -1786,16 +1786,16 @@ def create_department_announcement(request):
         title = str(request.data.get('title', '')).strip()
         content = str(request.data.get('content', '')).strip()
 
-        if not department_id:
-            return Response({"error": "department_id is required"}, status=400)
         if not title:
             return Response({"error": "title is required"}, status=400)
         if not content:
             return Response({"error": "content is required"}, status=400)
 
-        department = Departments.objects.filter(id=department_id).first()
-        if not department:
-            return Response({"error": "Department not found"}, status=404)
+        department = None
+        if department_id and department_id != 'global':
+            department = Departments.objects.filter(id=department_id).first()
+            if not department:
+                return Response({"error": "Department not found"}, status=404)
 
         post = Posts.objects.create(
             author=request.user,
@@ -1813,8 +1813,8 @@ def create_department_announcement(request):
                     "id": str(post.id),
                     "title": post.title,
                     "content": post.content,
-                    "department_id": str(department.id),
-                    "department_name": department.name,
+                    "department_id": str(department.id) if department else None,
+                    "department_name": department.name if department else "Global",
                     "created_at": str(post.created_at),
                 },
             },
@@ -1826,17 +1826,31 @@ def create_department_announcement(request):
 
 @extend_schema(tags=['Admin Panel'], responses=GENERIC_RESPONSES)
 @api_view(['GET'])
-@permission_classes([IsAuthenticated, IsAdmin])
+@permission_classes([IsAuthenticated])
 def list_department_announcements(request):
-    """List all department announcements, optionally filtered by department."""
+    """List all department announcements, optionally filtered by department. Also includes global announcements."""
     try:
-        department_id = request.query_params.get('department_id')
-        qs = Posts.objects.filter(
-            department__isnull=False,
-        ).select_related('author', 'department').order_by('-created_at')
+        from django.db.models import Q
+        from api.models import UserRole, Teachers
 
-        if department_id:
-            qs = qs.filter(department_id=department_id)
+        department_id = request.query_params.get('department_id')
+        
+        # Base query: Announcements have type='announcement' (implied by create logic, but we'll use department/global logic)
+        qs = Posts.objects.select_related('author', 'department').order_by('-created_at')
+        
+        if request.user.role == UserRole.ADMIN.value:
+            qs = qs.filter(Q(department__isnull=False) | Q(department__isnull=True, class_id__isnull=True))
+            if department_id:
+                qs = qs.filter(department_id=department_id)
+        elif request.user.role == UserRole.TEACHER.value:
+            teacher = Teachers.objects.filter(user=request.user).first()
+            if teacher and teacher.department:
+                qs = qs.filter(Q(department__name=teacher.department) | Q(department__isnull=True, class_id__isnull=True))
+            else:
+                qs = qs.filter(department__isnull=True, class_id__isnull=True)
+        else:
+            # Students only see global announcements here (or their class specific ones, but those are handled elsewhere)
+            qs = qs.filter(department__isnull=True, class_id__isnull=True)
 
         return Response(
             {
@@ -1845,8 +1859,8 @@ def list_department_announcements(request):
                         "id": str(p.id),
                         "title": p.title,
                         "content": p.content,
-                        "department_id": str(p.department_id),
-                        "department_name": p.department.name,
+                        "department_id": str(p.department_id) if p.department_id else None,
+                        "department_name": p.department.name if p.department else "Global",
                         "author": p.author.username,
                         "created_at": str(p.created_at),
                     }

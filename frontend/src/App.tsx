@@ -18,13 +18,17 @@ import AdminDepartments from "./pages/admin/Departments";
 import AdminTimetable from "./pages/admin/Timetable";
 import AdminPfeScheduler from "./pages/admin/PfeScheduler";
 import AdminPfeSessions from "./pages/admin/PfeSessions";
+import AdminPfeImport from "./pages/admin/PfeImport";
 import EnseignantDashboard from "./pages/enseignant/Dashboard";
 import EnseignantPlanning from "./pages/enseignant/Planning";
 import EnseignantDisponibilites from "./pages/enseignant/Disponibilites";
 import EnseignantEmploi from "./pages/enseignant/Emploi";
+import EnseignantPfeUpload from "./pages/enseignant/PfeUpload";
+import EnseignantPresence from "./pages/enseignant/Presence";
 import Forum from "./pages/shared/Forum";
 import EtudiantDashboard from "./pages/etudiant/Dashboard";
 import EtudiantEmploi from "./pages/etudiant/Emploi";
+import EtudiantPresence from "./pages/etudiant/Presence";
 import {
   clearSession,
   getStoredSession,
@@ -49,29 +53,33 @@ const pathToRole: Record<RoleRoute, AppUser["role"]> = {
 
 const getNavConfig = (user: AppUser): Record<AppUser["role"], NavItem[]> => ({
   chef: [
-    { id: "dashboard", label: "Admin Dashboard", icon: "▦" },
-    { id: "timetable", label: "Emploi du temps", icon: "▧" },
-    { id: "announcements", label: "Annonces", icon: "▤" },
-    { id: "pfe-sessions", label: "Manage Campaigns", icon: "◉" },
-    { id: "accounts", label: "Comptes", icon: "◎" },
-    { id: "import", label: "Import Excel", icon: "⬆" },
-    { id: "classes", label: "Classes", icon: "▤" },
-    { id: "departments", label: "Départements", icon: "◆" },
-    { id: "heads", label: "Chefs département", icon: "◈" },
+    { id: "dashboard", label: "Admin Dashboard", icon: "dashboard" },
+    { id: "timetable", label: "Emploi du temps", icon: "calendar-range" },
+    { id: "announcements", label: "Annonces", icon: "announcements" },
+    { id: "pfe-sessions", label: "Campagnes PFE", icon: "briefcase" },
+    { id: "pfe-import", label: "Import PFE Excel", icon: "spreadsheet" },
+    { id: "accounts", label: "Comptes", icon: "users" },
+    { id: "import", label: "Import comptes", icon: "upload" },
+    { id: "classes", label: "Classes", icon: "school" },
+    { id: "departments", label: "Départements", icon: "building" },
+    { id: "heads", label: "Chefs département", icon: "user-cog" },
   ],
   enseignant: [
-    { id: "dashboard", label: "Mon espace", icon: "▦" },
-    { id: "announcements", label: "Annonces", icon: "▤" },
-    { id: "emploi", label: "Emploi du temps", icon: "▧" },
-    { id: "planning", label: "Mes soutenances PFE", icon: "▤" },
-    { id: "disponibilites", label: "Disponibilités PFE", icon: "◌" },
-    { id: "forum", label: "Forum PFE", icon: "◎", badge: 1 },
+    { id: "dashboard", label: "Mon espace", icon: "dashboard" },
+    { id: "announcements", label: "Annonces", icon: "announcements" },
+    { id: "emploi", label: "Emploi du temps", icon: "calendar-range" },
+    { id: "pfe-upload", label: "Mes PFEs", icon: "briefcase" },
+    { id: "planning", label: "Mes soutenances PFE", icon: "calendar-check" },
+    { id: "disponibilites", label: "Disponibilités PFE", icon: "calendar-plus" },
+    { id: "presence", label: "Feuilles de présence", icon: "clipboard-check" },
+    { id: "forum", label: "Forum PFE", icon: "messages", badge: 1 },
   ],
   etudiant: [
-    { id: "dashboard", label: "Mon PFE", icon: "◉" },
-    { id: "announcements", label: "Annonces", icon: "▤" },
-    { id: "emploi", label: "Emploi du temps", icon: "▧" },
-    { id: "forum", label: "Forum PFE", icon: "◎" },
+    { id: "dashboard", label: "Mon PFE", icon: "graduation" },
+    { id: "announcements", label: "Annonces", icon: "announcements" },
+    { id: "emploi", label: "Emploi du temps", icon: "calendar-range" },
+    { id: "presence", label: "Mes présences", icon: "clipboard-check" },
+    { id: "forum", label: "Forum PFE", icon: "messages" },
   ],
 });
 
@@ -91,6 +99,7 @@ function renderPage(
       announcements: <AdminAnnouncements {...props} />,
       "pfe-sessions": <AdminPfeSessions />,
       "pfe-scheduler": <AdminPfeScheduler />,
+      "pfe-import": <AdminPfeImport />,
       accounts: <AdminAccounts {...props} />,
       import: <AdminAccountImport />,
       classes: <AdminClasses {...props} />,
@@ -101,14 +110,17 @@ function renderPage(
       dashboard: <EnseignantDashboard {...props} />,
       announcements: <Announcements {...props} />,
       emploi: <EnseignantEmploi {...props} />,
+      "pfe-upload": <EnseignantPfeUpload />,
       planning: <EnseignantPlanning {...props} />,
       disponibilites: <EnseignantDisponibilites {...props} />,
+      presence: <EnseignantPresence />,
       forum: <Forum {...props} />,
     },
     etudiant: {
       dashboard: <EtudiantDashboard {...props} />,
       announcements: <Announcements {...props} />,
       emploi: <EtudiantEmploi />,
+      presence: <EtudiantPresence />,
       forum: <Forum {...props} />,
     },
   };
